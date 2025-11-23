@@ -5,7 +5,7 @@ import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
-import { Work_Sans as FontSans } from "next/font/google";
+import { Bricolage_Grotesque as FontSans } from "next/font/google";
 
 export const metadata: Metadata = {
   title: {
