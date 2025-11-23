@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title: "Dan Billson",
     description:
       "Software engineer, volleyball player and craft beer enthusiast.",
-    url: "https://danbillson.com",
+    url: "https://dnbls.com",
     siteName: "Dan Billson",
     locale: "en_GB",
     type: "website",

@@ -2,14 +2,12 @@ import Gallery from "@/components/gallery";
 import { LatestPosts } from "@/components/latest-posts";
 import { Title } from "@/components/title";
 import { Section } from "@/components/ui/section";
-import { allPosts } from "contentlayer/generated";
-import { compareDesc } from "date-fns";
+import { getAllPosts } from "@/lib/mdx";
 import Link from "next/link";
 
-export default function Home() {
-  const latestPosts = allPosts
-    .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))
-    .slice(0, 3);
+export default async function Home() {
+  const allPosts = await getAllPosts();
+  const latestPosts = allPosts.slice(0, 3);
 
   return (
     <>
