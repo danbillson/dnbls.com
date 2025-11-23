@@ -1,4 +1,4 @@
-# danbillson.com
+# dnbls.com
 
 My personal portfolio and blog built with Next.js, React, TypeScript, and Tailwind CSS.
 

@@ -5,7 +5,7 @@ export default function robots() {
         userAgent: "*",
       },
     ],
-    sitemap: "https://danbillson.com/sitemap.xml",
-    host: "https://danbillson.com",
+    sitemap: "https://dnbls.com/sitemap.xml",
+    host: "https://dnbls.com",
   };
 }
