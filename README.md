@@ -8,14 +8,15 @@ My personal portfolio and blog built with Next.js, React, TypeScript, and Tailwi
 - 📝 **Blog**: Articles about software engineering, tech, and personal interests
 - 📄 **CV**: Professional background and experience
 - 💻 **Projects**: Highlights of my development projects
-- 📦 **Content Management**: Uses ContentLayer for MDX content
+- 📦 **Content Management**: MDX content with @next/mdx
 
 ## Tech Stack
 
-- ⚡ **Framework**: Next.js
+- ⚡ **Framework**: Next.js 16
+- ⚛️ **React**: React 19
 - 🔷 **Language**: TypeScript
-- 🎨 **Styling**: Tailwind CSS
-- 📝 **Content**: ContentLayer with MDX
+- 🎨 **Styling**: Tailwind CSS v4
+- 📝 **Content**: @next/mdx with remark and rehype plugins
 - 🚀 **Deployment**: Vercel
 
 ## Getting Started
@@ -40,21 +41,37 @@ pnpm dev
 - `components/` - Reusable React components
 - `content/blog/` - MDX blog posts
 - `public/` - Static assets
-- `styles/` - Global styles
-- `lib/` - Utility functions and shared code
+- `styles/` - Global styles and Tailwind configuration
+- `lib/` - Utility functions and MDX content management
 
 ## Adding New Content
 
 ### Blog Posts
 
-Add new MDX files to the `content/blog/` directory with the following frontmatter:
+Add new MDX files to the `content/blog/` directory with the following format:
 
-```md
----
-title: Post Title
-date: YYYY-MM-DD
-description: Brief description of the post
----
+```mdx
+export const metadata = {
+  title: "Post Title",
+  date: "YYYY-MM-DD",
+  description: "Brief description of the post",
+};
 
 Content...
 ```
+
+After adding a new blog post, you'll need to:
+
+1. Add the import to `lib/mdx.ts`
+2. Add the component to `app/blog/[...slug]/page.tsx`
+3. Add the metadata to the `allPostsData` array in `lib/mdx.ts`
+
+## Key Dependencies
+
+- **@next/mdx**: MDX support for Next.js
+- **@tailwindcss/postcss**: Tailwind CSS v4 PostCSS plugin
+- **@tailwindcss/typography**: Typography plugin for prose content
+- **tailwindcss-animate**: Animation utilities
+- **motion**: Animation library (formerly framer-motion)
+- **rehype-pretty-code**: Syntax highlighting for code blocks
+- **remark-gfm**: GitHub Flavored Markdown support
