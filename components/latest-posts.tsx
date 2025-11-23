@@ -2,7 +2,7 @@
 
 import { Section } from "./ui/section";
 import { AnimatedBackground } from "@/components/ui/animated-background";
-import type { Post } from "contentlayer/generated";
+import type { Post } from "@/lib/mdx";
 import Link from "next/link";
 
 type LatestPostsProps = {
@@ -25,14 +25,16 @@ export function LatestPosts({ posts }: LatestPostsProps) {
         >
           {posts.map((post) => (
             <Link
-              key={post._id}
+              key={post.slug}
               className="-mx-3 rounded-xl px-3 py-3"
               href={post.slug}
-              data-id={post._id}
+              data-id={post.slug}
             >
               <div className="flex flex-col space-y-1">
-                <h4 className="font-normal">{post.title}</h4>
-                <p className="text-muted-foreground">{post.description}</p>
+                <h4 className="font-normal">{post.metadata.title}</h4>
+                <p className="text-muted-foreground">
+                  {post.metadata.description}
+                </p>
               </div>
             </Link>
           ))}

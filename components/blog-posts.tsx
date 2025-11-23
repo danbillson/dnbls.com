@@ -2,7 +2,7 @@
 
 import { AnimatedBackground } from "@/components/ui/animated-background";
 import { formatDate } from "@/lib/utils";
-import type { Post } from "contentlayer/generated";
+import type { Post } from "@/lib/mdx";
 import Link from "next/link";
 
 type BlogPostsProps = {
@@ -23,21 +23,23 @@ export function BlogPosts({ posts }: BlogPostsProps) {
       >
         {posts.map((post) => (
           <article
-            key={post._id}
+            key={post.slug}
             className="group relative flex flex-col -mx-3 rounded-xl px-3 py-3"
-            data-id={post._id}
+            data-id={post.slug}
           >
-            <h2 className="text-2xl font-medium">{post.title}</h2>
-            {post.date && (
+            <h2 className="text-2xl font-medium">{post.metadata.title}</h2>
+            {post.metadata.date && (
               <time
-                dateTime={post.date}
+                dateTime={post.metadata.date}
                 className="text-sm text-muted-foreground"
               >
-                {formatDate(post.date)}
+                {formatDate(post.metadata.date)}
               </time>
             )}
-            {post.description && (
-              <p className="text-muted-foreground mt-4">{post.description}</p>
+            {post.metadata.description && (
+              <p className="text-muted-foreground mt-4">
+                {post.metadata.description}
+              </p>
             )}
             <Link href={post.slug} className="absolute inset-0">
               <span className="sr-only">View Article</span>

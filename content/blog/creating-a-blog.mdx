@@ -1,8 +1,8 @@
----
-title: Creating a blog with Next.js and Markdown
-date: 2024-06-15
-description: A guide on the process for creating a blog using Next.js, Contentlayer and mdx
----
+export const metadata = {
+  title: "Creating a blog with Next.js and Markdown",
+  date: "2024-06-15",
+  description: "A guide on the process for creating a blog using Next.js, Contentlayer and mdx",
+};
 
 <Callout>
   I’m taking a very meta approach and making my first blog post about creating
@@ -23,7 +23,7 @@ description: A guide on the process for creating a blog using Next.js, Contentla
   recommend going through [Next.js Learn](https://nextjs.org/learn).
 </Callout>
 
-If you’re starting from scratch you’ll want to create a new app with [create-next-app](https://nextjs.org/docs/app/api-reference/create-next-app) making sure that you are using tailwind and typescript (accepting all the defaults is pretty safe), you can call this whatever you want i.e. `danbillson.com` or `blog`, etc. optionally, I’d also recommend getting set up with [shadcn/ui](https://ui.shadcn.com/docs/installation/next), now we can start setting up Contentlayer which will be a very similar guide to the one of [their site](https://contentlayer.dev/docs/getting-started-cddd76b7#install-dependencies).
+If you're starting from scratch you'll want to create a new app with [create-next-app](https://nextjs.org/docs/app/api-reference/create-next-app) making sure that you are using tailwind and typescript (accepting all the defaults is pretty safe), you can call this whatever you want i.e. `dnbls.com` or `blog`, etc. optionally, I'd also recommend getting set up with [shadcn/ui](https://ui.shadcn.com/docs/installation/next), now we can start setting up Contentlayer which will be a very similar guide to the one of [their site](https://contentlayer.dev/docs/getting-started-cddd76b7#install-dependencies).
 
 ### Install dependencies
 
@@ -276,7 +276,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 
 <Callout>
   If things aren’t quite working as expected, you can check out this [pull
-  request](https://github.com/danbillson/danbillson.com/pull/1) to see all of
+  request](https://github.com/danbillson/dnbls.com/pull/1) to see all of
   the changes that were added whilst I was setting up this blog.
 </Callout>
 
@@ -288,7 +288,7 @@ If you’re considering starting a blog that involves some sort of coding discip
 
 <Callout>
   This section is a little more involved in the last section so here is a link
-  to the [pull request](https://github.com/danbillson/danbillson.com/pull/2)
+  to the [pull request](https://github.com/danbillson/dnbls.com/pull/2)
   that added support for MDX as you’ll probably want to copy and paste
   `components/mdx-components.tsx` , `content/blog/engineering/test-03.mdx` ,
   `styles/mdx.css` and maybe a couple of others if you want.
@@ -358,7 +358,7 @@ export default makeSource({
 
 ### Add MDX components
 
-Copy any new files from this [pull request](https://github.com/danbillson/danbillson.com/pull/2/files#diff-18f8a46c0c7267228f09602da973c922e45bd61a872bb9dbfa8edf5145d4a292)
+Copy any new files from this [pull request](https://github.com/danbillson/dnbls.com/pull/2/files#diff-18f8a46c0c7267228f09602da973c922e45bd61a872bb9dbfa8edf5145d4a292)
 
 - `components/mdx-components.tsx`
 - `components/mdx-card.tsx`
@@ -381,7 +381,7 @@ Import and use the new `Mdx` component
 +      <Mdx code={post.body.code} />
 ```
 
-With this, you should be able to test the [example .mdx](https://github.com/danbillson/danbillson.com/pull/2/files#diff-f054cb896a220d4d935d783c788b4c366eec9cf000c2d4a347bcb5a485f117a4) file to make sure everything is working properly, if not, double-check the changes made in the [pull request](https://github.com/danbillson/danbillson.com/pull/2) to see if anything has been missed.
+With this, you should be able to test the [example .mdx](https://github.com/danbillson/dnbls.com/pull/2/files#diff-f054cb896a220d4d935d783c788b4c366eec9cf000c2d4a347bcb5a485f117a4) file to make sure everything is working properly, if not, double-check the changes made in the [pull request](https://github.com/danbillson/dnbls.com/pull/2) to see if anything has been missed.
 
 ## Start your blog
 

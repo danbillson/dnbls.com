@@ -18,7 +18,7 @@ export default function Projects() {
           stack applications with auth and search features.
         </p>
 
-        <hr className="my-6 border-neutral-100" />
+        <hr className="my-6! border-neutral-100" />
         <h2 className="font-medium text-xl mb-1 tracking-tighter">
           <a href="https://yonder-experiences.vercel.app/">
             Yonder Experiences
@@ -34,7 +34,7 @@ export default function Projects() {
           </span>
         </p>
 
-        <hr className="my-6 border-neutral-100" />
+        <hr className="my-6! border-neutral-100" />
         <h2 className="font-medium text-xl mb-1 tracking-tighter">
           <a href="https://github.com/danbillson/next-forge-paddle">
             next-forge-paddle
@@ -52,7 +52,7 @@ export default function Projects() {
           to learn how to migrate a next-forge project to use Paddle.
         </p>
 
-        <hr className="my-6 border-neutral-100" />
+        <hr className="my-6! border-neutral-100" />
         <h2 className="font-medium text-xl mb-1 tracking-tighter">
           <a href="https://github.com/danbillson/advent-of-code-2023">
             Advent of Code 2024
@@ -75,7 +75,7 @@ export default function Projects() {
           .
         </p>
 
-        <hr className="my-6 border-neutral-100" />
+        <hr className="my-6! border-neutral-100" />
         <h2 className="font-medium text-xl mb-1 tracking-tighter">
           <a href="https://github.com/danbillson/t3-pouring-at">pouring.at</a>
         </h2>
@@ -90,7 +90,7 @@ export default function Projects() {
           <li>Clerk for authentication and Upstash for rate limiting.</li>
         </ul>
 
-        <hr className="my-6 border-neutral-100" />
+        <hr className="my-6! border-neutral-100" />
         <h2 className="font-medium text-xl mb-1 tracking-tighter">
           <a href="https://github.com/danbillson/office-hours">Office Hours</a>
         </h2>
@@ -100,7 +100,7 @@ export default function Projects() {
           office was limited.
         </p>
 
-        <hr className="my-6 border-neutral-100" />
+        <hr className="my-6! border-neutral-100" />
         <h2 className="font-medium text-xl mb-1 tracking-tighter">
           <a href="https://github.com/danbillson/kana-quiz">Kana Quiz</a>
         </h2>
@@ -112,7 +112,7 @@ export default function Projects() {
           how we managed state in one of the apps at SoPost.
         </p>
 
-        <hr className="my-6 border-neutral-100" />
+        <hr className="my-6! border-neutral-100" />
         <h2 className="font-medium text-xl mb-1 tracking-tighter">
           <a href="https://github.com/danbillson/advent-of-code-2023">
             Advent of Code 2023

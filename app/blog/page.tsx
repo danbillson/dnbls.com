@@ -1,7 +1,5 @@
 import { BlogPosts } from "@/components/blog-posts";
-import { Section } from "@/components/ui/section";
-import { allPosts } from "contentlayer/generated";
-import { compareDesc } from "date-fns";
+import { getAllPosts } from "@/lib/mdx";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,10 +8,8 @@ export const metadata: Metadata = {
     "A collection of my thoughts and ideas on software engineering and projects.",
 };
 
-export default function Blog() {
-  const posts = allPosts.sort((a, b) =>
-    compareDesc(new Date(a.date), new Date(b.date)),
-  );
+export default async function Blog() {
+  const posts = await getAllPosts();
 
   return (
     <div>

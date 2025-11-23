@@ -17,7 +17,7 @@ export default function Work() {
           to focus on creating a great developer experience, knowledge sharing
           and getting my team aligned.
         </p>
-        <hr className="my-6 border-neutral-100" />
+        <hr className="my-6! border-neutral-100" />
         <h2 className="font-medium text-xl mb-1 tracking-tighter">
           <a href="https://www.paddle.com">Paddle</a>
         </h2>
@@ -38,7 +38,7 @@ export default function Work() {
           .
         </p>
 
-        <hr className="my-6 border-neutral-100" />
+        <hr className="my-6! border-neutral-100" />
         <h2 className="font-medium text-xl mb-1 tracking-tighter">
           <a href="https://sopost.com">SoPost</a>
         </h2>
@@ -68,7 +68,7 @@ export default function Work() {
             of concept through to complete project.
           </li>
         </ul>
-        <hr className="my-6 border-neutral-100" />
+        <hr className="my-6! border-neutral-100" />
         <h2 className="font-medium text-xl mb-1 tracking-tighter">
           <a href="https://precisionproco.co.uk/">Climb Creative</a>
         </h2>
@@ -86,7 +86,7 @@ export default function Work() {
           the rebuild of the product page and checkout flow, as well as
           implementing the Canva integration for custom product design.
         </p>
-        <hr className="my-6 border-neutral-100" />
+        <hr className="my-6! border-neutral-100" />
         <h2 className="font-medium text-xl mb-1 tracking-tighter">
           <a href="https://www.wearemarmalade.co.uk/">Marmalade</a>
         </h2>
@@ -109,7 +109,7 @@ export default function Work() {
           aggregators like Moneysupermarket and Compare the Market, testing over
           100 quotes simultaneously.
         </p>
-        <hr className="my-6 border-neutral-100" />
+        <hr className="my-6! border-neutral-100" />
         <h2 className="font-medium text-xl mb-1 tracking-tighter">
           <a href="https://www.thg.com/">THG</a>
         </h2>

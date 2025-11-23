@@ -1,7 +1,6 @@
-import { Mdx } from "@/components/mdx-components";
 import "@/styles/mdx.css";
-import { allCVs } from "contentlayer/generated";
 import type { Metadata } from "next";
+import CV from "@/content/cv.mdx";
 
 export const metadata: Metadata = {
   title: "CV",
@@ -9,11 +8,11 @@ export const metadata: Metadata = {
 };
 
 export default function CVPage() {
-  const cv = allCVs[0];
-
   return (
     <article className="py-8">
-      <Mdx code={cv.body.code} />
+      <div className="mdx">
+        <CV />
+      </div>
     </article>
   );
 }
