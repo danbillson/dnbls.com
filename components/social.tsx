@@ -1,4 +1,3 @@
-import { Section } from "@/components/ui/section";
 import { siGithub, siInstagram, siLinkedin, siMedium, siX } from "simple-icons";
 
 const social = [
