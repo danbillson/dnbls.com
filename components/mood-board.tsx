@@ -4,35 +4,44 @@ import { InView } from "@/components/ui/in-view";
 import { Kbd } from "@/components/ui/kbd";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useOnClickOutside } from "usehooks-ts";
 
 export function MoodBoard() {
   const [selectedMoodIndex, setSelectedMoodIndex] = useState<number | null>(
     null,
   );
-  const [lastMoodIndex, setLastMoodIndex] = useState<number | null>(null);
-  const ref = useRef<HTMLDivElement>(null);
+  const lastMoodIndexRef = useRef<number | null>(null);
+  const ref = useRef<HTMLDivElement>(null!) as React.RefObject<HTMLDivElement>;
 
-  function closeModal() {
+  // Update ref when selectedMoodIndex changes
+  useEffect(() => {
+    if (selectedMoodIndex !== null) {
+      lastMoodIndexRef.current = selectedMoodIndex;
+    }
+  }, [selectedMoodIndex]);
+
+  const closeModal = useCallback(() => {
     setSelectedMoodIndex(null);
-  }
+  }, []);
 
-  function previousMood() {
-    if (selectedMoodIndex === null) {
-      setSelectedMoodIndex(lastMoodIndex ?? moods.length - 1);
-      return;
-    }
-    setSelectedMoodIndex(selectedMoodIndex - 1);
-  }
+  const previousMood = useCallback(() => {
+    setSelectedMoodIndex((current) => {
+      if (current === null) {
+        return lastMoodIndexRef.current ?? moods.length - 1;
+      }
+      return current - 1;
+    });
+  }, []);
 
-  function nextMood() {
-    if (selectedMoodIndex === null) {
-      setSelectedMoodIndex(lastMoodIndex ?? 0);
-      return;
-    }
-    setSelectedMoodIndex(selectedMoodIndex + 1);
-  }
+  const nextMood = useCallback(() => {
+    setSelectedMoodIndex((current) => {
+      if (current === null) {
+        return lastMoodIndexRef.current ?? 0;
+      }
+      return current + 1;
+    });
+  }, []);
 
   useOnClickOutside(ref, closeModal);
   useEffect(() => {
@@ -50,12 +59,7 @@ export function MoodBoard() {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [selectedMoodIndex]);
-  useEffect(() => {
-    if (selectedMoodIndex !== null) {
-      setLastMoodIndex(selectedMoodIndex);
-    }
-  }, [selectedMoodIndex]);
+  }, [closeModal, previousMood, nextMood]);
 
   const selectedMood =
     selectedMoodIndex !== null ? moods[selectedMoodIndex] : null;
@@ -98,7 +102,7 @@ export function MoodBoard() {
                   height={selectedMood.height}
                   className="rounded-lg"
                 />
-                <div className="absolute rounded-b-lg bottom-0 bg-gradient-to-b from-transparent to-black/50 w-full h-1/3" />
+                <div className="absolute rounded-b-lg bottom-0 bg-linear-to-b from-transparent to-black/50 w-full h-1/3" />
               </motion.div>
               <motion.h3
                 layoutId={`mood-title-${selectedMood.title}`}
