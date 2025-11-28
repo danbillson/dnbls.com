@@ -5,6 +5,7 @@ import * as creatingABlogModule from "@/content/blog/creating-a-blog.mdx";
 import * as howMuchTimeDoesThisDemandModule from "@/content/blog/how-much-time-does-this-demand.mdx";
 import * as howToLearnWebDevelopmentIn2025Module from "@/content/blog/how-to-learn-web-development-in-2025.mdx";
 import * as softwareEngineerMacbookSetupModule from "@/content/blog/software-engineer-macbook-setup.mdx";
+import * as top10PubsInLondon2025Module from "@/content/blog/top-10-pubs-in-london-2025.mdx";
 import * as top10PubsInLondonModule from "@/content/blog/top-10-pubs-in-london.mdx";
 import * as top10TakeawaysFromGettingRealModule from "@/content/blog/top-10-takeaways-from-getting-real.mdx";
 
@@ -12,11 +13,14 @@ const aiVsAdventOfCodeMeta = aiVsAdventOfCodeModule.metadata;
 const animatingHeightInReactMeta = animatingHeightInReactModule.metadata;
 const creatingABlogMeta = creatingABlogModule.metadata;
 const howMuchTimeDoesThisDemandMeta = howMuchTimeDoesThisDemandModule.metadata;
-const howToLearnWebDevelopmentIn2025Meta = howToLearnWebDevelopmentIn2025Module.metadata;
-const softwareEngineerMacbookSetupMeta = softwareEngineerMacbookSetupModule.metadata;
+const howToLearnWebDevelopmentIn2025Meta =
+  howToLearnWebDevelopmentIn2025Module.metadata;
+const softwareEngineerMacbookSetupMeta =
+  softwareEngineerMacbookSetupModule.metadata;
 const top10PubsInLondonMeta = top10PubsInLondonModule.metadata;
-const top10TakeawaysFromGettingRealMeta = top10TakeawaysFromGettingRealModule.metadata;
-
+const top10TakeawaysFromGettingRealMeta =
+  top10TakeawaysFromGettingRealModule.metadata;
+const top10PubsInLondon2025Meta = top10PubsInLondon2025Module.metadata;
 export interface Post {
   slug: string;
   slugAsParams: string;
@@ -113,6 +117,16 @@ const allPostsData: Post[] = [
       published: true,
     },
   },
+  {
+    slug: "/blog/top-10-pubs-in-london-2025",
+    slugAsParams: "top-10-pubs-in-london-2025",
+    metadata: {
+      title: top10PubsInLondon2025Meta.title || "",
+      date: top10PubsInLondon2025Meta.date || "",
+      description: top10PubsInLondon2025Meta.description,
+      published: true,
+    },
+  },
 ];
 
 export async function getAllPosts(): Promise<Post[]> {
@@ -134,4 +148,3 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 export async function getCV(): Promise<CV> {
   return { metadata: {} };
 }
-
