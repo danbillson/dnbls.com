@@ -38,6 +38,7 @@
   --sidebar-border: oklch(0.9400 0 0);
   --sidebar-ring: oklch(0 0 0);
   --font-sans: "Work Sans", sans-serif;
+  --font-title: "Bricolage Grotesque", sans-serif;
   --radius: 0.5rem;
   --shadow-x: 0px;
   --shadow-y: 1px;
@@ -91,6 +92,7 @@
   --sidebar-border: oklch(0.3200 0 0);
   --sidebar-ring: oklch(0.7200 0 0);
   --font-sans: "Work Sans", sans-serif;
+  --font-title: "Bricolage Grotesque", sans-serif;
   --radius: 0.5rem;
   --shadow-x: 0px;
   --shadow-y: 1px;
@@ -143,6 +145,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   --font-sans: var(--font-sans);
+  --font-title: var(--font-title);
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
 
@@ -167,5 +170,8 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-title;
   }
 }

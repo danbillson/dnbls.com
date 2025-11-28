@@ -5,7 +5,10 @@ import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
-import { Bricolage_Grotesque as FontSans } from "next/font/google";
+import {
+  Bricolage_Grotesque as FontTitle,
+  Work_Sans as FontSans,
+} from "next/font/google";
 
 export const metadata: Metadata = {
   title: {
@@ -36,6 +39,12 @@ export const metadata: Metadata = {
   },
 };
 
+const fontTitle = FontTitle({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-title",
+});
+
 const fontSans = FontSans({
   subsets: ["latin"],
   weight: ["400", "700"],
@@ -52,6 +61,7 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
+          fontTitle.variable,
           fontSans.variable,
         )}
       >
