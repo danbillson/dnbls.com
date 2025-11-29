@@ -45,7 +45,8 @@ export async function generateMetadata({
 
   const { title, date: publishedTime, description } = post.metadata;
   const pageTitle = title || slugString;
-  const ogImage = ogImageUrl(pageTitle);
+  const ogImage = await ogImageUrl(pageTitle);
+  const postUrl = await absoluteUrl(`/blog/${slugString}`);
 
   return {
     title: pageTitle,
@@ -55,7 +56,7 @@ export async function generateMetadata({
       description,
       type: "article",
       publishedTime,
-      url: absoluteUrl(`/blog/${slugString}`),
+      url: postUrl,
       images: [
         {
           url: ogImage,

@@ -11,50 +11,56 @@ import {
   Work_Sans as FontSans,
 } from "next/font/google";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(getSiteUrl()),
-  title: {
-    default: "Dan Billson",
-    template: "%s | Dan Billson",
-  },
-  description:
-    "Software engineer, volleyball player and craft beer enthusiast.",
-  openGraph: {
-    title: "Dan Billson",
+export async function generateMetadata(): Promise<Metadata> {
+  const siteUrl = await getSiteUrl();
+  const ogImage = await ogImageUrl();
+  const baseUrl = await absoluteUrl("/");
+
+  return {
+    metadataBase: new URL(siteUrl),
+    title: {
+      default: "Dan Billson",
+      template: "%s | Dan Billson",
+    },
     description:
       "Software engineer, volleyball player and craft beer enthusiast.",
-    url: absoluteUrl("/"),
-    siteName: "Dan Billson",
-    images: [
-      {
-        url: ogImageUrl(),
-        width: 1200,
-        height: 630,
-        alt: "Dan Billson",
-      },
-    ],
-    locale: "en_GB",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Dan Billson",
-    description:
-      "Software engineer, volleyball player and craft beer enthusiast.",
-    images: [ogImageUrl()],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+    openGraph: {
+      title: "Dan Billson",
+      description:
+        "Software engineer, volleyball player and craft beer enthusiast.",
+      url: baseUrl,
+      siteName: "Dan Billson",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: "Dan Billson",
+        },
+      ],
+      locale: "en_GB",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Dan Billson",
+      description:
+        "Software engineer, volleyball player and craft beer enthusiast.",
+      images: [ogImage],
+    },
+    robots: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
-};
+  };
+}
 
 const fontTitle = FontTitle({
   subsets: ["latin"],

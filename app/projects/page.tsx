@@ -4,27 +4,32 @@ import type { Metadata } from "next";
 const title = "Projects";
 const description = "A summary of my personal projects.";
 
-export const metadata: Metadata = {
-  title,
-  description,
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const ogImage = await ogImageUrl("projects");
+  const projectsUrl = await absoluteUrl("/projects");
+
+  return {
     title,
     description,
-    url: absoluteUrl("/projects"),
-    images: [
-      {
-        url: ogImageUrl("projects"),
-      },
-    ],
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-    images: [ogImageUrl("projects")],
-  },
-};
+    openGraph: {
+      title,
+      description,
+      url: projectsUrl,
+      images: [
+        {
+          url: ogImage,
+        },
+      ],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+  };
+}
 
 export default function Projects() {
   return (

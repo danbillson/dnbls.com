@@ -7,27 +7,32 @@ const title = "Blog";
 const description =
   "A collection of my thoughts and ideas on software engineering and projects.";
 
-export const metadata: Metadata = {
-  title,
-  description,
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const ogImage = await ogImageUrl("blog");
+  const blogUrl = await absoluteUrl("/blog");
+
+  return {
     title,
     description,
-    url: absoluteUrl("/blog"),
-    images: [
-      {
-        url: ogImageUrl("blog"),
-      },
-    ],
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-    images: [ogImageUrl("blog")],
-  },
-};
+    openGraph: {
+      title,
+      description,
+      url: blogUrl,
+      images: [
+        {
+          url: ogImage,
+        },
+      ],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+  };
+}
 
 export default async function Blog() {
   const posts = await getAllPosts();

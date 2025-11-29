@@ -6,27 +6,32 @@ import type { Metadata } from "next";
 const title = "CV";
 const description = "Dan Billson's CV and professional experience";
 
-export const metadata: Metadata = {
-  title,
-  description,
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const ogImage = await ogImageUrl("cv");
+  const cvUrl = await absoluteUrl("/cv");
+
+  return {
     title,
     description,
-    url: absoluteUrl("/cv"),
-    images: [
-      {
-        url: ogImageUrl("cv"),
-      },
-    ],
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-    images: [ogImageUrl("cv")],
-  },
-};
+    openGraph: {
+      title,
+      description,
+      url: cvUrl,
+      images: [
+        {
+          url: ogImage,
+        },
+      ],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+  };
+}
 
 export default function CVPage() {
   return (
