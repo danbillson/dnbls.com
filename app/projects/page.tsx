@@ -1,8 +1,29 @@
+import { absoluteUrl, ogImageUrl } from "@/lib/metadata";
 import type { Metadata } from "next";
 
+const title = "Projects";
+const description = "A summary of my personal projects.";
+
 export const metadata: Metadata = {
-  title: "Projects",
-  description: "A summary of my personal projects.",
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: absoluteUrl("/projects"),
+    images: [
+      {
+        url: ogImageUrl("projects"),
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: [ogImageUrl("projects")],
+  },
 };
 
 export default function Projects() {

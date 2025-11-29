@@ -1,5 +1,6 @@
 import Nav from "@/components/nav";
 import Social from "@/components/social";
+import { absoluteUrl, getSiteUrl, ogImageUrl } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
@@ -11,6 +12,7 @@ import {
 } from "next/font/google";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: {
     default: "Dan Billson",
     template: "%s | Dan Billson",
@@ -21,10 +23,25 @@ export const metadata: Metadata = {
     title: "Dan Billson",
     description:
       "Software engineer, volleyball player and craft beer enthusiast.",
-    url: "https://dnbls.com",
+    url: absoluteUrl("/"),
     siteName: "Dan Billson",
+    images: [
+      {
+        url: ogImageUrl(),
+        width: 1200,
+        height: 630,
+        alt: "Dan Billson",
+      },
+    ],
     locale: "en_GB",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Dan Billson",
+    description:
+      "Software engineer, volleyball player and craft beer enthusiast.",
+    images: [ogImageUrl()],
   },
   robots: {
     index: true,

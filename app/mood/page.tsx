@@ -1,9 +1,30 @@
 import { MoodBoard } from "@/components/mood-board";
+import { absoluteUrl, ogImageUrl } from "@/lib/metadata";
 import type { Metadata } from "next";
 
+const title = "Mood";
+const description = "A curated list of my favourite things.";
+
 export const metadata: Metadata = {
-  title: "Mood",
-  description: "A curated list of my favourite things.",
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: absoluteUrl("/mood"),
+    images: [
+      {
+        url: ogImageUrl("mood"),
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: [ogImageUrl("mood")],
+  },
 };
 
 export default function Mood() {

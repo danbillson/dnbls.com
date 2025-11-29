@@ -1,11 +1,32 @@
 import { BlogPosts } from "@/components/blog-posts";
 import { getAllPosts } from "@/lib/mdx";
+import { absoluteUrl, ogImageUrl } from "@/lib/metadata";
 import type { Metadata } from "next";
 
+const title = "Blog";
+const description =
+  "A collection of my thoughts and ideas on software engineering and projects.";
+
 export const metadata: Metadata = {
-  title: "Blog",
-  description:
-    "A collection of my thoughts and ideas on software engineering and projects.",
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: absoluteUrl("/blog"),
+    images: [
+      {
+        url: ogImageUrl("blog"),
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: [ogImageUrl("blog")],
+  },
 };
 
 export default async function Blog() {
