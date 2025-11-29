@@ -1,59 +1,21 @@
 import { LogoIcon } from "@/components/logo-icon";
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 
 const HEADING = "Dan Billson";
 const SUBTITLE_MAX_LENGTH = 80;
-
-// Cache font promises to avoid refetching on every request
-const fontCache = new Map<string, Promise<ArrayBuffer>>();
-
-async function fetchFont(fontCssUrl: string): Promise<ArrayBuffer> {
-  // Return cached promise if available
-  if (fontCache.has(fontCssUrl)) {
-    return fontCache.get(fontCssUrl)!;
-  }
-
-  const fontPromise = (async () => {
-    const cssResponse = await fetch(fontCssUrl, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-      },
-      next: { revalidate: 86400 }, // Cache fonts for 24 hours
-    });
-
-    const css = await cssResponse.text();
-    const fontUrlMatch = css.match(
-      /src: url\((.+?)\) format\('(woff2|truetype)'\)/,
-    );
-
-    if (!fontUrlMatch) {
-      throw new Error(`Failed to load font from ${fontCssUrl}`);
-    }
-
-    const fontUrl = fontUrlMatch[1].replace(/(^")|("$)/g, "");
-    const fontResponse = await fetch(fontUrl, {
-      next: { revalidate: 86400 }, // Cache fonts for 24 hours
-    });
-
-    return fontResponse.arrayBuffer();
-  })();
-
-  fontCache.set(fontCssUrl, fontPromise);
-  return fontPromise;
-}
 
 export async function generateOgImage(subtitle?: string) {
   const subtitleText = subtitle
     ? subtitle.slice(0, SUBTITLE_MAX_LENGTH).trim()
     : undefined;
 
+  // Load fonts from local assets folder
   const [titleFontData, bodyFontData] = await Promise.all([
-    fetchFont(
-      "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&text=Dan%20Billson",
-    ),
+    readFile(join(process.cwd(), "assets", "BricolageGrotesque-Bold.ttf")),
     subtitleText
-      ? fetchFont("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400")
+      ? readFile(join(process.cwd(), "assets", "WorkSans-Regular.ttf"))
       : Promise.resolve(null),
   ]);
 
@@ -131,16 +93,16 @@ export async function generateOgImage(subtitle?: string) {
         {
           name: "Bricolage Grotesque",
           data: titleFontData,
-          weight: 700,
-          style: "normal",
+          weight: 700 as const,
+          style: "normal" as const,
         },
         ...(bodyFontData
           ? [
               {
                 name: "Work Sans",
                 data: bodyFontData,
-                weight: 400,
-                style: "normal",
+                weight: 400 as const,
+                style: "normal" as const,
               },
             ]
           : []),
@@ -148,4 +110,3 @@ export async function generateOgImage(subtitle?: string) {
     },
   );
 }
-
