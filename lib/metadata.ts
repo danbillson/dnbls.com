@@ -12,6 +12,17 @@ export async function getSiteUrl() {
     if (host) {
       return `${protocol}://${host}`;
     }
+
+    // Fallback to Referer header if host is not available
+    const referer = headersList.get("referer");
+    if (referer) {
+      try {
+        const refererUrl = new URL(referer);
+        return `${refererUrl.protocol}//${refererUrl.host}`;
+      } catch {
+        // Invalid referer URL, continue to fallback
+      }
+    }
   } catch {
     // headers() can only be called in Server Components/Server Actions
     // Fall back to environment variable or default
