@@ -1,6 +1,5 @@
 import Nav from "@/components/nav";
 import Social from "@/components/social";
-import { absoluteUrl, getSiteUrl, ogImageUrl } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
@@ -11,56 +10,34 @@ import {
   Work_Sans as FontSans,
 } from "next/font/google";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const siteUrl = await getSiteUrl();
-  const ogImage = await ogImageUrl();
-  const baseUrl = await absoluteUrl("/");
-
-  return {
-    metadataBase: new URL(siteUrl),
-    title: {
-      default: "Dan Billson",
-      template: "%s | Dan Billson",
-    },
+export const metadata: Metadata = {
+  title: {
+    default: "Dan Billson",
+    template: "%s | Dan Billson",
+  },
+  description:
+    "Software engineer, volleyball player and craft beer enthusiast.",
+  openGraph: {
+    title: "Dan Billson",
     description:
       "Software engineer, volleyball player and craft beer enthusiast.",
-    openGraph: {
-      title: "Dan Billson",
-      description:
-        "Software engineer, volleyball player and craft beer enthusiast.",
-      url: baseUrl,
-      siteName: "Dan Billson",
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: "Dan Billson",
-        },
-      ],
-      locale: "en_GB",
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: "Dan Billson",
-      description:
-        "Software engineer, volleyball player and craft beer enthusiast.",
-      images: [ogImage],
-    },
-    robots: {
+    url: "https://dnbls.com",
+    siteName: "Dan Billson",
+    locale: "en_GB",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
       index: true,
       follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
-  };
-}
+  },
+};
 
 const fontTitle = FontTitle({
   subsets: ["latin"],

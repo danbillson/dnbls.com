@@ -1,37 +1,11 @@
 import "@/styles/mdx.css";
-import CV from "@/content/cv.mdx";
-import { absoluteUrl, ogImageUrl } from "@/lib/metadata";
 import type { Metadata } from "next";
+import CV from "@/content/cv.mdx";
 
-const title = "CV";
-const description = "Dan Billson's CV and professional experience";
-
-export async function generateMetadata(): Promise<Metadata> {
-  const ogImage = await ogImageUrl("cv");
-  const cvUrl = await absoluteUrl("/cv");
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      url: cvUrl,
-      images: [
-        {
-          url: ogImage,
-        },
-      ],
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [ogImage],
-    },
-  };
-}
+export const metadata: Metadata = {
+  title: "CV",
+  description: "Dan Billson's CV and professional experience",
+};
 
 export default function CVPage() {
   return (

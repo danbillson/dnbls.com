@@ -9,7 +9,6 @@ import Top10PubsInLondon2025 from "@/content/blog/top-10-pubs-in-london-2025.mdx
 import Top10PubsInLondon from "@/content/blog/top-10-pubs-in-london.mdx";
 import Top10TakeawaysFromGettingReal from "@/content/blog/top-10-takeaways-from-getting-real.mdx";
 import { getAllPosts } from "@/lib/mdx";
-import { absoluteUrl, ogImageUrl } from "@/lib/metadata";
 import { formatDate } from "@/lib/utils";
 import "@/styles/mdx.css";
 import type { Metadata } from "next";
@@ -44,30 +43,21 @@ export async function generateMetadata({
   }
 
   const { title, date: publishedTime, description } = post.metadata;
-  const pageTitle = title || slugString;
-  const ogImage = await ogImageUrl(pageTitle);
-  const postUrl = await absoluteUrl(`/blog/${slugString}`);
 
   return {
-    title: pageTitle,
+    title,
     description,
     openGraph: {
-      title: pageTitle,
+      title,
       description,
       type: "article",
       publishedTime,
-      url: postUrl,
-      images: [
-        {
-          url: ogImage,
-        },
-      ],
+      url: `https://dnbls.com/blog/${slugString}`,
     },
     twitter: {
-      card: "summary_large_image",
-      title: pageTitle,
+      card: "summary",
+      title,
       description,
-      images: [ogImage],
     },
   };
 }

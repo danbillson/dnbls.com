@@ -1,53 +1,60 @@
 import { LogoIcon } from "@/components/logo-icon";
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
-export const size = {
-  width: 1200,
-  height: 630,
-};
-export const contentType = "image/png";
-
 const HEADING = "Dan Billson";
 const SUBTITLE_MAX_LENGTH = 80;
 
-const titleFont = fetchFont(
-  "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&text=Dan%20Billson",
-);
+// Cache font promises to avoid refetching on every request
+const fontCache = new Map<string, Promise<ArrayBuffer>>();
 
-const bodyFont = fetchFont(
-  "https://fonts.googleapis.com/css2?family=Work+Sans:wght@400",
-);
-
-async function fetchFont(fontCssUrl: string) {
-  const cssResponse = await fetch(fontCssUrl, {
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    },
-  });
-
-  const css = await cssResponse.text();
-  const fontUrlMatch = css.match(/src: url\((.+?)\) format\('(woff2|truetype)'\)/);
-
-  if (!fontUrlMatch) {
-    throw new Error(`Failed to load font from ${fontCssUrl}`);
+async function fetchFont(fontCssUrl: string): Promise<ArrayBuffer> {
+  // Return cached promise if available
+  if (fontCache.has(fontCssUrl)) {
+    return fontCache.get(fontCssUrl)!;
   }
 
-  const fontUrl = fontUrlMatch[1].replace(/(^")|("$)/g, "");
-  const fontResponse = await fetch(fontUrl);
+  const fontPromise = (async () => {
+    const cssResponse = await fetch(fontCssUrl, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      },
+      next: { revalidate: 86400 }, // Cache fonts for 24 hours
+    });
 
-  return fontResponse.arrayBuffer();
+    const css = await cssResponse.text();
+    const fontUrlMatch = css.match(
+      /src: url\((.+?)\) format\('(woff2|truetype)'\)/,
+    );
+
+    if (!fontUrlMatch) {
+      throw new Error(`Failed to load font from ${fontCssUrl}`);
+    }
+
+    const fontUrl = fontUrlMatch[1].replace(/(^")|("$)/g, "");
+    const fontResponse = await fetch(fontUrl, {
+      next: { revalidate: 86400 }, // Cache fonts for 24 hours
+    });
+
+    return fontResponse.arrayBuffer();
+  })();
+
+  fontCache.set(fontCssUrl, fontPromise);
+  return fontPromise;
 }
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const subtitleParam = searchParams.get("subtitle") || "";
-  const subtitle = subtitleParam.slice(0, SUBTITLE_MAX_LENGTH).trim();
+export async function generateOgImage(subtitle?: string) {
+  const subtitleText = subtitle
+    ? subtitle.slice(0, SUBTITLE_MAX_LENGTH).trim()
+    : undefined;
 
   const [titleFontData, bodyFontData] = await Promise.all([
-    titleFont,
-    bodyFont,
+    fetchFont(
+      "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&text=Dan%20Billson",
+    ),
+    subtitleText
+      ? fetchFont("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400")
+      : Promise.resolve(null),
   ]);
 
   return new ImageResponse(
@@ -100,7 +107,7 @@ export async function GET(request: Request) {
             >
               {HEADING}
             </span>
-            {subtitle ? (
+            {subtitleText ? (
               <span
                 style={{
                   marginTop: 16,
@@ -110,7 +117,7 @@ export async function GET(request: Request) {
                   color: "#4a4a4a",
                 }}
               >
-                {subtitle}
+                {subtitleText}
               </span>
             ) : null}
           </div>
@@ -118,7 +125,8 @@ export async function GET(request: Request) {
       </div>
     ),
     {
-      ...size,
+      width: 1200,
+      height: 630,
       fonts: [
         {
           name: "Bricolage Grotesque",
@@ -126,13 +134,18 @@ export async function GET(request: Request) {
           weight: 700,
           style: "normal",
         },
-        {
-          name: "Work Sans",
-          data: bodyFontData,
-          weight: 400,
-          style: "normal",
-        },
+        ...(bodyFontData
+          ? [
+              {
+                name: "Work Sans",
+                data: bodyFontData,
+                weight: 400,
+                style: "normal",
+              },
+            ]
+          : []),
       ],
     },
   );
 }
+

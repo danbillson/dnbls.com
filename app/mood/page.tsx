@@ -1,36 +1,10 @@
 import { MoodBoard } from "@/components/mood-board";
-import { absoluteUrl, ogImageUrl } from "@/lib/metadata";
 import type { Metadata } from "next";
 
-const title = "Mood";
-const description = "A curated list of my favourite things.";
-
-export async function generateMetadata(): Promise<Metadata> {
-  const ogImage = await ogImageUrl("mood");
-  const moodUrl = await absoluteUrl("/mood");
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      url: moodUrl,
-      images: [
-        {
-          url: ogImage,
-        },
-      ],
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [ogImage],
-    },
-  };
-}
+export const metadata: Metadata = {
+  title: "Mood",
+  description: "A curated list of my favourite things.",
+};
 
 export default function Mood() {
   return (

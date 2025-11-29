@@ -1,38 +1,12 @@
 import { BlogPosts } from "@/components/blog-posts";
 import { getAllPosts } from "@/lib/mdx";
-import { absoluteUrl, ogImageUrl } from "@/lib/metadata";
 import type { Metadata } from "next";
 
-const title = "Blog";
-const description =
-  "A collection of my thoughts and ideas on software engineering and projects.";
-
-export async function generateMetadata(): Promise<Metadata> {
-  const ogImage = await ogImageUrl("blog");
-  const blogUrl = await absoluteUrl("/blog");
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      url: blogUrl,
-      images: [
-        {
-          url: ogImage,
-        },
-      ],
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [ogImage],
-    },
-  };
-}
+export const metadata: Metadata = {
+  title: "Blog",
+  description:
+    "A collection of my thoughts and ideas on software engineering and projects.",
+};
 
 export default async function Blog() {
   const posts = await getAllPosts();
