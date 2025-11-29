@@ -45,6 +45,7 @@ export async function generateOgImage(subtitle?: string) {
         >
           <div
             style={{
+              display: "flex",
               borderRadius: "999px",
               padding: "24px",
               border: "1px solid #111111",
