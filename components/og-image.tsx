@@ -26,33 +26,19 @@ export async function generateOgImage(subtitle?: string) {
           width: "100%",
           height: "100%",
           display: "flex",
-          backgroundColor: "#f8f7f4",
-          color: "#0f0f0f",
+          backgroundColor: "#ffffff",
+          color: "#140700",
         }}
       >
         <div
           style={{
             display: "flex",
-            flexDirection: "row",
             alignItems: "center",
-            gap: "60px",
-            margin: "auto",
-            padding: "80px 96px",
-            borderRadius: "32px",
-            backgroundColor: "#ffffff",
-            boxShadow: "0px 20px 70px rgba(0, 0, 0, 0.08)",
+            gap: "48px",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              borderRadius: "999px",
-              padding: "24px",
-              border: "1px solid #111111",
-            }}
-          >
-            <LogoIcon width={220} height={220} />
-          </div>
+          <LogoIcon width={120} height={120} />
+
           <div
             style={{
               display: "flex",
@@ -77,7 +63,7 @@ export async function generateOgImage(subtitle?: string) {
                   fontFamily: '"Work Sans"',
                   fontSize: 52,
                   lineHeight: 1.2,
-                  color: "#4a4a4a",
+                  color: "#525252",
                 }}
               >
                 {subtitleText}
