@@ -27,16 +27,15 @@ const postComponents: Record<string, React.ComponentType> = {
 };
 
 type BlogPostProps = {
-  params: Promise<{ slug: string[] }>;
+  params: Promise<{ slug: string }>;
 };
 
 export async function generateMetadata({
   params,
 }: BlogPostProps): Promise<Metadata> {
   const { slug } = await params;
-  const slugString = slug.join("/");
   const posts = await getAllPosts();
-  const post = posts.find((p) => p.slugAsParams === slugString);
+  const post = posts.find((p) => p.slugAsParams === slug);
 
   if (!post) {
     return {};
@@ -52,7 +51,7 @@ export async function generateMetadata({
       description,
       type: "article",
       publishedTime,
-      url: `https://dnbls.com/blog/${slugString}`,
+      url: `https://dnbls.com/blog/${slug}`,
     },
     twitter: {
       card: "summary",
@@ -64,20 +63,19 @@ export async function generateMetadata({
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
-  return posts.map((post) => ({ slug: [post.slugAsParams] }));
+  return posts.map((post) => ({ slug: post.slugAsParams }));
 }
 
 export default async function BlogPost({ params }: BlogPostProps) {
   const { slug } = await params;
-  const slugString = slug.join("/");
   const posts = await getAllPosts();
-  const post = posts.find((p) => p.slugAsParams === slugString);
+  const post = posts.find((p) => p.slugAsParams === slug);
 
   if (!post) {
     notFound();
   }
 
-  const MDXContent = postComponents[slugString];
+  const MDXContent = postComponents[slug];
 
   if (!MDXContent) {
     notFound();
