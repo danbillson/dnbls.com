@@ -15,7 +15,7 @@ const social = [
   },
   {
     icon: siLinkedin.svg,
-    link: `https://www.linkedin.com/in/danielbillson/`,
+    link: `https://www.linkedin.com/in/danbillson/`,
   },
   {
     icon: siMedium.svg,
