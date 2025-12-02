@@ -1,13 +1,9 @@
-import { siGithub, siInstagram, siLinkedin, siMedium, siX } from "simple-icons";
+import { siGithub, siLinkedin, siX } from "simple-icons";
 
 const social = [
   {
     icon: siGithub.svg,
     link: `https://github.com/danbillson`,
-  },
-  {
-    icon: siInstagram.svg,
-    link: `https://www.instagram.com/danbillson/`,
   },
   {
     icon: siX.svg,
@@ -16,10 +12,6 @@ const social = [
   {
     icon: siLinkedin.svg,
     link: `https://www.linkedin.com/in/danbillson/`,
-  },
-  {
-    icon: siMedium.svg,
-    link: `https://medium.com/@danielbillson`,
   },
 ];
 
