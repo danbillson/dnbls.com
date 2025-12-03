@@ -17,12 +17,12 @@ export default async function Home() {
           <p>
             Design engineer in London, working at{" "}
             <a
-              href="https://paddle.com"
+              href="https://attio.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Paddle
-            </a>{" "}
+              Attio
+            </a>
             . Ex-cheerleader on Team England, now playing volleyball. Big fan of
             craft beer, coffee and <Link href="/mood">much more</Link>.
           </p>

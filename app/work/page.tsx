@@ -19,9 +19,20 @@ export default function Work() {
         </p>
         <hr className="my-6! border-neutral-100" />
         <h2 className="font-medium text-xl mb-1 tracking-tighter">
+          <a href="https://attio.com">Attio</a>
+        </h2>
+        <p className="text-neutral-600 text-sm">Product Engineer, current</p>
+        <p className="text-pretty">
+          I recently joined the{" "}
+          <a href="https://attio.com/platform/automations">automations</a> team
+          at Attio. Keep following to find out more.
+        </p>
+
+        <hr className="my-6! border-neutral-100" />
+        <h2 className="font-medium text-xl mb-1 tracking-tighter">
           <a href="https://www.paddle.com">Paddle</a>
         </h2>
-        <p className="text-neutral-600 text-sm">Software Engineer, current</p>
+        <p className="text-neutral-600 text-sm">Software Engineer, 2024-2025</p>
         <p>
           After moving to London, I joined Paddle’s Developer Experience team. I
           led the homepage refresh for our{" "}
