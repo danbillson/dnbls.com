@@ -13,9 +13,10 @@ export default function Work() {
       </h1>
       <div className="prose prose-neutral">
         <p>
-          I am a well rounded engineer with experience across the board, I like
-          to focus on creating a great developer experience, knowledge sharing
-          and getting my team aligned.
+          I&apos;m a design-driven engineer specialising in interaction, UX and
+          front-end systems. I blend product thinking with engineering
+          discipline to ship experiences that feel fast, intentional and deeply
+          polished, while helping my team stay aligned and moving with clarity.
         </p>
         <hr className="my-6! border-neutral-100" />
         <h2 className="font-medium text-xl mb-1 tracking-tighter">
