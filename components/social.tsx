@@ -7,7 +7,7 @@ const social = [
   },
   {
     icon: siX.svg,
-    link: `https://x.com/dbillson`,
+    link: `https://x.com/danbillson`,
   },
   {
     icon: siLinkedin.svg,
