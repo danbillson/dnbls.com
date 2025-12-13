@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Figtree, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Nav from "@/components/nav";
+import Social from "@/components/social";
 
 const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -53,7 +55,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <main className="mt-6 p-6 max-w-2xl mx-auto">
+          <Nav />
+          {children}
+          <Social />
+        </main>
       </body>
     </html>
   );
