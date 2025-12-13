@@ -1,77 +1,36 @@
-# dnbls.com
-
-My personal portfolio and blog built with Next.js, React, TypeScript, and Tailwind CSS.
-
-## Features
-
-- 🎨 **Portfolio**: Showcase of my work, skills, and experiences
-- 📝 **Blog**: Articles about software engineering, tech, and personal interests
-- 📄 **CV**: Professional background and experience
-- 💻 **Projects**: Highlights of my development projects
-- 📦 **Content Management**: MDX content with @next/mdx
-
-## Tech Stack
-
-- ⚡ **Framework**: Next.js 16
-- ⚛️ **React**: React 19
-- 🔷 **Language**: TypeScript
-- 🎨 **Styling**: Tailwind CSS v4
-- 📝 **Content**: @next/mdx with remark and rehype plugins
-- 🚀 **Deployment**: Vercel
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
-1. Install dependencies
+First, run the development server:
 
 ```bash
-pnpm install
-```
-
-2. Run the development server
-
-```bash
+npm run dev
+# or
+yarn dev
+# or
 pnpm dev
+# or
+bun dev
 ```
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Content Structure
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-- `app/` - Next.js app directory with page components
-- `components/` - Reusable React components
-- `content/blog/` - MDX blog posts
-- `public/` - Static assets
-- `styles/` - Global styles and Tailwind configuration
-- `lib/` - Utility functions and MDX content management
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Adding New Content
+## Learn More
 
-### Blog Posts
+To learn more about Next.js, take a look at the following resources:
 
-Add new MDX files to the `content/blog/` directory with the following format:
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-```mdx
-export const metadata = {
-  title: "Post Title",
-  date: "YYYY-MM-DD",
-  description: "Brief description of the post",
-};
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-Content...
-```
+## Deploy on Vercel
 
-After adding a new blog post, you'll need to:
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-1. Add the import to `lib/mdx.ts`
-2. Add the component to `app/blog/[...slug]/page.tsx`
-3. Add the metadata to the `allPostsData` array in `lib/mdx.ts`
-
-## Key Dependencies
-
-- **@next/mdx**: MDX support for Next.js
-- **@tailwindcss/postcss**: Tailwind CSS v4 PostCSS plugin
-- **@tailwindcss/typography**: Typography plugin for prose content
-- **tailwindcss-animate**: Animation utilities
-- **motion**: Animation library (formerly framer-motion)
-- **rehype-pretty-code**: Syntax highlighting for code blocks
-- **remark-gfm**: GitHub Flavored Markdown support
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
