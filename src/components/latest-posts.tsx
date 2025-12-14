@@ -27,7 +27,7 @@ export function LatestPosts({ posts }: LatestPostsProps) {
             <Link
               key={post.slug}
               className="-mx-3 rounded-xl px-3 py-3"
-              href={post.slug}
+              href={`/blog/${post.slug}`}
               data-id={post.slug}
             >
               <div className="flex flex-col space-y-1">
