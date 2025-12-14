@@ -19,7 +19,7 @@ export default async function Home() {
               Attio
             </a>
             . Ex-cheerleader on Team England, now playing volleyball. Big fan of
-            craft beer, coffee and <Link href="/mood">much more</Link>.
+            craft beer and coffee.
           </p>
         </div>
       </Section>

@@ -12,7 +12,7 @@ export function AnimatedCard1() {
     <div className="flex h-fit w-full max-w-sm flex-col gap-4 rounded-md p-4 shadow-md mx-auto">
       <Image
         className="rounded-sm"
-        src="/mood/mug.jpg"
+        src="/blog/mug.jpg"
         alt="mugs"
         width={600}
         height={600}

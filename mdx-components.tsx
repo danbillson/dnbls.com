@@ -76,10 +76,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       className,
       ...props
     }: React.HTMLAttributes<HTMLParagraphElement>) => (
-      <p
-        className={cn("leading-7 [&:not(:first-child)]:mt-6", className)}
-        {...props}
-      />
+      <p className={cn("leading-7 not-first:mt-6", className)} {...props} />
     ),
     ul: ({ className, ...props }: React.HTMLAttributes<HTMLUListElement>) => (
       <ul className={cn("my-6 ml-6 list-disc", className)} {...props} />
@@ -96,7 +93,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     }: React.HTMLAttributes<HTMLQuoteElement>) => (
       <blockquote
         className={cn(
-          "mt-6 border-l-2 pl-6 italic [&>*]:text-muted-foreground",
+          "mt-6 border-l-2 pl-6 italic *:text-muted-foreground",
           className,
         )}
         {...props}
@@ -107,7 +104,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       alt,
       ...props
     }: React.ImgHTMLAttributes<HTMLImageElement>) => (
-      // eslint-disable-next-line @next/next/no-img-element
+      // biome-ignore lint/performance/noImgElement: md image
       <img
         className={cn("rounded-md border", className)}
         alt={alt}
@@ -138,7 +135,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     }: React.ThHTMLAttributes<HTMLTableHeaderCellElement>) => (
       <th
         className={cn(
-          "border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right",
+          "border px-4 py-2 text-left font-bold [[align=center]]:text-center [[align=right]]:text-right",
           className,
         )}
         {...props}
@@ -150,7 +147,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     }: React.ThHTMLAttributes<HTMLTableDataCellElement>) => (
       <td
         className={cn(
-          "border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right",
+          "border px-4 py-2 text-left [[align=center]]:text-center [[align=right]]:text-right",
           className,
         )}
         {...props}

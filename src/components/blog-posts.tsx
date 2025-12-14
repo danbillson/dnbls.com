@@ -10,7 +10,7 @@ type BlogPostsProps = {
     metadata: {
       title: string;
       date: string;
-      description: string;
+      description?: string;
     };
   }[];
 };
@@ -47,7 +47,7 @@ export function BlogPosts({ posts }: BlogPostsProps) {
                 {post.metadata.description}
               </p>
             )}
-            <Link href={post.slug} className="absolute inset-0">
+            <Link href={`/blog/${post.slug}`} className="absolute inset-0">
               <span className="sr-only">View Article</span>
             </Link>
           </article>

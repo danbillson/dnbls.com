@@ -20,7 +20,7 @@ export function AnimatedCard3() {
       <div ref={ref} className="flex flex-col gap-4 p-4">
         <Image
           className="rounded-sm"
-          src="/mood/mug.jpg"
+          src="/blog/mug.jpg"
           alt="mugs"
           width={600}
           height={600}
