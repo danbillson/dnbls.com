@@ -1,0 +1,233 @@
+export const metadata = {
+  title: "Animating height in React",
+  date: "2025-07-27",
+  description: "How to animate height in React using framer motion and useMeasure",
+};
+
+A simple guide to animating height on elements with react-use-measure and motion using things like accordions and cards as examples
+
+---
+
+<AnimatedCard3 />
+
+TLDR;
+
+Below is an example of how to animate height with dynamic content using `motion` (previously framer-motion) and `react-use-measure`
+
+```tsx
+"use client";
+
+import { ChevronDown } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import Image from "next/image";
+import { useState } from "react";
+import useMeasure from "react-use-measure";
+
+export function AnimatedCard() {
+  const [ref, bounds] = useMeasure();
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <motion.div
+      className="w-full max-w-sm overflow-hidden rounded-md shadow-md"
+      animate={{ height: bounds.height }}
+      transition={{ type: "spring", duration: 0.5, bounce: 0 }}
+    >
+      <div ref={ref} className="flex flex-col gap-4 p-4">
+        <Image src="/mug.jpg" alt="mugs" width={600} height={600} />
+        <h1
+          className="inline-flex cursor-pointer justify-between text-xl underline"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          Studio Arhoj{" "}
+          <ChevronDown
+            className={`transition-transform duration-200 ${
+              isOpen ? "rotate-180" : ""
+            }`}
+          />
+        </h1>
+        <AnimatePresence>
+          {isOpen && (
+            <motion.p
+              initial={{ opacity: 0, filter: "blur(4px)" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              exit={{
+                opacity: 0,
+                filter: "blur(4px)",
+                transition: { duration: 0.1 },
+              }}
+              transition={{ delay: 0.2 }}
+            >
+              I first sumbled across these mugs in Hens Teeth, Dublin where I
+              had to grab a couple of them, and then I had the priveledge of
+              visiting the store in Copenhagen and couldn't resist grabbing
+              another.
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+}
+
+```
+
+There are quite a few moving parts in this, so lets break it down a bit further.
+
+## Introduction
+
+Animating `height: auto;` has always been a challenge with css, luckily there is some modern tooling that makes this trivial, the first big piece is [motion](https://motion.dev/) which provides a set of motion components which can interpolate movement of elements into smooth transitions, and then we have [react-use-measure](https://github.com/pmndrs/react-use-measure) to measure the boundaries of an element, in our case we care about the height.
+
+## Animating height
+
+First we can take a look at what this component looks like without any animation and build from there
+
+<AnimatedCard1 />
+
+```tsx
+"use client";
+
+import { ChevronDown } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+
+export function Card() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="flex h-fit w-full max-w-sm flex-col gap-4 rounded-md p-4 shadow-md">
+      <Image src="/mug.jpg" alt="mugs" width={600} height={600} />
+      <h1
+        className="inline-flex cursor-pointer justify-between text-xl underline"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        Studio Arhoj{" "}
+        <ChevronDown
+          className={`transition-transform duration-200 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
+      </h1>
+      {isOpen && (
+        <p>
+          I first sumbled across these mugs in Hens Teeth, Dublin where I had to
+          grab a couple of them, and then I had the priveledge of visiting the
+          store in Copenhagen and couldn't resist grabbing another.
+        </p>
+      )}
+    </div>
+  );
+}
+
+```
+
+To get this to animate we need to use `useMeasure` to get the height of the card as the content changes and use a `motion.div` to animate the change in height, the key thing here is that we can’t use the same element for our measure ref and animation so we’ll have to separate them into a wrapper and inner. We can use the wrapper for animations and the inner for the ref, this means that we’ll have to move our layout options like display and padding onto the inner so that it can calculate the height correctly, we’ll also need to include an overflow of hidden onto the wrapper so that the inner isn’t showing up independently which would hide the animation.
+
+```tsx
+- <div className="flex h-fit w-full max-w-sm flex-col gap-4 rounded-md p-4 shadow-md">
++ <motion.div
+    animate={{ height: bounds.height }}
+    transition={{ type: "spring", duration: 0.5, bounce: 0 }}
+    className="h-fit w-full max-w-sm overflow-hidden rounded-md shadow-md"
+  >
++   <div ref={ref} className="flex flex-col gap-4 p-4">
+```
+
+<AnimatedCard2 />
+
+    
+```tsx
+"use client";
+
+import { ChevronDown } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+import useMeasure from "react-use-measure";
+import { motion } from "motion/react";
+
+export function Card() {
+    const [ref, bounds] = useMeasure();
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+    <motion.div
+        animate={{ height: bounds.height }}
+        transition={{ type: "spring", duration: 0.5, bounce: 0 }}
+        className="h-fit w-full max-w-sm overflow-hidden rounded-md shadow-md"
+    >
+        <div ref={ref} className="flex flex-col gap-4 p-4">
+        <Image src="/mug.jpg" alt="mugs" width={600} height={600} />
+        <h1
+            className="inline-flex cursor-pointer justify-between text-xl underline"
+            onClick={() => setIsOpen(!isOpen)}
+        >
+            Studio Arhoj{" "}
+            <ChevronDown
+            className={`transition-transform duration-200 ${
+                isOpen ? "rotate-180" : ""
+            }`}
+            />
+        </h1>
+        {isOpen && (
+            <p>
+            I first sumbled across these mugs in Hens Teeth, Dublin where I had
+            to grab a couple of them, and then I had the priveledge of visiting
+            the store in Copenhagen and couldn't resist grabbing another.
+            </p>
+        )}
+        </div>
+    </motion.div>
+    );
+}
+```
+    
+
+For the majority of cases, it is probably good enough to stop here but occasionally it helps to announce an entrance and exit with animations.
+
+To be able to make use of exit animations we’ll need to reach for [AnimatePresence](https://motion.dev/docs/react-animate-presence) from motion to delay the unmounting of the react component, the typical structure for using this is shown below.
+
+```tsx
+<AnimatePresence>{isOpen && <motion.p>Hello</motion.p>}</AnimatePresence>
+```
+
+This then allows you to include an `exit` animation to a motion element.
+
+<AnimatedCard3 />
+
+To achieve the full effect of enter and exit animations, we can add the following:
+
+```tsx
+AnimatePresence>
+    {isOpen && (
+    <motion.p
+        initial={{ opacity: 0, filter: "blur(4px)" }}
+        animate={{ opacity: 1, filter: "blur(0px)" }}
+        exit={{
+        opacity: 0,
+        filter: "blur(4px)",
+        transition: { duration: 0.1 },
+        }}
+        transition={{ delay: 0.2 }}
+    >
+        I first sumbled across these mugs in Hens Teeth, Dublin where I
+        had to grab a couple of them, and then I had the priveledge of
+        visiting the store in Copenhagen and couldn't resist grabbing
+        another.
+    </motion.p>
+    )}
+</AnimatePresence>
+```
+
+To break this down further, we go from `{ opacity: 0, filter: "blur(4px)" }` to `{ opacity: 1, filter: "blur(0px)" }` when the accordion open which adds a subtle entrance for the text, we add `transition={{ delay: 0.2 }}` to wait for the card to get to a reasonable height before showing the text and we reduce the transition duration to `0.1` on exit to get rid of it faster.
+
+## Conclusion
+
+There are a few things to remember when animating height in React:
+
+- Use a wrapper for motion and an inner container for the bounds ref
+- The wrapper should have `overflow: hidden`
+- Use `AnimatePresence` if you need exit animations
+
+---
+
+Got any questions? Feel free to reach out on X - [@dbillson](https://x.com/dbillson)

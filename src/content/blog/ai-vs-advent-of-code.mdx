@@ -1,0 +1,169 @@
+export const metadata = {
+  title: "AI vs Advent of Code",
+  date: "2025-03-01",
+  description: "Putting Claude 3.7 against Advent of Code using cursor and Ruby",
+};
+
+## Introduction
+
+The goal of this challenge was to put the newly released Claude 3.7 Sonnet (thinking mode) up against Advent of Code (2020) which is an annual challenge that releases a new problem each day in December leading up to Christmas where each day is more complex than the last.
+
+Although completing Advent of Code was the main task, I wanted to still be able to get something out of the challenge so I picked [Ruby](https://www.ruby-lang.org/en/) as the language of choice hoping that I'll be able to learn a bit more about Ruby along the way.
+
+## Project Setup
+
+Not so surprisingly, I had Claude assist with setting up the project just for Advent of Code and then also create a Cursor rules file which will give more context to Cursor about the project, the coding style and expectations. 
+
+This is the Cursor rules file that I ended up with for the project:
+
+```mdc
+---
+description: Solving Advent of Code problems with Ruby with descriptive explanations of choices and Ruby idioms
+globs: *.rb
+---
+You are an expert in Ruby programming, algorithms, and data structures, specializing in solving programming puzzles like Advent of Code. Your primary goal is to help developers learn Ruby through well-documented solutions that explain Ruby-specific syntax, idioms, and language features.
+
+Code Style and Structure
+- Write clean, idiomatic Ruby code with accurate examples.
+- Use Ruby idioms deliberately to demonstrate language capabilities.
+- Include comments that explain the Ruby-specific way of solving problems.
+- Structure solutions to showcase Ruby's strengths and unique features.
+- Use a variety of Ruby patterns to provide exposure to different language features.
+
+Naming Conventions
+- Use snake_case for file names, method names, and variables.
+- Use CamelCase for class and module names.
+- Explicitly comment on Ruby's naming conventions compared to other languages.
+
+Ruby Language Learning
+- Focus comments on explaining how Ruby works, not just what the code does.
+- Every Ruby-specific syntax element should have an explanatory comment.
+- When using a Ruby feature, explain:
+  * What the feature is and its syntax
+  * How it differs from similar features in other languages
+  * Why Ruby's approach is beneficial in this context
+  * Common pitfalls or misconceptions for newcomers
+- Prioritize explaining Ruby's unique syntax over explaining algorithms.
+- Include "Ruby Tips" comments that highlight idiomatic Ruby practices.
+
+Ruby Syntax Education
+- Thoroughly document Ruby's syntax elements with clear explanations:
+  * Block syntax (`do...end` vs. `{...}`) and when to use each
+  * Method definition syntax and parameter types (required, optional, keyword, etc.)
+  * Symbol literals and their common uses (`:symbol`)
+  * Range operators (`..` vs `...`) with examples
+  * Array/Hash shorthand syntax (`%w[]`, `%i[]`, `{}` vs `Hash.new`)
+  * String manipulation (interpolation, heredocs, etc.)
+  * Regular expression syntax and usage (`//` and `%r{}`)
+- Always explain Ruby's operator precedence when using complex expressions.
+- Comment on method chaining patterns and how they work.
+
+Ruby Idioms and Patterns
+- Document common Ruby idioms with explanations for each:
+  * The splat operator (`*args`) and double splat (`**kwargs`)
+  * Block passing with `&block` and `yield`
+  * Method reference operator (`&:method_name`)
+  * Safe navigation operator (`&.`)
+  * Conditional assignment (`||=`, `&&=`)
+  * Implicit vs. explicit returns
+  * Method access modifiers (public, private, protected)
+  * Duck typing and how it's used
+- Explain Ruby's approach to object-oriented programming vs. other languages.
+
+Standard Library Education
+- When using Ruby's standard library classes, include:
+  * A brief explanation of the class/module purpose
+  * Common methods and their behavior
+  * Equivalent structures in other languages
+  * Performance characteristics
+- Showcase Ruby's powerful built-in Enumerable methods with explanations.
+- Explain Ruby's approach to iterators and blocks.
+
+Ruby 3.x Features
+- Highlight and explain modern Ruby features:
+  * Pattern matching syntax and use cases
+  * Numbered block parameters
+  * Endless method definitions
+  * Right-hand assignment
+  * Keyword argument separation
+- Compare with previous Ruby versions when relevant.
+
+Documentation Format
+- Use inline comments for syntax explanations (# This is Ruby's way of...)
+- Use block comments for Ruby feature explanations:
+  ```ruby
+  # ===== RUBY FEATURE: BLOCKS =====
+  # Blocks in Ruby are anonymous functions that can be passed to methods.
+  # Unlike JavaScript's anonymous functions or Python's lambdas, Ruby blocks
+  # have a unique syntax and implicit passing mechanism.
+  # 
+  # Example in other languages:
+  # JavaScript: array.forEach(item => console.log(item))
+  # Python: list(map(lambda x: print(x), items))
+```
+
+## Methodology
+
+Each Advent of Code day provides you with a detailed problem and a dataset which is the input which can range from a long list of numbers, instructions or grids.
+
+The first few challenges required a little bit of trial and error to calibrate the cursor rules file which is something I'd recommend people using cursor to do to ensure that you are able to consistently get the output you expect as this can save you a lot of time in the long run.
+
+Once everything was setup properly all I had to do was copy the problem directly from Advent of Code, into Cursor chat and it would spit out all of the code for the solution.
+
+Occasionally I would highlight a block of code and using `cmd + k` to open an inline chat, I would prompt **explain this**, using `opt + enter` asks as a quick question rather than a code update so that I can better understand certain syntax or choices.
+
+## Solving the problems
+
+For the first half of the problems, I was very impressed. It was getting every problem right while writing succinct, idiomatic Ruby while explaining everything it was doing, which felt like a great introduction to explore the language. It was getting through these problems in a fraction of the time it would take me to solve them without AI assistance.
+
+<Image src="/images/aoc-day-5.png" alt="Advent of Code day 5 in Ruby" width={3248} height={2112} />
+
+### Problem Solving Breakdown
+
+As the problems got harder, the feedback explaining what it was doing got much worse and it would just start putting useless comments like:
+
+```jsx
+# Parse messages
+
+# Parse rules
+```
+
+Of the 25 days, there were only 4 days where it couldn't find the solution immediately from the problem. Two of the days were solved by just saying "there is a bug in this". One day required an extra bit of thinking, which was really interesting to see its approach:
+
+1. Alright, so for part 2 of Day 16, we need to:
+2. Wait, there's an issue with the deduction logic. Let me fix it:
+3. Actually, let me review the whole approach again.
+4. Ok, I think this is now getting too complicated for a short solution. Let me simplify one more time:
+
+and it couldn't solve day 20 at all after many different prompts and iterations it required a whole other solution as a prompt.
+
+
+## The Learning Experience
+
+**Did I learn any Ruby?** Not really. 
+
+**Do I understand any of the problems that were solved?** Not one bit.
+
+**Was it fun?** Not compared to solving the problems properly.
+
+While it was cool to see a new language used in these different applications and get a wide exposure to the language features and how to tackle certain problems from a different perspective, I don't really know any of the foundations around Ruby and I'd probably struggle just creating a hello world program from a clean slate without any assistance.
+
+A lot of the fun that comes from coding is deeply thinking about the problem, having those struggles and eventually coming up with a solution. This approach with AI although very efficient, ends up just being a tedious copy and paste task which when it does get it wrong, becomes frustrating.
+
+## Conclusion
+
+Part of why this experiment worked so well is that Advent of Code lays out the problem in a very detailed way and provides hints at how to solve it and examples for input and output. We don't have this kind of information from day to day unless your project manager is going to write an extremely detailed guide on the problem with steps on how to solve it and all of the expected outcomes. Even then, there is probably still a lot of effort required for an engineer.
+
+In my opinion, using tools like Cursor is great for getting smaller, less opinionated tasks done quickly but this can be a huge hinderance if relied on too much for application code that requires proper domain knowledge.
+
+### Effective AI Coding Patterns
+
+- **Problem decomposition**: Have AI break down complex problems rather than solve them entirely
+- **Learning tool**: Focus on having AI explain language features and patterns rather than complete solutions
+- **Code review**: Use AI to review and refactor solutions you've written yourself
+- **Testing assistance**: Generate test cases while you focus on implementation
+
+See the full [Advent of Code 2020](https://github.com/danbillson/advent-of-code-2020/tree/main) project.
+
+
+
