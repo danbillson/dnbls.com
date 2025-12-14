@@ -1,9 +1,13 @@
-import Link from "next/link";
 import Gallery from "@/components/gallery";
+import { LatestPosts } from "@/components/latest-posts";
 import { Title } from "@/components/title";
 import { Section } from "@/components/ui/section";
+import { getAllBlogPosts } from "@/lib/blog";
 
 export default async function Home() {
+  const posts = await getAllBlogPosts();
+  const latestPosts = posts.slice(0, 3);
+
   return (
     <>
       <Title />
@@ -39,6 +43,7 @@ export default async function Home() {
           </p>
         </div>
       </Section>
+      <LatestPosts posts={latestPosts} />
     </>
   );
 }

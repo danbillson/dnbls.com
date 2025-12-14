@@ -1,8 +1,18 @@
 import type { Metadata } from "next";
-import { Figtree, Geist, Geist_Mono } from "next/font/google";
+import {
+  Bricolage_Grotesque,
+  Figtree,
+  Geist,
+  Geist_Mono,
+} from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/nav";
 import Social from "@/components/social";
+
+const bricolage = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-title",
+});
 
 const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -51,7 +61,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={figtree.variable}>
+    <html lang="en" className={`${figtree.variable} ${bricolage.variable}`}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
