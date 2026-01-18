@@ -35,9 +35,11 @@ export default function Gallery() {
             className={image.className}
             variants={variants}
           >
-            {/* eslint-disable-next-line jsx-a11y/alt-text */}
             <Image
-              {...image}
+              src={image.src}
+              alt={image.alt}
+              width={image.width}
+              height={image.height}
               className="rounded-lg"
               placeholder="blur"
               priority

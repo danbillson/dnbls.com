@@ -17,23 +17,19 @@ export function AnimatedCard1() {
         width={600}
         height={600}
       />
-      <h1
-        className="inline-flex cursor-pointer justify-between text-xl underline"
+      <button
+        type="button"
+        className="inline-flex w-full cursor-pointer justify-between text-xl underline"
         onClick={() => setIsOpen(!isOpen)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            setIsOpen(!isOpen);
-          }
-        }}
       >
-        Studio Arhoj{" "}
+        <span className="font-bold">Studio Arhoj</span>
         <HugeiconsIcon
           icon={ArrowDown01Icon}
           className={`transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
         />
-      </h1>
+      </button>
       {isOpen && (
         <p>
           I first sumbled across these mugs in Hens Teeth, Dublin where I had to
