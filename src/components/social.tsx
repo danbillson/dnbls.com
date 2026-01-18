@@ -13,6 +13,7 @@ export default function Social() {
         className="w-6 h-6 mx-2"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="GitHub"
       >
         <HugeiconsIcon icon={GithubIcon} />
       </a>
@@ -21,6 +22,7 @@ export default function Social() {
         className="w-6 h-6 mx-2"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="X (Twitter)"
       >
         <HugeiconsIcon icon={NewTwitterIcon} />
       </a>
@@ -29,6 +31,7 @@ export default function Social() {
         className="w-6 h-6 mx-2"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="LinkedIn"
       >
         <HugeiconsIcon icon={LinkedinIcon} />
       </a>
