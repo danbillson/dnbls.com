@@ -8,18 +8,16 @@ export const metadata: Metadata = {
 export default function Projects() {
   return (
     <section>
-      <h1 className="font-medium text-2xl mt-14 mb-8 tracking-tighter">
-        my projects
-      </h1>
-      <div className="prose prose-neutral">
+      <h1 className="text-title mt-14 mb-8">my projects</h1>
+      <div className="prose">
         <p>
           Here are some of the projects I have worked on in my spare time, these
           range from small apps to test out specific technologies to larger full
           stack applications with auth and search features.
         </p>
 
-        <hr className="my-6! border-neutral-100" />
-        <h2 className="font-medium text-xl mb-1 tracking-tighter">
+        <hr className="my-6! border-border-muted" />
+        <h2 className="text-subtitle mb-1">
           <a href="https://yonder-experiences.vercel.app/">
             Yonder Experiences
           </a>
@@ -34,8 +32,8 @@ export default function Projects() {
           </span>
         </p>
 
-        <hr className="my-6! border-neutral-100" />
-        <h2 className="font-medium text-xl mb-1 tracking-tighter">
+        <hr className="my-6! border-border-muted" />
+        <h2 className="text-subtitle mb-1">
           <a href="https://github.com/danbillson/next-forge-paddle">
             next-forge-paddle
           </a>
@@ -52,8 +50,8 @@ export default function Projects() {
           to learn how to migrate a next-forge project to use Paddle.
         </p>
 
-        <hr className="my-6! border-neutral-100" />
-        <h2 className="font-medium text-xl mb-1 tracking-tighter">
+        <hr className="my-6! border-border-muted" />
+        <h2 className="text-subtitle mb-1">
           <a href="https://github.com/danbillson/advent-of-code-2023">
             Advent of Code 2024
           </a>
@@ -75,8 +73,8 @@ export default function Projects() {
           .
         </p>
 
-        <hr className="my-6! border-neutral-100" />
-        <h2 className="font-medium text-xl mb-1 tracking-tighter">
+        <hr className="my-6! border-border-muted" />
+        <h2 className="text-subtitle mb-1">
           <a href="https://github.com/danbillson/t3-pouring-at">pouring.at</a>
         </h2>
         <p>
@@ -90,8 +88,8 @@ export default function Projects() {
           <li>Clerk for authentication and Upstash for rate limiting.</li>
         </ul>
 
-        <hr className="my-6! border-neutral-100" />
-        <h2 className="font-medium text-xl mb-1 tracking-tighter">
+        <hr className="my-6! border-border-muted" />
+        <h2 className="text-subtitle mb-1">
           <a href="https://github.com/danbillson/office-hours">Office Hours</a>
         </h2>
         <p>
@@ -100,8 +98,8 @@ export default function Projects() {
           office was limited.
         </p>
 
-        <hr className="my-6! border-neutral-100" />
-        <h2 className="font-medium text-xl mb-1 tracking-tighter">
+        <hr className="my-6! border-border-muted" />
+        <h2 className="text-subtitle mb-1">
           <a href="https://github.com/danbillson/kana-quiz">Kana Quiz</a>
         </h2>
         <p>
@@ -112,8 +110,8 @@ export default function Projects() {
           how we managed state in one of the apps at SoPost.
         </p>
 
-        <hr className="my-6! border-neutral-100" />
-        <h2 className="font-medium text-xl mb-1 tracking-tighter">
+        <hr className="my-6! border-border-muted" />
+        <h2 className="text-subtitle mb-1">
           <a href="https://github.com/danbillson/advent-of-code-2023">
             Advent of Code 2023
           </a>

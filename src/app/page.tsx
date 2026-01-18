@@ -12,7 +12,7 @@ export default async function Home() {
     <>
       <Title />
       <Section>
-        <div className="prose prose-neutral">
+        <div className="prose">
           <p>
             Design engineer in London, working at{" "}
             <a
@@ -29,7 +29,7 @@ export default async function Home() {
       </Section>
       <Gallery />
       <Section>
-        <div className="prose prose-neutral mt-10">
+        <div className="prose mt-10">
           <p>
             For those of you new to cheerleading, I recommend checking out{" "}
             <a

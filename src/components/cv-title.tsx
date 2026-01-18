@@ -2,8 +2,8 @@ export function CVTitle() {
   return (
     <div className="flex justify-between w-full not-print:mt-14">
       <div>
-        <h1 className="text-3xl font-medium">Dan Billson</h1>
-        <p className="text-sm text-muted-foreground">Software Engineer</p>
+        <h1 className="text-title-lg">Dan Billson</h1>
+        <p className="text-label text-content-secondary">Software Engineer</p>
       </div>
       <div className="flex flex-col text-right">
         <p>London</p>

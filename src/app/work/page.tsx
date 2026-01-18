@@ -8,34 +8,36 @@ export const metadata: Metadata = {
 export default function Work() {
   return (
     <section>
-      <h1 className="font-medium text-2xl mt-14 mb-8 tracking-tighter">
-        my work
-      </h1>
-      <div className="prose prose-neutral">
+      <h1 className="text-title mt-14 mb-8">my work</h1>
+      <div className="prose">
         <p>
           I&apos;m a design-driven engineer specialising in interaction, UX and
           front-end systems. I blend product thinking with engineering
           discipline to ship experiences that feel fast, intentional and deeply
           polished, while helping my team stay aligned and moving with clarity.
         </p>
-        <hr className="my-6! border-neutral-100" />
-        <h2 className="font-medium text-xl mb-1 tracking-tighter">
+        <hr className="my-6! border-border-muted" />
+        <h2 className="text-subtitle mb-1">
           <a href="https://attio.com">Attio</a>
         </h2>
-        <p className="text-neutral-600 text-sm">Product Engineer, current</p>
+        <p className="text-content-secondary text-paragraph-sm">
+          Product Engineer, current
+        </p>
         <p className="text-pretty">
           I recently joined the{" "}
           <a href="https://attio.com/platform/automations">automations</a> team
           at Attio. Keep following to find out more.
         </p>
 
-        <hr className="my-6! border-neutral-100" />
-        <h2 className="font-medium text-xl mb-1 tracking-tighter">
+        <hr className="my-6! border-border-muted" />
+        <h2 className="text-subtitle mb-1">
           <a href="https://www.paddle.com">Paddle</a>
         </h2>
-        <p className="text-neutral-600 text-sm">Software Engineer, 2024-2025</p>
+        <p className="text-content-secondary text-paragraph-sm">
+          Software Engineer, 2024-2025
+        </p>
         <p>
-          After moving to London, I joined Paddle’s Developer Experience team. I
+          After moving to London, I joined Paddle's Developer Experience team. I
           led the homepage refresh for our{" "}
           <a href="https://developer.paddle.com/">developer docs</a>, helped
           build our design system, and maintained our open source projects. I
@@ -50,11 +52,11 @@ export default function Work() {
           .
         </p>
 
-        <hr className="my-6! border-neutral-100" />
-        <h2 className="font-medium text-xl mb-1 tracking-tighter">
+        <hr className="my-6! border-border-muted" />
+        <h2 className="text-subtitle mb-1">
           <a href="https://sopost.com">SoPost</a>
         </h2>
-        <p className="text-neutral-600 text-sm">
+        <p className="text-content-secondary text-paragraph-sm">
           Senior Software Engineer, 2021 - 2024
         </p>
         <p>
@@ -80,11 +82,11 @@ export default function Work() {
             of concept through to complete project.
           </li>
         </ul>
-        <hr className="my-6! border-neutral-100" />
-        <h2 className="font-medium text-xl mb-1 tracking-tighter">
+        <hr className="my-6! border-border-muted" />
+        <h2 className="text-subtitle mb-1">
           <a href="https://precisionproco.co.uk/">Climb Creative</a>
         </h2>
-        <p className="text-neutral-600 text-sm">
+        <p className="text-content-secondary text-paragraph-sm">
           Front-end developer, 2020 - 2021
         </p>
         <p>
@@ -98,11 +100,11 @@ export default function Work() {
           the rebuild of the product page and checkout flow, as well as
           implementing the Canva integration for custom product design.
         </p>
-        <hr className="my-6! border-neutral-100" />
-        <h2 className="font-medium text-xl mb-1 tracking-tighter">
+        <hr className="my-6! border-border-muted" />
+        <h2 className="text-subtitle mb-1">
           <a href="https://www.wearemarmalade.co.uk/">Marmalade</a>
         </h2>
-        <p className="text-neutral-600 text-sm">
+        <p className="text-content-secondary text-paragraph-sm">
           Front-end developer, 2019 - 2020
         </p>
         <p>
@@ -121,11 +123,11 @@ export default function Work() {
           aggregators like Moneysupermarket and Compare the Market, testing over
           100 quotes simultaneously.
         </p>
-        <hr className="my-6! border-neutral-100" />
-        <h2 className="font-medium text-xl mb-1 tracking-tighter">
+        <hr className="my-6! border-border-muted" />
+        <h2 className="text-subtitle mb-1">
           <a href="https://www.thg.com/">THG</a>
         </h2>
-        <p className="text-neutral-600 text-sm">
+        <p className="text-content-secondary text-paragraph-sm">
           Graduate Front-end developer, 2018
         </p>
         <p>
