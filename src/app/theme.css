@@ -1,0 +1,466 @@
+:root {
+  /* Surfaces */
+  --surface-primary: oklch(1 0 0);
+  --surface-secondary: oklch(0.97 0 0);
+  --surface-elevated: oklch(1 0 0);
+  --surface-inset: oklch(0.97 0 0);
+
+  /* Content */
+  --content-primary: oklch(0.145 0 0);
+  --content-secondary: oklch(0.4 0 0);
+  --content-tertiary: oklch(0.556 0 0);
+  --content-inverse: oklch(0.985 0 0);
+
+  /* Borders */
+  --border-default: oklch(0.922 0 0);
+  --border-muted: oklch(0.95 0 0);
+  --border-strong: oklch(0.8 0 0);
+
+  /* Interactive */
+  --interactive-primary: oklch(0.205 0 0);
+  --interactive-secondary: oklch(0.97 0 0);
+
+  /* Focus */
+  --ring-focus: oklch(0.708 0 0);
+  --ring-offset: oklch(1 0 0);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 oklch(0 0 0 / 5%);
+  --shadow-md:
+    0 4px 6px -1px oklch(0 0 0 / 10%), 0 2px 4px -2px oklch(0 0 0 / 10%);
+  --shadow-lg:
+    0 10px 15px -3px oklch(0 0 0 / 10%), 0 4px 6px -4px oklch(0 0 0 / 10%);
+
+  /* Radii */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.625rem;
+  --radius-full: 9999px;
+
+  /* Status: Gray */
+  --gray-surface: oklch(0.93 0 0);
+  --gray-content: oklch(0.37 0 0);
+
+  /* Status: Red */
+  --red-surface: oklch(0.94 0.03 25);
+  --red-content: oklch(0.45 0.18 25);
+
+  /* Status: Orange */
+  --orange-surface: oklch(0.93 0.04 55);
+  --orange-content: oklch(0.5 0.16 50);
+
+  /* Status: Amber */
+  --amber-surface: oklch(0.94 0.05 85);
+  --amber-content: oklch(0.5 0.14 70);
+
+  /* Status: Yellow */
+  --yellow-surface: oklch(0.95 0.06 100);
+  --yellow-content: oklch(0.47 0.12 90);
+
+  /* Status: Lime */
+  --lime-surface: oklch(0.94 0.06 130);
+  --lime-content: oklch(0.45 0.14 130);
+
+  /* Status: Green */
+  --green-surface: oklch(0.94 0.04 155);
+  --green-content: oklch(0.45 0.14 155);
+
+  /* Status: Emerald */
+  --emerald-surface: oklch(0.94 0.04 170);
+  --emerald-content: oklch(0.45 0.12 170);
+
+  /* Status: Teal */
+  --teal-surface: oklch(0.94 0.04 185);
+  --teal-content: oklch(0.45 0.1 185);
+
+  /* Status: Cyan */
+  --cyan-surface: oklch(0.94 0.04 200);
+  --cyan-content: oklch(0.45 0.1 200);
+
+  /* Status: Sky */
+  --sky-surface: oklch(0.94 0.04 230);
+  --sky-content: oklch(0.48 0.14 230);
+
+  /* Status: Blue */
+  --blue-surface: oklch(0.94 0.04 255);
+  --blue-content: oklch(0.48 0.18 255);
+
+  /* Status: Indigo */
+  --indigo-surface: oklch(0.93 0.04 275);
+  --indigo-content: oklch(0.45 0.18 275);
+
+  /* Status: Violet */
+  --violet-surface: oklch(0.94 0.05 295);
+  --violet-content: oklch(0.5 0.2 295);
+
+  /* Status: Purple */
+  --purple-surface: oklch(0.94 0.05 305);
+  --purple-content: oklch(0.47 0.2 305);
+
+  /* Status: Fuchsia */
+  --fuchsia-surface: oklch(0.94 0.05 325);
+  --fuchsia-content: oklch(0.5 0.2 325);
+
+  /* Status: Pink */
+  --pink-surface: oklch(0.94 0.04 350);
+  --pink-content: oklch(0.5 0.18 350);
+
+  /* Status: Rose */
+  --rose-surface: oklch(0.94 0.03 10);
+  --rose-content: oklch(0.5 0.18 10);
+
+  /* Animation Durations */
+  --duration-instant: 0ms;
+  --duration-fast: 100ms;
+  --duration-normal: 150ms;
+  --duration-slow: 250ms;
+
+  /* Animation Easings */
+  --ease-default: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+  /* Typography: Title */
+  --text-title-3xl: 3.75rem;
+  --text-title-3xl-leading: 1.05;
+  --text-title-3xl-tracking: -0.025em;
+  --text-title-3xl-weight: 700;
+
+  --text-title-2xl: 3rem;
+  --text-title-2xl-leading: 1.1;
+  --text-title-2xl-tracking: -0.025em;
+  --text-title-2xl-weight: 700;
+
+  --text-title-xl: 2.25rem;
+  --text-title-xl-leading: 1.15;
+  --text-title-xl-tracking: -0.02em;
+  --text-title-xl-weight: 700;
+
+  --text-title-lg: 1.875rem;
+  --text-title-lg-leading: 1.2;
+  --text-title-lg-tracking: -0.02em;
+  --text-title-lg-weight: 700;
+
+  --text-title: 1.5rem;
+  --text-title-leading: 1.25;
+  --text-title-tracking: -0.015em;
+  --text-title-weight: 600;
+
+  --text-subtitle: 1.125rem;
+  --text-subtitle-leading: 1.35;
+  --text-subtitle-tracking: -0.01em;
+  --text-subtitle-weight: 600;
+
+  /* Typography: Paragraph */
+  --text-paragraph-lg: 1.125rem;
+  --text-paragraph-lg-leading: 1.5;
+  --text-paragraph-lg-tracking: 0;
+  --text-paragraph-lg-weight: 400;
+
+  --text-paragraph: 1rem;
+  --text-paragraph-leading: 1.5;
+  --text-paragraph-tracking: 0;
+  --text-paragraph-weight: 400;
+
+  --text-paragraph-sm: 0.875rem;
+  --text-paragraph-sm-leading: 1.5;
+  --text-paragraph-sm-tracking: 0;
+  --text-paragraph-sm-weight: 400;
+
+  /* Typography: Label */
+  --text-label: 0.875rem;
+  --text-label-leading: 1.25;
+  --text-label-tracking: 0.01em;
+  --text-label-weight: 500;
+
+  --text-label-sm: 0.75rem;
+  --text-label-sm-leading: 1.35;
+  --text-label-sm-tracking: 0.02em;
+  --text-label-sm-weight: 500;
+}
+
+.dark {
+  /* Surfaces */
+  --surface-primary: oklch(0.145 0 0);
+  --surface-secondary: oklch(0.269 0 0);
+  --surface-elevated: oklch(0.205 0 0);
+  --surface-inset: oklch(0.269 0 0);
+
+  /* Content */
+  --content-primary: oklch(0.985 0 0);
+  --content-secondary: oklch(0.8 0 0);
+  --content-tertiary: oklch(0.708 0 0);
+  --content-inverse: oklch(0.205 0 0);
+
+  /* Borders */
+  --border-default: oklch(1 0 0 / 10%);
+  --border-muted: oklch(1 0 0 / 5%);
+  --border-strong: oklch(1 0 0 / 20%);
+
+  /* Interactive */
+  --interactive-primary: oklch(0.87 0 0);
+  --interactive-secondary: oklch(0.269 0 0);
+
+  /* Focus */
+  --ring-focus: oklch(0.556 0 0);
+  --ring-offset: oklch(0.145 0 0);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 oklch(0 0 0 / 20%);
+  --shadow-md:
+    0 4px 6px -1px oklch(0 0 0 / 30%), 0 2px 4px -2px oklch(0 0 0 / 30%);
+  --shadow-lg:
+    0 10px 15px -3px oklch(0 0 0 / 30%), 0 4px 6px -4px oklch(0 0 0 / 30%);
+
+  /* Status: Gray */
+  --gray-surface: oklch(0.25 0 0);
+  --gray-content: oklch(0.75 0 0);
+
+  /* Status: Red */
+  --red-surface: oklch(0.25 0.04 25);
+  --red-content: oklch(0.75 0.14 25);
+
+  /* Status: Orange */
+  --orange-surface: oklch(0.27 0.05 55);
+  --orange-content: oklch(0.78 0.12 55);
+
+  /* Status: Amber */
+  --amber-surface: oklch(0.28 0.06 85);
+  --amber-content: oklch(0.82 0.12 85);
+
+  /* Status: Yellow */
+  --yellow-surface: oklch(0.28 0.06 100);
+  --yellow-content: oklch(0.85 0.12 100);
+
+  /* Status: Lime */
+  --lime-surface: oklch(0.27 0.06 130);
+  --lime-content: oklch(0.82 0.14 130);
+
+  /* Status: Green */
+  --green-surface: oklch(0.26 0.05 155);
+  --green-content: oklch(0.78 0.12 155);
+
+  /* Status: Emerald */
+  --emerald-surface: oklch(0.26 0.05 170);
+  --emerald-content: oklch(0.78 0.1 170);
+
+  /* Status: Teal */
+  --teal-surface: oklch(0.26 0.04 185);
+  --teal-content: oklch(0.78 0.08 185);
+
+  /* Status: Cyan */
+  --cyan-surface: oklch(0.26 0.04 200);
+  --cyan-content: oklch(0.8 0.08 200);
+
+  /* Status: Sky */
+  --sky-surface: oklch(0.26 0.05 230);
+  --sky-content: oklch(0.8 0.1 230);
+
+  /* Status: Blue */
+  --blue-surface: oklch(0.26 0.05 255);
+  --blue-content: oklch(0.78 0.12 255);
+
+  /* Status: Indigo */
+  --indigo-surface: oklch(0.26 0.05 275);
+  --indigo-content: oklch(0.76 0.14 275);
+
+  /* Status: Violet */
+  --violet-surface: oklch(0.27 0.06 295);
+  --violet-content: oklch(0.78 0.16 295);
+
+  /* Status: Purple */
+  --purple-surface: oklch(0.27 0.06 305);
+  --purple-content: oklch(0.78 0.16 305);
+
+  /* Status: Fuchsia */
+  --fuchsia-surface: oklch(0.27 0.06 325);
+  --fuchsia-content: oklch(0.78 0.16 325);
+
+  /* Status: Pink */
+  --pink-surface: oklch(0.27 0.05 350);
+  --pink-content: oklch(0.78 0.14 350);
+
+  /* Status: Rose */
+  --rose-surface: oklch(0.26 0.04 10);
+  --rose-content: oklch(0.78 0.14 10);
+}
+
+/* ==========================================================================
+   Tailwind Theme Configuration
+   ========================================================================== */
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Fonts */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  /* Surfaces */
+  --color-surface-primary: var(--surface-primary);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-inset: var(--surface-inset);
+
+  /* Content */
+  --color-content-primary: var(--content-primary);
+  --color-content-secondary: var(--content-secondary);
+  --color-content-tertiary: var(--content-tertiary);
+  --color-content-inverse: var(--content-inverse);
+
+  /* Borders */
+  --color-border-default: var(--border-default);
+  --color-border-muted: var(--border-muted);
+  --color-border-strong: var(--border-strong);
+
+  /* Interactive */
+  --color-interactive-primary: var(--interactive-primary);
+  --color-interactive-secondary: var(--interactive-secondary);
+
+  /* Focus */
+  --color-ring-focus: var(--ring-focus);
+  --color-ring-offset: var(--ring-offset);
+
+  /* Status Colors */
+  --color-gray-surface: var(--gray-surface);
+  --color-gray-content: var(--gray-content);
+  --color-red-surface: var(--red-surface);
+  --color-red-content: var(--red-content);
+  --color-orange-surface: var(--orange-surface);
+  --color-orange-content: var(--orange-content);
+  --color-amber-surface: var(--amber-surface);
+  --color-amber-content: var(--amber-content);
+  --color-yellow-surface: var(--yellow-surface);
+  --color-yellow-content: var(--yellow-content);
+  --color-lime-surface: var(--lime-surface);
+  --color-lime-content: var(--lime-content);
+  --color-green-surface: var(--green-surface);
+  --color-green-content: var(--green-content);
+  --color-emerald-surface: var(--emerald-surface);
+  --color-emerald-content: var(--emerald-content);
+  --color-teal-surface: var(--teal-surface);
+  --color-teal-content: var(--teal-content);
+  --color-cyan-surface: var(--cyan-surface);
+  --color-cyan-content: var(--cyan-content);
+  --color-sky-surface: var(--sky-surface);
+  --color-sky-content: var(--sky-content);
+  --color-blue-surface: var(--blue-surface);
+  --color-blue-content: var(--blue-content);
+  --color-indigo-surface: var(--indigo-surface);
+  --color-indigo-content: var(--indigo-content);
+  --color-violet-surface: var(--violet-surface);
+  --color-violet-content: var(--violet-content);
+  --color-purple-surface: var(--purple-surface);
+  --color-purple-content: var(--purple-content);
+  --color-fuchsia-surface: var(--fuchsia-surface);
+  --color-fuchsia-content: var(--fuchsia-content);
+  --color-pink-surface: var(--pink-surface);
+  --color-pink-content: var(--pink-content);
+  --color-rose-surface: var(--rose-surface);
+  --color-rose-content: var(--rose-content);
+
+  /* Radii */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-full: var(--radius-full);
+}
+
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
+
+@layer base {
+  * {
+    @apply border-border-default outline-ring-focus/50;
+  }
+  body {
+    @apply bg-surface-primary text-content-primary;
+  }
+  code,
+  kbd,
+  pre {
+    @apply font-mono;
+  }
+}
+
+/* ==========================================================================
+   Typography Utilities
+   ========================================================================== */
+
+@utility text-title-3xl {
+  font-size: var(--text-title-3xl);
+  line-height: var(--text-title-3xl-leading);
+  letter-spacing: var(--text-title-3xl-tracking);
+  font-weight: var(--text-title-3xl-weight);
+}
+
+@utility text-title-2xl {
+  font-size: var(--text-title-2xl);
+  line-height: var(--text-title-2xl-leading);
+  letter-spacing: var(--text-title-2xl-tracking);
+  font-weight: var(--text-title-2xl-weight);
+}
+
+@utility text-title-xl {
+  font-size: var(--text-title-xl);
+  line-height: var(--text-title-xl-leading);
+  letter-spacing: var(--text-title-xl-tracking);
+  font-weight: var(--text-title-xl-weight);
+}
+
+@utility text-title-lg {
+  font-size: var(--text-title-lg);
+  line-height: var(--text-title-lg-leading);
+  letter-spacing: var(--text-title-lg-tracking);
+  font-weight: var(--text-title-lg-weight);
+}
+
+@utility text-title {
+  font-size: var(--text-title);
+  line-height: var(--text-title-leading);
+  letter-spacing: var(--text-title-tracking);
+  font-weight: var(--text-title-weight);
+}
+
+@utility text-subtitle {
+  font-size: var(--text-subtitle);
+  line-height: var(--text-subtitle-leading);
+  letter-spacing: var(--text-subtitle-tracking);
+  font-weight: var(--text-subtitle-weight);
+}
+
+@utility text-paragraph-lg {
+  font-size: var(--text-paragraph-lg);
+  line-height: var(--text-paragraph-lg-leading);
+  letter-spacing: var(--text-paragraph-lg-tracking);
+  font-weight: var(--text-paragraph-lg-weight);
+}
+
+@utility text-paragraph {
+  font-size: var(--text-paragraph);
+  line-height: var(--text-paragraph-leading);
+  letter-spacing: var(--text-paragraph-tracking);
+  font-weight: var(--text-paragraph-weight);
+}
+
+@utility text-paragraph-sm {
+  font-size: var(--text-paragraph-sm);
+  line-height: var(--text-paragraph-sm-leading);
+  letter-spacing: var(--text-paragraph-sm-tracking);
+  font-weight: var(--text-paragraph-sm-weight);
+}
+
+@utility text-label {
+  font-size: var(--text-label);
+  line-height: var(--text-label-leading);
+  letter-spacing: var(--text-label-tracking);
+  font-weight: var(--text-label-weight);
+}
+
+@utility text-label-sm {
+  font-size: var(--text-label-sm);
+  line-height: var(--text-label-sm-leading);
+  letter-spacing: var(--text-label-sm-tracking);
+  font-weight: var(--text-label-sm-weight);
+}

@@ -10,7 +10,7 @@ type LinkTitleProps = {
 
 export function InfoLinks({ location, url, instagram }: LinkTitleProps) {
   return (
-    <div className="flex items-center justify-between mt-3 text-muted-foreground">
+    <div className="flex items-center justify-between mt-3 text-content-secondary">
       <p className={cn("leading-7 inline-flex font-bold")}>{location}</p>
       <div className="flex gap-4">
         {url ? (

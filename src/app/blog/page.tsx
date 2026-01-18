@@ -13,7 +13,7 @@ export default async function Blog() {
 
   return (
     <div>
-      <h1 className="font-medium text-2xl mt-14 mb-8 tracking-tighter">blog</h1>
+      <h1 className="text-title mt-14 mb-8">blog</h1>
       <BlogPosts posts={posts} />
     </div>
   );

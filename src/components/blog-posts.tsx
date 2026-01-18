@@ -20,7 +20,7 @@ export function BlogPosts({ posts }: BlogPostsProps) {
     <div className="grid gap-10 sm:grid-cols-2">
       <AnimatedBackground
         enableHover
-        className="w-full h-full bg-zinc-100 rounded-lg"
+        className="w-full h-full bg-surface-secondary rounded-lg"
         transition={{
           type: "spring",
           bounce: 0,
@@ -33,17 +33,17 @@ export function BlogPosts({ posts }: BlogPostsProps) {
             className="group relative flex flex-col -mx-3 rounded-xl px-3 py-3"
             data-id={post.slug}
           >
-            <h2 className="text-2xl font-medium">{post.metadata.title}</h2>
+            <h2 className="text-title">{post.metadata.title}</h2>
             {post.metadata.date && (
               <time
                 dateTime={post.metadata.date}
-                className="text-sm text-muted-foreground"
+                className="text-label-sm text-content-secondary"
               >
                 {formatDate(post.metadata.date)}
               </time>
             )}
             {post.metadata.description && (
-              <p className="text-muted-foreground mt-4">
+              <p className="text-content-secondary mt-4">
                 {post.metadata.description}
               </p>
             )}

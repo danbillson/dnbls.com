@@ -12,11 +12,11 @@ type LatestPostsProps = {
 export function LatestPosts({ posts }: LatestPostsProps) {
   return (
     <Section className="mt-10">
-      <h3 className="mb-3 text-lg font-medium">Latest Posts</h3>
+      <h3 className="mb-3 text-subtitle">Latest Posts</h3>
       <div className="flex flex-col space-y-0">
         <AnimatedBackground
           enableHover
-          className="h-full w-full rounded-lg bg-zinc-100"
+          className="h-full w-full rounded-lg bg-surface-secondary"
           transition={{
             type: "spring",
             bounce: 0,
@@ -32,7 +32,7 @@ export function LatestPosts({ posts }: LatestPostsProps) {
             >
               <div className="flex flex-col space-y-1">
                 <h4 className="font-normal">{post.metadata.title}</h4>
-                <p className="text-muted-foreground">
+                <p className="text-content-secondary">
                   {post.metadata.description}
                 </p>
               </div>

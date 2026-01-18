@@ -20,14 +20,14 @@ export default async function Page({
 
     return (
       <article className="py-8">
-        <div className="mb-8 text-center prose prose-neutral">
+        <div className="mb-8 text-center">
           <time
             dateTime={post.metadata.date}
-            className="mb-1 text-xs text-gray-600"
+            className="mb-1 text-label-sm text-content-secondary"
           >
             {formatDate(post.metadata.date)}
           </time>
-          <h1 className="text-3xl font-medium">{post.metadata.title}</h1>
+          <h1 className="text-title-lg">{post.metadata.title}</h1>
         </div>
         <div className="mdx">
           <Post />
