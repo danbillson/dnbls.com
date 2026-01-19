@@ -18,6 +18,15 @@ export default function Projects() {
 
         <hr className="my-6! border-border-muted" />
         <h2 className="text-subtitle mb-1">
+          <a href="https://ui.dnbls.com">ui.dnbls.com</a>
+        </h2>
+        <p>
+          My personal design system and component library. A collection of
+          foundations, patterns and components I use across my projects.
+        </p>
+
+        <hr className="my-6! border-border-muted" />
+        <h2 className="text-subtitle mb-1">
           <a href="https://yonder-experiences.vercel.app/">
             Yonder Experiences
           </a>
