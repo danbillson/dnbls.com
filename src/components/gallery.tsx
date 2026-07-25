@@ -42,7 +42,6 @@ export default function Gallery() {
               height={image.height}
               className="rounded-lg"
               placeholder="blur"
-              priority
             />
           </motion.div>
         ))}
