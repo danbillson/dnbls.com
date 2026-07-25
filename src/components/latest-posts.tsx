@@ -12,7 +12,7 @@ type LatestPostsProps = {
 export function LatestPosts({ posts }: LatestPostsProps) {
   return (
     <Section className="mt-10">
-      <h3 className="mb-3 text-subtitle">Latest Posts</h3>
+      <h2 className="mb-3 text-subtitle">Latest Posts</h2>
       <div className="flex flex-col space-y-0">
         <AnimatedBackground
           enableHover
@@ -31,7 +31,7 @@ export function LatestPosts({ posts }: LatestPostsProps) {
               data-id={post.slug}
             >
               <div className="flex flex-col space-y-1">
-                <h4 className="font-normal">{post.metadata.title}</h4>
+                <h3 className="font-normal">{post.metadata.title}</h3>
                 <p className="text-content-secondary">
                   {post.metadata.description}
                 </p>

@@ -40,6 +40,8 @@ export default function Gallery() {
               alt={image.alt}
               width={image.width}
               height={image.height}
+              sizes={image.sizes}
+              loading={image.eager ? "eager" : "lazy"}
               className="rounded-lg"
               placeholder="blur"
             />
@@ -50,6 +52,9 @@ export default function Gallery() {
   );
 }
 
+const COLUMN_SIZES = "(min-width: 720px) 306px, calc(50vw - 30px)";
+const FULL_WIDTH_SIZES = "(min-width: 720px) 624px, calc(100vw - 48px)";
+
 const images = [
   {
     src: walking,
@@ -57,6 +62,8 @@ const images = [
     width: 500,
     height: 675,
     className: "row-span-3",
+    sizes: COLUMN_SIZES,
+    eager: true,
   },
   {
     src: mikkeller,
@@ -64,6 +71,8 @@ const images = [
     width: 500,
     height: 500,
     className: "row-span-2",
+    sizes: COLUMN_SIZES,
+    eager: true,
   },
   {
     src: cupie,
@@ -71,6 +80,8 @@ const images = [
     width: 500,
     height: 675,
     className: "row-span-3",
+    sizes: COLUMN_SIZES,
+    eager: true,
   },
   {
     src: light,
@@ -78,6 +89,8 @@ const images = [
     width: 500,
     height: 500,
     className: "row-span-2",
+    sizes: COLUMN_SIZES,
+    eager: false,
   },
   {
     src: te,
@@ -85,5 +98,7 @@ const images = [
     width: 740,
     height: 500,
     className: "col-span-2",
+    sizes: FULL_WIDTH_SIZES,
+    eager: false,
   },
 ] as const;
