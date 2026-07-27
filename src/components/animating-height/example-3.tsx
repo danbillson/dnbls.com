@@ -2,7 +2,7 @@
 
 import { ArrowDown01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
 import useMeasure from "react-use-measure";
@@ -12,7 +12,7 @@ export function AnimatedCard3() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <motion.div
+    <m.div
       className="w-full max-w-sm overflow-hidden rounded-md shadow-md mx-auto"
       animate={{ height: bounds.height }}
       transition={{ type: "spring", duration: 0.5, bounce: 0 }}
@@ -44,7 +44,7 @@ export function AnimatedCard3() {
         </h1>
         <AnimatePresence>
           {isOpen && (
-            <motion.p
+            <m.p
               initial={{ opacity: 0, filter: "blur(4px)" }}
               animate={{ opacity: 1, filter: "blur(0px)" }}
               exit={{
@@ -58,10 +58,10 @@ export function AnimatedCard3() {
               had to grab a couple of them, and then I had the priveledge of
               visiting the store in Copenhagen and couldn&apos;t resist grabbing
               another.
-            </motion.p>
+            </m.p>
           )}
         </AnimatePresence>
       </div>
-    </motion.div>
+    </m.div>
   );
 }

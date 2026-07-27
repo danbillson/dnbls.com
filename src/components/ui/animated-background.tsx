@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, type Transition } from "motion/react";
+import { AnimatePresence, m, type Transition } from "motion/react";
 import {
   Children,
   cloneElement,
@@ -74,7 +74,7 @@ export function AnimatedBackground({
       <>
         <AnimatePresence initial={false}>
           {activeId === id && (
-            <motion.div
+            <m.div
               layoutId={`background-${uniqueId}`}
               className={cn("absolute inset-0", className)}
               transition={transition}

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import Image from "next/image";
 import { InView } from "@/components/ui/in-view";
 import cupie from "../../public/home/cupie.jpg";
@@ -30,7 +30,7 @@ export default function Gallery() {
     >
       <div className="mt-6 grid grid-cols-2 gap-3">
         {images.map((image) => (
-          <motion.div
+          <m.div
             key={image.alt}
             className={image.className}
             variants={variants}
@@ -45,7 +45,7 @@ export default function Gallery() {
               className="rounded-lg"
               placeholder="blur"
             />
-          </motion.div>
+          </m.div>
         ))}
       </div>
     </InView>

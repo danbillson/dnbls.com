@@ -2,7 +2,7 @@
 
 import { ArrowDown01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
 import useMeasure from "react-use-measure";
@@ -12,7 +12,7 @@ export function AnimatedCard2() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <motion.div
+    <m.div
       animate={{ height: bounds.height }}
       transition={{ type: "spring", duration: 0.5, bounce: 0 }}
       className="h-fit w-full max-w-sm overflow-hidden rounded-md shadow-md mx-auto"
@@ -50,6 +50,6 @@ export function AnimatedCard2() {
           </p>
         )}
       </div>
-    </motion.div>
+    </m.div>
   );
 }

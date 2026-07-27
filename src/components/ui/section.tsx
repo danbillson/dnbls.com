@@ -1,6 +1,6 @@
 "use client";
 
-import { type HTMLMotionProps, motion } from "motion/react";
+import { type HTMLMotionProps, m } from "motion/react";
 
 const variants = {
   hidden: { opacity: 0, y: 20, filter: "blur(8px)" },
@@ -15,7 +15,7 @@ type SectionProps = HTMLMotionProps<"section">;
 
 export function Section(props: SectionProps) {
   return (
-    <motion.section
+    <m.section
       variants={variants}
       transition={transition}
       initial="hidden"

@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  motion,
+  m,
   type Transition,
   type UseInViewOptions,
   useInView,
@@ -35,7 +35,7 @@ export function InView({
   const ref = useRef(null);
   const isInView = useInView(ref, viewOptions);
 
-  const MotionComponent = motion[as as keyof typeof motion] as typeof as;
+  const MotionComponent = m[as as keyof typeof m] as typeof as;
 
   return (
     <MotionComponent

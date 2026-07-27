@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { fontMono, fontSans } from "@/lib/fonts";
 import "./globals.css";
+import { MotionProvider } from "@/components/motion-provider";
 import Nav from "@/components/nav";
 import Social from "@/components/social";
 
@@ -45,9 +46,11 @@ export default function RootLayout({
     >
       <body className={`antialiased`}>
         <main className="mt-6 p-6 max-w-2xl mx-auto">
-          <Nav />
-          {children}
-          <Social />
+          <MotionProvider>
+            <Nav />
+            {children}
+            <Social />
+          </MotionProvider>
         </main>
       </body>
     </html>
