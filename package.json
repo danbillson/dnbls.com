@@ -50,7 +50,7 @@
     "rehype-slug": "^6.0.0",
     "remark": "^15.0.1",
     "tailwindcss": "^4.3.3",
-    "typescript": "^7.0.2"
+    "typescript": "^5"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,md,mdx}": "biome check --write"
