@@ -18,7 +18,7 @@ export default function Social() {
         <HugeiconsIcon icon={GithubIcon} />
       </a>
       <a
-        href="https://x.com/danbillson"
+        href="https://x.com/dbillson"
         className="w-6 h-6 mx-2"
         target="_blank"
         rel="noopener noreferrer"
