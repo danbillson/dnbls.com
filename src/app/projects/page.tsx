@@ -18,6 +18,24 @@ export default function Projects() {
 
         <hr className="my-6! border-border-muted" />
         <h2 className="text-subtitle mb-1">
+          <a href="https://pothooks.com">pothooks</a>
+        </h2>
+        <p>
+          Creating and download your own handdrawn fonts to add some personality
+          to your projects.
+        </p>
+
+        <hr className="my-6! border-border-muted" />
+        <h2 className="text-subtitle mb-1">
+          <a href="https://ink.dnbls.com">ink.dnbls.com</a>
+        </h2>
+        <p>
+          An experiment with ink like shaders to create a drawn effect with a 3d
+          model.
+        </p>
+
+        <hr className="my-6! border-border-muted" />
+        <h2 className="text-subtitle mb-1">
           <a href="https://ui.dnbls.com">ui.dnbls.com</a>
         </h2>
         <p>
