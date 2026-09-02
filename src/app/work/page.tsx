@@ -21,12 +21,13 @@ export default function Work() {
           <a href="https://attio.com">Attio</a>
         </h2>
         <p className="text-content-secondary text-paragraph-sm">
-          Product Engineer, current
+          Design Engineer, current
         </p>
         <p className="text-pretty">
-          I recently joined the{" "}
-          <a href="https://attio.com/platform/automations">automations</a> team
-          at Attio. Keep following to find out more.
+          I intially joined Attio as a product engineer on the workflows team
+          building out the node based workflow editor. I then made the drastic
+          shift over to marketing as a design engineer where I'm now building
+          the cool things on <a href="https://attio.com">attio.com</a>.
         </p>
 
         <hr className="my-6! border-border-muted" />
