@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
  */
 export function ImageCycler({
   images,
-  interval = 1600,
+  interval = 1000,
   active = true,
   sizes,
   eager = false,

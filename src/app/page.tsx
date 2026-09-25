@@ -11,11 +11,15 @@ import {
 } from "@/lib/content";
 import { getImages, interleave } from "@/lib/images";
 
-// Work photos of me beyond Attio that belong in the hero.
+// Hero = photos of me, mostly from Attio, plus a few picks from other jobs.
 const heroExtras = [
   "/images/work/paddle/focus.jpg",
-  "/images/work/paddle/walking.jpg",
   "/images/work/sopost/award.jpg",
+];
+const heroExclude = [
+  "/images/me/volleyball.jpg",
+  "/images/me/team-england.jpg",
+  "/images/me/cheer-partner-stunt.jpg",
 ];
 
 const pastimes = [
@@ -42,7 +46,7 @@ export default function Home() {
     getImages("work").filter(
       (p) => p.category === "work/attio" || heroExtras.includes(p.src),
     ),
-    getImages("me"),
+    getImages("me").filter((p) => !heroExclude.includes(p.src)),
   );
 
   return (
@@ -69,11 +73,12 @@ export default function Home() {
         </header>
 
         <div className="flex flex-1 items-center justify-center page-x">
-          <h1 className="flex items-center font-display text-[clamp(3rem,13vw,15rem)] leading-none font-semibold tracking-[-0.045em] whitespace-nowrap">
+          <h1 className="font-display text-[clamp(3rem,13vw,15rem)] leading-none font-semibold tracking-[-0.045em] whitespace-nowrap">
             Dan
+            {/* Cap-height tall, sitting on the baseline: Host Grotesk caps = 0.7em */}
             <span
               aria-hidden
-              className="relative mx-[0.06em] inline-block h-[0.62em] w-[0.95em] overflow-hidden bg-foreground/5"
+              className="relative mx-[0.06em] inline-block h-[0.7em] w-[1.07em] overflow-hidden bg-foreground/5"
             >
               <ImageCycler
                 images={heroImages}

@@ -17,6 +17,8 @@ const OFFSET = 24;
 /** Ledger of roles. Hovering a row floats that company's photos by the cursor. */
 export function WorkTable({ rows }: { rows: Row[] }) {
   const [active, setActive] = useState<string | null>(null);
+  // Fresh shuffle each time a row is entered, so it doesn't open on the same shot.
+  const [order, setOrder] = useState<Record<string, Row["photos"]>>({});
   const previewRef = useRef<HTMLDivElement>(null);
 
   function follow(e: PointerEvent) {
@@ -36,7 +38,12 @@ export function WorkTable({ rows }: { rows: Row[] }) {
     const row = (e.target as HTMLElement).closest<HTMLElement>(
       "[data-company]",
     );
-    if (row) setActive(row.dataset.company ?? null);
+    const company = row?.dataset.company;
+    if (company && company !== active) {
+      const photos = rows.find((r) => r.company === company)?.photos ?? [];
+      setOrder((o) => ({ ...o, [company]: shuffle(photos) }));
+      setActive(company);
+    }
     follow(e);
   }
 
@@ -83,22 +90,42 @@ export function WorkTable({ rows }: { rows: Row[] }) {
         className="pointer-events-none fixed top-0 left-0 z-40 aspect-[4/3] w-[clamp(14rem,22vw,22rem)]"
       >
         {rows.map((r) =>
-          r.photos.length ? (
+          r.photos.length === 0 ? (
+            <div
+              key={r.company}
+              className={`absolute inset-0 flex flex-col justify-between bg-accent p-3 text-foreground ${active === r.company ? "" : "invisible"}`}
+            >
+              <span className="text-xs font-medium">
+                Lost footage — {r.company}, {r.years}
+              </span>
+              <span className="font-display text-[clamp(1.5rem,2.4vw,2.25rem)] leading-none font-semibold tracking-tight">
+                Pics or it didn’t happen.
+              </span>
+            </div>
+          ) : (
             <div
               key={r.company}
               className={`absolute inset-0 bg-foreground/5 ${active === r.company ? "" : "invisible"}`}
             >
               <ImageCycler
-                images={r.photos}
-                interval={1000}
+                images={order[r.company] ?? r.photos}
                 active={active === r.company}
                 sizes="(min-width: 1024px) 22vw, 14rem"
                 className="grayscale"
               />
             </div>
-          ) : null,
+          ),
         )}
       </div>
     </>
   );
+}
+
+function shuffle<T>(items: T[]): T[] {
+  const out = [...items];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
 }
