@@ -4,15 +4,59 @@
   --background: #f9f9f9;
   --foreground: #171717;
   --accent: #e4ff02;
+  --muted: color-mix(in oklab, var(--foreground) 50%, transparent);
+  --rule: color-mix(in oklab, var(--foreground) 15%, transparent);
+
+  --font-body: var(--font-inter);
+  --margin: 1rem;
+  --gutter: 1rem;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --margin: 1.25rem;
+    --gutter: 1.25rem;
+  }
+}
+
+/* Body font switcher — see src/lib/font-options.ts */
+html[data-font="dm"] {
+  --font-body: var(--font-dm-sans);
+}
+html[data-font="plex"] {
+  --font-body: var(--font-ibm-plex);
+}
+html[data-font="host"] {
+  --font-body: var(--font-host-grotesk);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
   --font-display: var(--font-host-grotesk);
-  /* body: --font-inter | --font-dm-sans | --font-ibm-plex */
-  --font-sans: var(--font-inter);
+  --font-sans: var(--font-body);
+}
+
+/* 12-col page grid shared by every layout + the overlay */
+@utility page-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  padding-inline: var(--margin);
+}
+
+@utility page-x {
+  padding-inline: var(--margin);
+}
+
+.grid-overlay {
+  display: none;
+}
+html[data-grid="1"] .grid-overlay {
+  display: grid;
 }
 
 ::selection {
