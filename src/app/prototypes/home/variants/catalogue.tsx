@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { experience, nav, photoList, profile, projects } from "@/lib/content";
+import { experience, nav, profile, projects } from "@/lib/content";
+import { getImages } from "@/lib/images";
 
 type Entry = { title: string; kind: string; year: string; count: number };
 
@@ -35,6 +36,7 @@ function Item({ entry }: { entry: Entry }) {
 }
 
 export default function Catalogue() {
+  const photoList = getImages();
   return (
     <main className="py-[var(--margin)] text-[1.0625rem]">
       <header className="page-grid mb-24 text-sm">
@@ -60,10 +62,11 @@ export default function Catalogue() {
               <div className="flex gap-6 overflow-x-auto page-x [scrollbar-width:none]">
                 {photoList.map((photo) => (
                   <Image
-                    key={photo.alt}
+                    key={photo.src}
                     src={photo.src}
                     alt={photo.alt}
-                    placeholder="blur"
+                    width={photo.width}
+                    height={photo.height}
                     sizes="30vw"
                     className="h-[clamp(12rem,24vw,22rem)] w-auto shrink-0 object-cover grayscale transition-[filter] duration-300 hover:grayscale-0"
                   />

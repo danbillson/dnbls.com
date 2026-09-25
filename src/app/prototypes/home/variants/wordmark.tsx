@@ -1,7 +1,9 @@
 import Image from "next/image";
-import { experience, nav, photos, profile } from "@/lib/content";
+import { experience, nav, profile } from "@/lib/content";
+import { getImages } from "@/lib/images";
 
 export default function Wordmark() {
+  const [photo] = getImages("beer");
   return (
     <>
       <section className="flex min-h-dvh flex-col py-[var(--margin)]">
@@ -27,8 +29,8 @@ export default function Wordmark() {
             Dan
             <span className="relative mx-[0.06em] inline-block h-[0.62em] w-[0.95em] overflow-hidden">
               <Image
-                src={photos.mikkeller.src}
-                alt={photos.mikkeller.alt}
+                src={photo.src}
+                alt={photo.alt}
                 fill
                 preload
                 sizes="15vw"

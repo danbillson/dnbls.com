@@ -1,12 +1,3 @@
-import beermerchants from "@/assets/beermerchantstap.jpg";
-import cupie from "@/assets/cupie.jpg";
-import kanpai from "@/assets/kanpai.jpg";
-import light from "@/assets/light.jpg";
-import mikkeller from "@/assets/mikkeller.jpg";
-import mug from "@/assets/mug.jpg";
-import te from "@/assets/te.jpg";
-import walking from "@/assets/walking.jpg";
-
 // Placeholder content lifted from reference/ for prototyping.
 
 export const profile = {
@@ -134,16 +125,3 @@ export const posts = [
   { title: "AI vs Advent of Code", date: "2025-03-01" },
   { title: "Top 10 bars/pubs in London", date: "2024-11-19" },
 ];
-
-export const photos = {
-  walking: { src: walking, alt: "Dan walking into the Paddle office" },
-  mikkeller: { src: mikkeller, alt: "Dan at Mikkeller bar in Copenhagen" },
-  cupie: { src: cupie, alt: "Dan doing a partner stunt" },
-  light: { src: light, alt: "Dan under a beam of light" },
-  te: { src: te, alt: "Team England Cheer" },
-  kanpai: { src: kanpai, alt: "Kanpai" },
-  mug: { src: mug, alt: "A mug of coffee" },
-  beermerchants: { src: beermerchants, alt: "Beer Merchants Tap" },
-};
-
-export const photoList = Object.values(photos);

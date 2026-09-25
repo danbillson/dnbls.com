@@ -1,12 +1,6 @@
 import Image from "next/image";
-import {
-  experience,
-  links,
-  photos,
-  posts,
-  profile,
-  projects,
-} from "@/lib/content";
+import { experience, links, posts, profile, projects } from "@/lib/content";
+import { getImages } from "@/lib/images";
 
 function Section({
   n,
@@ -34,6 +28,7 @@ const row =
   "grid grid-cols-6 gap-x-[var(--gutter)] border-rule border-b py-1.5 transition-colors duration-150 hover:bg-accent";
 
 export default function Poster() {
+  const [photo] = getImages("me");
   return (
     <main className="text-sm">
       <header className="page-grid gap-y-1 py-[var(--margin)] font-semibold">
@@ -53,8 +48,8 @@ export default function Poster() {
         </h1>
         <div className="relative col-span-6 row-start-2 aspect-[3/4] md:col-span-3 md:col-start-10 md:row-start-1 md:self-end">
           <Image
-            src={photos.light.src}
-            alt={photos.light.alt}
+            src={photo.src}
+            alt={photo.alt}
             fill
             preload
             sizes="25vw"

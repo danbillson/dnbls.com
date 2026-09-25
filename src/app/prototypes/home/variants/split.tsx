@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { experience, links, photoList, profile, projects } from "@/lib/content";
+import { experience, links, profile, projects } from "@/lib/content";
+import { getImages } from "@/lib/images";
 
 const rows = [
   { label: "Role", value: profile.role },
@@ -8,6 +9,7 @@ const rows = [
 ];
 
 export default function Split() {
+  const photoList = getImages();
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-2">
       <aside className="flex flex-col justify-between gap-16 border-rule p-[var(--margin)] text-sm lg:sticky lg:top-0 lg:h-dvh lg:border-r">
@@ -72,13 +74,14 @@ export default function Split() {
       <main className="flex flex-col gap-[var(--gutter)] p-[var(--margin)]">
         <p className="text-right text-sm uppercase">About</p>
         {photoList.map((photo, i) => (
-          <figure key={photo.alt}>
+          <figure key={photo.src}>
             {i % 3 === 1 ? (
               <div className="flex aspect-[4/3] items-center justify-center bg-[#e8e6e1]">
                 <Image
                   src={photo.src}
                   alt={photo.alt}
-                  placeholder="blur"
+                  width={photo.width}
+                  height={photo.height}
                   sizes="(min-width: 1024px) 20vw, 40vw"
                   className="h-3/4 w-auto object-contain shadow-sm"
                 />
@@ -87,7 +90,8 @@ export default function Split() {
               <Image
                 src={photo.src}
                 alt={photo.alt}
-                placeholder="blur"
+                width={photo.width}
+                height={photo.height}
                 preload={i === 0}
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 className="aspect-[4/3] w-full object-cover"
