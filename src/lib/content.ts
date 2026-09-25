@@ -24,6 +24,7 @@ export const nav = ["Work", "Projects", "Writing", "About", "Contact"];
 export const experience = [
   {
     company: "Attio",
+    photos: "work/attio",
     role: "Design Engineer",
     years: "2025–",
     short: "'25",
@@ -32,6 +33,7 @@ export const experience = [
   },
   {
     company: "Paddle",
+    photos: "work/paddle",
     role: "Software Engineer",
     years: "2024–2025",
     short: "'24",
@@ -40,6 +42,7 @@ export const experience = [
   },
   {
     company: "SoPost",
+    photos: "work/sopost",
     role: "Senior Software Engineer",
     years: "2021–2024",
     short: "'21",
@@ -48,6 +51,7 @@ export const experience = [
   },
   {
     company: "Climb Creative",
+    photos: "work/climb-creative",
     role: "Front-end Developer",
     years: "2020–2021",
     short: "'20",

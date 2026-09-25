@@ -1,8 +1,28 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+/** Dev-only 12-col overlay matching `page-grid`. Toggle with G. */
 export function GridOverlay() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.metaKey || e.ctrlKey || e.altKey || e.key !== "g") return;
+      const target = e.target as HTMLElement;
+      if (target.closest("input, textarea, select, [contenteditable]")) return;
+      setVisible((v) => !v);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  if (!visible) return null;
+
   return (
     <div
       aria-hidden
-      className="grid-overlay pointer-events-none fixed inset-0 z-40 page-grid"
+      className="pointer-events-none fixed inset-0 z-50 page-grid"
     >
       {Array.from({ length: 12 }, (_, i) => (
         <div

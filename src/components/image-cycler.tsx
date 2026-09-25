@@ -2,27 +2,36 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import type { Photo } from "@/lib/images";
 
 /**
  * Hard-cut slideshow (à la paulkalkbrenner.net). Every frame stays mounted so
- * swaps are instant; only the active one is visible. Static under reduced motion
- * and paused while the tab is hidden.
+ * swaps are instant; only the current one is visible. Decorative — the parent
+ * carries the meaning. Static under reduced motion, paused while the tab is
+ * hidden or `active` is false.
  */
 export function ImageCycler({
   images,
-  interval = 800,
+  interval = 1600,
+  active = true,
   sizes,
+  eager = false,
   className = "",
 }: {
-  images: Pick<Photo, "src" | "alt">[];
+  images: { src: string }[];
   interval?: number;
+  active?: boolean;
   sizes: string;
+  /** Load every frame up front (hero). Otherwise the browser decides. */
+  eager?: boolean;
   className?: string;
 }) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    if (!active) {
+      setIndex(0);
+      return;
+    }
     if (images.length < 2) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -43,18 +52,17 @@ export function ImageCycler({
       window.clearInterval(id);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [images.length, interval]);
+  }, [active, images.length, interval]);
 
   return images.map((image, i) => (
     <Image
       key={image.src}
       src={image.src}
-      alt={i === index ? image.alt : ""}
-      aria-hidden={i !== index}
+      alt=""
       fill
       sizes={sizes}
-      loading="eager"
-      fetchPriority={i === 0 ? "high" : "low"}
+      loading={eager ? "eager" : undefined}
+      fetchPriority={eager && i === 0 ? "high" : undefined}
       className={`object-cover ${i === index ? "" : "invisible"} ${className}`}
     />
   ));

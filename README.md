@@ -12,7 +12,8 @@ Personal site. Swiss/editorial rewrite in progress — old site lives in `refere
 ## Design tokens
 
 - Display: Host Grotesk
-- Body: Inter (candidates: DM Sans, IBM Plex Sans — swap `--font-sans` in `src/app/globals.css`)
+- Body: Inter
+- Dev: press G for the 12-col grid overlay
 - Background `#F9F9F9`, foreground `#171717`, accent `#E4FF02`
 
 ## Images

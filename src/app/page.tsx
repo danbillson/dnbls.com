@@ -1,5 +1,6 @@
 import { ImageCycler } from "@/components/image-cycler";
 import { cell, LedgerHeading, LedgerTable } from "@/components/ledger";
+import { WorkTable } from "@/components/work-table";
 import {
   experience,
   links,
@@ -9,6 +10,13 @@ import {
   projects,
 } from "@/lib/content";
 import { getImages, interleave } from "@/lib/images";
+
+// Work photos of me beyond Attio that belong in the hero.
+const heroExtras = [
+  "/images/work/paddle/focus.jpg",
+  "/images/work/paddle/walking.jpg",
+  "/images/work/sopost/award.jpg",
+];
 
 const pastimes = [
   {
@@ -22,17 +30,20 @@ const pastimes = [
     detail: "Craft, cask, and the odd top ten list",
   },
   { label: "Running", category: "running", detail: "London, mostly" },
-  { label: "Cheer", category: "me", detail: "Ex-Team England, now volleyball" },
+  {
+    label: "Me",
+    category: "me",
+    detail: "Ex-Team England cheer, now volleyball",
+  },
 ];
 
 export default function Home() {
   const heroImages = interleave(
+    getImages("work").filter(
+      (p) => p.category === "work/attio" || heroExtras.includes(p.src),
+    ),
     getImages("me"),
-    getImages("travel"),
-    getImages("beer"),
-    getImages("running"),
-    getImages("work"),
-  ).slice(0, 32);
+  );
 
   return (
     <>
@@ -60,9 +71,13 @@ export default function Home() {
         <div className="flex flex-1 items-center justify-center page-x">
           <h1 className="flex items-center font-display text-[clamp(3rem,13vw,15rem)] leading-none font-semibold tracking-[-0.045em] whitespace-nowrap">
             Dan
-            <span className="relative mx-[0.06em] inline-block h-[0.62em] w-[0.95em] overflow-hidden bg-foreground/5">
+            <span
+              aria-hidden
+              className="relative mx-[0.06em] inline-block h-[0.62em] w-[0.95em] overflow-hidden bg-foreground/5"
+            >
               <ImageCycler
                 images={heroImages}
+                eager
                 sizes="(min-width: 1024px) 15vw, 25vw"
                 className="grayscale"
               />
@@ -89,26 +104,12 @@ export default function Home() {
       <main className="flex flex-col gap-40 pt-32 pb-40 text-sm font-medium">
         <section id="work" className="flex scroll-mt-8 flex-col gap-24">
           <LedgerHeading mark="&" lines={["Work", "Experi-", "ence"]} />
-          <LedgerTable>
-            {experience.map((e) => (
-              <div key={e.company} className="contents">
-                <span className={`${cell} col-span-2 tabular-nums`}>
-                  {e.short}
-                </span>
-                <span className={`${cell} col-span-4 md:col-span-3`}>
-                  {e.company}
-                </span>
-                <span className={`${cell} col-span-6 md:col-span-4`}>
-                  {e.role}
-                </span>
-                <span
-                  className={`${cell} hidden text-muted md:col-span-1 md:block`}
-                >
-                  {e.years}
-                </span>
-              </div>
-            ))}
-          </LedgerTable>
+          <WorkTable
+            rows={experience.map((e) => ({
+              ...e,
+              photos: e.photos ? getImages(e.photos) : [],
+            }))}
+          />
         </section>
 
         <section id="projects" className="flex scroll-mt-8 flex-col gap-24">
