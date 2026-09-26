@@ -1,0 +1,35 @@
+@media (hover: hover) and (pointer: fine) {
+  [data-scramble] {
+    cursor: crosshair;
+  }
+}
+
+/* Word stand-ins: hidden until the word flips, then its letters sit out. */
+[data-w] > [data-alt] {
+  display: none;
+}
+
+[data-w][data-alt-on] > [data-alt] {
+  display: inline;
+}
+
+[data-w][data-alt-on] > [data-core] {
+  display: none;
+}
+
+/* Hits land instantly; only the way back eases. */
+[data-scramble][data-revert="fade"] [data-char] {
+  transition:
+    color 250ms ease,
+    background-color 250ms ease;
+}
+
+[data-scramble][data-revert="fade"] [data-char][data-hit] {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-scramble] [data-char] {
+    transition: none;
+  }
+}

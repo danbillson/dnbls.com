@@ -1,11 +1,8 @@
-export default function robots() {
+import type { MetadataRoute } from "next";
+
+export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [
-      {
-        userAgent: "*",
-      },
-    ],
+    rules: { userAgent: "*", allow: "/" },
     sitemap: "https://dnbls.com/sitemap.xml",
-    host: "https://dnbls.com",
   };
 }

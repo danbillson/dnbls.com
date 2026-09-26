@@ -1,0 +1,176 @@
+/* Reveal system (see reveal.tsx). Children of a `[data-reveal]` rest hidden
+   and play once the parent has `data-in`. Order via --i (--rv-step, 60ms by
+   default), extra offset via --d. Curve is the site's ease-out-quint. */
+
+:root {
+  --rv-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes rv-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes rv-word {
+  from {
+    transform: translateY(135%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Holds the mask only while the word moves; released after so tight
+   line-heights don't keep descenders clipped. */
+@keyframes rv-mask {
+  from,
+  to {
+    clip-path: inset(0 -0.2em -0.25em);
+  }
+}
+
+@keyframes rv-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rv-drift {
+  from {
+    transform: translateY(-6%);
+  }
+  to {
+    transform: translateY(6%);
+  }
+}
+
+/* Computed on the animated element itself so its own --i is read; --d and
+   --rv-step come down from ancestors. */
+[data-reveal] :is(.rv-rise, .rv-mask, .rv-word, .rv-img > img) {
+  --rv-delay: calc(var(--i, 0) * var(--rv-step, 60ms) + var(--d, 0ms));
+}
+
+/* Headline words: quick rise; start times come from words.tsx via --d. */
+.rv-words {
+  --rv-word-ms: 450ms;
+}
+
+/* Text/blocks: rise and fade. */
+[data-reveal] .rv-rise {
+  opacity: 0;
+}
+
+/* Words: slide up out of a line mask. */
+[data-reveal] .rv-mask {
+  clip-path: inset(0 -0.2em -0.25em);
+}
+
+[data-reveal] .rv-word {
+  transform: translateY(135%);
+}
+
+/* Pictures: the grey frame holds the space, the picture fades into it. */
+[data-reveal] .rv-img > img {
+  opacity: 0;
+}
+
+[data-reveal][data-in] .rv-rise {
+  animation: rv-rise 700ms var(--rv-ease) both;
+  animation-delay: var(--rv-delay);
+}
+
+[data-reveal][data-in] .rv-mask {
+  clip-path: none;
+  animation: rv-mask var(--rv-word-ms, 900ms) linear backwards;
+  animation-delay: var(--rv-delay);
+}
+
+[data-reveal][data-in] .rv-word {
+  animation: rv-word var(--rv-word-ms, 900ms) var(--rv-ease) both;
+  animation-delay: var(--rv-delay);
+}
+
+[data-reveal][data-in] .rv-img > img {
+  animation: rv-fade 800ms ease both;
+  animation-delay: var(--rv-delay);
+}
+
+/* Line-split copy (lines.tsx): hidden until split; a post-resize re-split
+   shows its final state without replaying. */
+[data-reveal] .rv-lines:not([data-split]) {
+  visibility: hidden;
+}
+
+[data-reveal] .rv-lines[data-settled] .rv-mask {
+  clip-path: none;
+  animation: none;
+}
+
+[data-reveal] .rv-lines[data-settled] .rv-word {
+  transform: none;
+  animation: none;
+}
+
+/* Scroll-linked drift for an overscanned picture layer. */
+@supports (animation-timeline: view()) {
+  .rv-parallax {
+    animation: rv-drift linear both;
+    animation-timeline: view();
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] .rv-mask {
+    clip-path: none;
+    animation: none;
+  }
+
+  [data-reveal] :is(.rv-rise, .rv-word) {
+    transform: none;
+    opacity: 0;
+  }
+
+  [data-reveal][data-in] :is(.rv-rise, .rv-word, .rv-img > img) {
+    animation: rv-fade 300ms ease both;
+    animation-delay: 0ms;
+  }
+
+  .rv-parallax {
+    animation: none;
+  }
+}
+
+@media (scripting: none) {
+  [data-reveal] :is(.rv-mask, .rv-rise, .rv-word, .rv-img > img) {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+
+  [data-reveal] .rv-lines:not([data-split]) {
+    visibility: visible;
+  }
+}
+
+/* Print: everything visible, nothing pending. */
+@media print {
+  [data-reveal] :is(.rv-mask, .rv-rise, .rv-word, .rv-img > img) {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    animation: none;
+  }
+
+  [data-reveal] .rv-lines:not([data-split]) {
+    visibility: visible;
+  }
+}

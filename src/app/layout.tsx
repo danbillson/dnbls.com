@@ -1,61 +1,45 @@
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
-import { fontMono, fontSans } from "@/lib/fonts";
+import { GridOverlay } from "@/components/grid-overlay";
+import { PeekHeader } from "@/components/peek-header";
+import { SmoothScroll } from "@/components/smooth-scroll";
+import { fontVariables } from "@/lib/fonts";
+import { personJsonLd } from "@/lib/llms";
 import "./globals.css";
-import { MotionProvider } from "@/components/motion-provider";
-import Nav from "@/components/nav";
-import Social from "@/components/social";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://dnbls.com"),
   title: {
     default: "Dan Billson",
     template: "%s | Dan Billson",
   },
   description:
-    "Software engineer, volleyball player and craft beer enthusiast.",
-  openGraph: {
-    title: "Dan Billson",
-    description:
-      "Software engineer, volleyball player and craft beer enthusiast.",
-    url: "https://dnbls.com",
-    siteName: "Dan Billson",
-    locale: "en_GB",
-    type: "website",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
+    "Dan Billson is a design engineer in London, building interactive web experiences at Attio. Motion, typography and design systems.",
+  alternates: {
+    types: { "text/plain": [{ url: "/llms.txt", title: "llms.txt" }] },
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${fontSans.variable} ${fontMono.variable} font-sans`}
-    >
-      <body className={`antialiased`}>
-        <main className="mt-6 p-6 max-w-2xl mx-auto">
-          <MotionProvider>
-            <Nav />
-            {children}
-            <Social />
-          </MotionProvider>
-        </main>
-        <SpeedInsights />
-        <Analytics />
+    <html lang="en" className={`${fontVariables} h-full antialiased`}>
+      <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
+        <a
+          href="#main"
+          className="fixed top-2 left-2 z-50 -translate-y-[calc(100%+1rem)] bg-accent px-3 py-2 text-sm font-medium transition-transform duration-150 focus:translate-y-0 motion-reduce:transition-none"
+        >
+          Skip to content
+        </a>
+        <script
+          type="application/ld+json"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: static JSON-LD, `<` escaped
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
+        <SmoothScroll />
+        <PeekHeader />
+        {children}
+        {process.env.NODE_ENV === "development" && <GridOverlay />}
       </body>
     </html>
   );

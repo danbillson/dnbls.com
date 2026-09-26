@@ -1,50 +1,547 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "./theme.css";
 
-@plugin "@tailwindcss/typography";
+:root {
+  --background: #f9f9f9;
+  --foreground: #171717;
+  --accent: #e4ff02;
+  /* 62% → #6d6d6d on the page bg, 4.9:1 (AA at small sizes). */
+  --muted: color-mix(in oklab, var(--foreground) 62%, transparent);
+  --rule: color-mix(in oklab, var(--foreground) 15%, transparent);
 
-@layer base {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-sans;
+  --margin: 1rem;
+  --gutter: 1rem;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --margin: 1.25rem;
+    --gutter: 1.25rem;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --font-display: var(--font-host-grotesk);
+  --font-sans: var(--font-inter);
+}
+
+/* 12-col page grid, mirrored by the dev grid overlay (G) */
+@utility page-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  padding-inline: var(--margin);
+}
+
+@utility page-x {
+  padding-inline: var(--margin);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--foreground);
+}
+
+/* Lightbox open: the page beneath shouldn't rubber-band under a touch drag. */
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
+/* Fixed header copy: slides in on scroll up, out on scroll down. Leaving is
+   quicker than arriving, so it gets out of the way of what you're reading.
+   Near the top ([data-near]) the shadow fades and the swap for the in-flow
+   header is instant, so it reads as the header scrolling away. */
+.peek-header {
+  transform: translateY(-100%);
+  transition: transform 160ms ease-in;
+}
+
+.peek-header[data-shown] {
+  transform: none;
+  transition: transform 220ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.peek-header[data-near] {
+  transition: none;
+}
+
+.peek-header::after {
+  content: "";
+  position: absolute;
+  inset: 100% 0 auto 0;
+  height: 1.5rem;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--foreground) 6%, transparent),
+    transparent
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+/* Only while in and clear of the top; hidden, it would still poke into view. */
+.peek-header[data-shown]:not([data-near])::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .peek-header {
+    transform: none;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 160ms ease,
+      visibility 0s 160ms;
   }
 
-  /* Code blocks */
-  [data-rehype-pretty-code-figure] code {
-    @apply grid min-w-full break-words rounded-none border-0! bg-transparent p-0 text-sm text-content-primary;
-    counter-reset: line;
-    box-decoration-break: clone;
+  .peek-header[data-shown] {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 160ms ease;
   }
-  [data-rehype-pretty-code-figure] [data-line] {
-    @apply px-4 py-1;
+
+  .peek-header[data-near] {
+    transition: none;
   }
-  [data-rehype-pretty-code-figure] [data-line-numbers] > .line::before {
-    counter-increment: line;
-    content: counter(line);
-    display: inline-block;
-    width: 1rem;
-    margin-right: 1rem;
-    text-align: right;
-    color: var(--content-tertiary);
+}
+
+/* Work page — switching jobs. Direction comes from [data-dir] on the viewer:
+   1 = moving down the index, -1 = moving up. */
+@keyframes work-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--dir, 1) * 8px));
+    filter: blur(2px);
   }
-  [data-rehype-pretty-code-figure] [data-highlighted-line] {
-    @apply bg-surface-secondary;
+}
+
+@keyframes work-reveal-up {
+  from {
+    clip-path: inset(100% 0 0 0);
   }
-  [data-rehype-pretty-code-figure] [data-highlighted-line] span {
-    @apply relative;
+}
+
+@keyframes work-reveal-down {
+  from {
+    clip-path: inset(0 0 100% 0);
   }
-  [data-rehype-pretty-code-figure] [data-highlighted-chars] {
-    @apply rounded-md bg-surface-secondary p-1;
+}
+
+@keyframes work-settle {
+  from {
+    transform: scale(1.08);
   }
-  [data-rehype-pretty-code-title] {
-    @apply mt-4 px-4 py-2 text-label;
+}
+
+@keyframes work-fade {
+  from {
+    opacity: 0;
   }
-  [data-rehype-pretty-code-title] + pre {
-    @apply mt-0;
+}
+
+[data-dir="1"] {
+  --dir: 1;
+}
+
+[data-dir="-1"] {
+  --dir: -1;
+}
+
+.work-in {
+  animation: work-in 450ms cubic-bezier(0.19, 1, 0.22, 1) backwards;
+  animation-delay: calc(var(--i, 0) * 35ms);
+}
+
+.work-reveal {
+  animation: work-reveal-up 800ms cubic-bezier(0.19, 1, 0.22, 1) backwards;
+  animation-delay: calc(min(var(--i, 0), 5) * 70ms);
+}
+
+[data-dir="-1"] .work-reveal {
+  animation-name: work-reveal-down;
+}
+
+/* Photo (or logo) settles inside its frame while the frame opens. */
+.work-reveal > :is(img, svg) {
+  animation: work-settle 1000ms cubic-bezier(0.19, 1, 0.22, 1) backwards;
+  animation-delay: inherit;
+}
+
+/* Reduced motion: keep the change legible with a plain fade, drop movement. */
+@media (prefers-reduced-motion: reduce) {
+  .work-in,
+  .work-reveal {
+    animation: work-fade 200ms ease backwards;
+  }
+
+  .work-reveal > :is(img, svg) {
+    animation: none;
+  }
+}
+
+/* Homepage work poster — names rise out of a line mask once the panel is in
+   view ([data-in]); each carries a rule that fills accent on hover. Explicit
+   end frames because the resting styles hide the names. */
+@keyframes poster-rise {
+  from {
+    transform: translateY(115%);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+@keyframes poster-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.poster-rise .poster-link {
+  transform: translateY(115%);
+}
+
+.poster-rise .poster-caption {
+  opacity: 0;
+}
+
+.poster-rise[data-in] .poster-link {
+  animation: poster-rise 800ms cubic-bezier(0.19, 1, 0.22, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+.poster-rise[data-in] .poster-caption {
+  animation: poster-fade 400ms ease both;
+  animation-delay: calc(var(--i, 0) * 60ms + 200ms);
+}
+
+.poster-rule {
+  position: absolute;
+  inset: auto 0 -0.14em 0;
+  height: 2px;
+  background: color-mix(in oklab, currentColor 35%, transparent);
+}
+
+.poster-rule::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 320ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.poster-link[data-active="true"] .poster-rule::after {
+  transform: scaleX(1);
+}
+
+.poster-arrow {
+  display: inline-block;
+  opacity: 0;
+  transform: translate(-0.15em, 0.15em);
+  transition:
+    opacity 160ms ease,
+    transform 320ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.poster-link[data-active="true"] .poster-arrow {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .poster-rise .poster-link {
+    transform: none;
+  }
+
+  .poster-rise[data-in] .poster-link {
+    animation: poster-fade 300ms ease both;
+    animation-delay: 0ms;
+  }
+
+  .poster-rule::after,
+  .poster-arrow {
+    transition: opacity 160ms ease;
+    transform: none;
+  }
+}
+
+/* Home → work: the poster's picture morphs into the first tile
+   (<ViewTransition name="work-hero" share="morph">). */
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+::view-transition-group(.morph) {
+  animation-duration: 560ms;
+  animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+::view-transition-old(.morph),
+::view-transition-new(.morph) {
+  height: 100%;
+  object-fit: cover;
+  overflow: clip;
+}
+
+/* Reduced motion: cut straight to the new page. Same selectors as above so
+   these win by order, without !important. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-group(.morph),
+  ::view-transition-old(.morph),
+  ::view-transition-new(.morph) {
+    animation-duration: 0s;
+  }
+}
+
+/* Post bodies (/blog/[slug]). Kept in the components layer so utilities on
+   MDX components still win; `.not-prose` opts a subtree out. */
+@layer components {
+  .prose {
+    max-width: 64ch;
+    font-size: 1rem;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  .prose > :first-child {
+    margin-top: 0;
+  }
+
+  .prose :where(p):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 1.25em;
+  }
+
+  .prose :where(h2, h3, h4):not(:where(.not-prose, .not-prose *)) {
+    scroll-margin-top: 2rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
+    margin-top: 3.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-size: 1.625rem;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  .prose :where(h3):not(:where(.not-prose, .not-prose *)) {
+    margin-top: 2.5rem;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  /* Minor headings read as kickers. */
+  .prose :where(h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
+    margin-top: 2rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .prose :where(h2, h3, h4) + p {
+    margin-top: 0.75em;
+  }
+
+  /* Long bare URLs and paths shouldn't widen the column on phones. */
+  .prose :where(a, code):not(:where(pre *, .not-prose, .not-prose *)) {
+    overflow-wrap: anywhere;
+  }
+
+  .prose :where(a):not(:where(.not-prose, .not-prose *)) {
+    text-decoration: underline;
+    text-decoration-color: var(--muted);
+    text-underline-offset: 3px;
+    transition: background-color 150ms;
+  }
+
+  .prose :where(a):not(:where(.not-prose, .not-prose *)):hover {
+    background: var(--accent);
+    text-decoration-color: currentColor;
+  }
+
+  .prose :where(strong):not(:where(.not-prose, .not-prose *)) {
+    font-weight: 600;
+  }
+
+  .prose :where(ul, ol):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 1.25em;
+    padding-left: 1.25rem;
+  }
+
+  .prose :where(ul):not(:where(.not-prose, .not-prose *)) {
+    list-style: disc;
+  }
+
+  .prose :where(ol):not(:where(.not-prose, .not-prose *)) {
+    list-style: decimal;
+  }
+
+  .prose :where(li):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 0.4em;
+    padding-left: 0.25rem;
+  }
+
+  .prose :where(li):not(:where(.not-prose, .not-prose *))::marker {
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .prose :where(li > p):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 0.4em;
+  }
+
+  .prose :where(blockquote):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 2.5rem;
+    padding-left: 1.25rem;
+    border-left: 2px solid var(--foreground);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    text-wrap: pretty;
+  }
+
+  .prose :where(blockquote p):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 0.75em;
+  }
+
+  /* Section break: a short heavy rule rather than a page-wide hairline. */
+  .prose :where(hr):not(:where(.not-prose, .not-prose *)) {
+    width: 3rem;
+    margin-block: 4rem;
+    border: 0;
+    border-top: 2px solid var(--foreground);
+  }
+
+  .prose :where(img):not(:where(.not-prose, .not-prose *)) {
+    width: 100%;
+    height: auto;
+  }
+
+  .prose :where(table):not(:where(.not-prose, .not-prose *)) {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    margin-block: 2rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .prose :where(th):not(:where(.not-prose, .not-prose *)) {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--foreground);
+    text-align: left;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .prose :where(td):not(:where(.not-prose, .not-prose *)) {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+
+  .prose :where(code):not(:where(pre *, .not-prose, .not-prose *)) {
+    padding: 0.1em 0.35em;
+    background: color-mix(in oklab, var(--foreground) 6%, transparent);
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+  }
+
+  /* Code blocks (rehype-pretty-code). Paper-white on the off-white page. */
+  .prose :where(figure[data-rehype-pretty-code-figure]) {
+    margin-block: 2rem;
+    border: 1px solid var(--rule);
+    background: #fff;
+  }
+
+  .prose :where(figure[data-rehype-pretty-code-figure] pre) {
+    overflow-x: auto;
+    padding-block: 1rem;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
+  .prose :where(figure[data-rehype-pretty-code-figure] code) {
+    display: grid;
+    min-width: 100%;
+    font-family: var(--font-mono);
+  }
+
+  .prose :where([data-line]) {
+    padding-inline: 1.25rem;
+  }
+
+  .prose :where([data-highlighted-line]) {
+    background: color-mix(in oklab, var(--accent) 35%, transparent);
+  }
+
+  .prose :where([data-highlighted-chars]) {
+    padding: 0.1em 0.2em;
+    background: color-mix(in oklab, var(--accent) 50%, transparent);
+  }
+
+  .prose :where([data-rehype-pretty-code-title]) {
+    padding: 0.5rem 1.25rem;
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  @media (min-width: 48rem) {
+    .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
+      font-size: 1.875rem;
+    }
+
+    .prose :where(blockquote):not(:where(.not-prose, .not-prose *)) {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+/* /cv on paper */
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  :root {
+    --margin: 0px;
+    --gutter: 1rem;
+  }
+
+  body {
+    background: #fff;
   }
 }
