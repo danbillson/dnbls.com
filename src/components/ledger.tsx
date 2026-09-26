@@ -1,6 +1,10 @@
 import type { ReactNode } from "react";
 
-/** Stepped, hyphenated section heading: `mark` hangs left of the second line. */
+/**
+ * Stepped, hyphenated section heading: `mark` hangs left of the second line.
+ * Rows overlap at this leading, so each darkens onto the one above —
+ * otherwise a row's selection highlight paints over the glyphs above it.
+ */
 export function LedgerHeading({
   mark,
   lines,
@@ -11,12 +15,19 @@ export function LedgerHeading({
   const [first, second, third] = lines;
   return (
     <h2 className="page-grid font-display text-[clamp(2.75rem,7.5vw,8rem)] leading-[0.92] font-semibold tracking-[-0.04em]">
-      <span className="col-span-9 col-start-4">{first}</span>
-      <span className="col-span-2 col-start-2 row-start-2" aria-hidden>
+      <span className="col-span-9 col-start-4 mix-blend-darken">{first}</span>
+      <span
+        className="col-span-2 col-start-2 row-start-2 mix-blend-darken"
+        aria-hidden
+      >
         {mark}
       </span>
-      <span className="col-span-9 col-start-4 row-start-2">{second}</span>
-      <span className="col-span-7 col-start-6 row-start-3">{third}</span>
+      <span className="col-span-9 col-start-4 row-start-2 mix-blend-darken">
+        {second}
+      </span>
+      <span className="col-span-7 col-start-6 row-start-3 mix-blend-darken">
+        {third}
+      </span>
     </h2>
   );
 }

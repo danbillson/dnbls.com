@@ -3,11 +3,8 @@
 export const profile = {
   name: "Dan Billson",
   role: "Design Engineer",
-  location: "London, UK",
-  coords: "51.5072° N, 0.1276° W",
-  currently: { company: "Attio", href: "https://attio.com" },
   intro:
-    "Design engineer in London, working at Attio. Ex-cheerleader on Team England, now playing volleyball. Big fan of craft beer and coffee.",
+    "I’m a design engineer at Attio. I like things made with care — interactions, typefaces, a proper pint of cask. The rest of the time you’ll find me on a volleyball court or out on a run.",
   statement:
     "A design-driven engineer specialising in interaction, UX and front-end systems. Blending product thinking with engineering discipline to ship experiences that feel fast, intentional and deeply polished.",
 };
