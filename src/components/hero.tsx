@@ -10,7 +10,8 @@ import {
   type Rect,
 } from "@/components/hero-intro";
 import { ImageCycler } from "@/components/image-cycler";
-import { nav, profile } from "@/lib/content";
+import { SiteHeader } from "@/components/site-header";
+import { profile } from "@/lib/content";
 import "./hero.css";
 
 type Photo = { src: string; width: number; height: number };
@@ -136,8 +137,8 @@ export function Hero({
           slotInner: els.slotInner,
           dan: els.dan,
           billson: els.billson,
-          logo: root.querySelector('[data-enter="logo"]') as HTMLElement,
-          nav: [...root.querySelectorAll<HTMLElement>('[data-enter="nav"]')],
+          logo: root.querySelector("header > a") as HTMLElement,
+          nav: [...root.querySelectorAll<HTMLElement>("header nav a")],
           intro: root.querySelector('[data-enter="intro"]') as HTMLElement,
           arrow: root.querySelector('[data-enter="arrow"]') as HTMLElement,
         },
@@ -207,27 +208,7 @@ export function Hero({
         </div>
       )}
 
-      <header className="page-grid items-center text-[13px] font-medium md:text-sm">
-        <a
-          href="/"
-          data-enter="logo"
-          className="col-span-2 flex size-8 items-center justify-center rounded-full border-[1.5px] border-foreground font-display text-xs font-bold"
-        >
-          DB
-        </a>
-        <nav className="col-span-10 flex justify-end gap-3.5 md:col-span-6 md:col-start-7 md:justify-between">
-          {nav.map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              data-enter="nav"
-              className="hover:underline"
-            >
-              {item}
-            </a>
-          ))}
-        </nav>
-      </header>
+      <SiteHeader />
 
       <div className="flex flex-1 items-center justify-center page-x">
         <h1 className="font-display text-[clamp(3rem,13vw,15rem)] leading-none font-semibold tracking-[-0.045em] whitespace-nowrap">

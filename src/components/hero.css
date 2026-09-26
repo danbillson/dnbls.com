@@ -1,6 +1,6 @@
 /* Pre-intro states. `html[data-hero]` is set before paint by `introScript`;
    Motion's inline styles take over once the sequence starts. */
-.hero[data-state="intro"] [data-enter] {
+.hero[data-state="intro"] :is(header a, [data-enter]) {
   opacity: 0;
 }
 
@@ -50,7 +50,7 @@ html[data-hero="full"] .hero[data-state="intro"] .hero-overlay {
 }
 
 @media (scripting: none) {
-  .hero[data-state] [data-enter] {
+  .hero[data-state] :is(header a, [data-enter]) {
     opacity: 1;
   }
 }
