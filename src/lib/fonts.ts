@@ -1,11 +1,13 @@
-import { Figtree, JetBrains_Mono } from "next/font/google";
+import { Host_Grotesk, Inter } from "next/font/google";
 
-export const fontSans = Figtree({
+export const fontDisplay = Host_Grotesk({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-host-grotesk",
 });
 
-export const fontMono = JetBrains_Mono({
+export const fontSans = Inter({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-inter",
 });
+
+export const fontVariables = `${fontDisplay.variable} ${fontSans.variable}`;

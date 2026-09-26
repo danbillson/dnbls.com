@@ -1,50 +1,46 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "./theme.css";
 
-@plugin "@tailwindcss/typography";
+:root {
+  --background: #f9f9f9;
+  --foreground: #171717;
+  --accent: #e4ff02;
+  --muted: color-mix(in oklab, var(--foreground) 50%, transparent);
+  --rule: color-mix(in oklab, var(--foreground) 15%, transparent);
 
-@layer base {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-sans;
-  }
+  --margin: 1rem;
+  --gutter: 1rem;
+}
 
-  /* Code blocks */
-  [data-rehype-pretty-code-figure] code {
-    @apply grid min-w-full break-words rounded-none border-0! bg-transparent p-0 text-sm text-content-primary;
-    counter-reset: line;
-    box-decoration-break: clone;
+@media (min-width: 64rem) {
+  :root {
+    --margin: 1.25rem;
+    --gutter: 1.25rem;
   }
-  [data-rehype-pretty-code-figure] [data-line] {
-    @apply px-4 py-1;
-  }
-  [data-rehype-pretty-code-figure] [data-line-numbers] > .line::before {
-    counter-increment: line;
-    content: counter(line);
-    display: inline-block;
-    width: 1rem;
-    margin-right: 1rem;
-    text-align: right;
-    color: var(--content-tertiary);
-  }
-  [data-rehype-pretty-code-figure] [data-highlighted-line] {
-    @apply bg-surface-secondary;
-  }
-  [data-rehype-pretty-code-figure] [data-highlighted-line] span {
-    @apply relative;
-  }
-  [data-rehype-pretty-code-figure] [data-highlighted-chars] {
-    @apply rounded-md bg-surface-secondary p-1;
-  }
-  [data-rehype-pretty-code-title] {
-    @apply mt-4 px-4 py-2 text-label;
-  }
-  [data-rehype-pretty-code-title] + pre {
-    @apply mt-0;
-  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --font-display: var(--font-host-grotesk);
+  --font-sans: var(--font-inter);
+}
+
+/* 12-col page grid, mirrored by the dev grid overlay (G) */
+@utility page-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  padding-inline: var(--margin);
+}
+
+@utility page-x {
+  padding-inline: var(--margin);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--foreground);
 }
