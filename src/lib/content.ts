@@ -1,5 +1,3 @@
-// Placeholder content lifted from reference/ for prototyping.
-
 export const profile = {
   name: "Dan Billson",
   role: "Design Engineer",

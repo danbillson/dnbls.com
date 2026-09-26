@@ -1,6 +1,6 @@
 # dnbls.com
 
-Personal site. Swiss/editorial rewrite in progress — old site lives in `reference/` (standalone project, `cd reference && pnpm i && pnpm dev`).
+Personal site.
 
 ## Tech
 
