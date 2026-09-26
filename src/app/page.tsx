@@ -7,7 +7,8 @@ import { LedgerHeading } from "@/components/ledger-heading";
 import { Lines } from "@/components/lines";
 import { ScrollReveal } from "@/components/reveal";
 import { WorkPoster } from "@/components/work-poster";
-import { experience, links, posts, profile, projects } from "@/lib/content";
+import { getPosts, ledgerDate } from "@/lib/blog";
+import { experience, links, profile, projects } from "@/lib/content";
 import { getImages, interleave } from "@/lib/images";
 
 // Hero = photos of me, mostly from Attio, plus a few picks from other jobs.
@@ -17,7 +18,11 @@ const heroExtras = [
 ];
 const heroExclude = ["/images/me/volleyball.jpg"];
 
-export default function Home() {
+// Latest few on the homepage; the rest live at /blog.
+const POSTS_ON_HOME = 6;
+
+export default async function Home() {
+  const posts = (await getPosts()).slice(0, POSTS_ON_HOME);
   const heroImages = interleave(
     getImages("work").filter(
       (p) => p.category === "work/attio" || heroExtras.includes(p.src),
@@ -101,23 +106,36 @@ export default function Home() {
           <h2 className="rv-rise col-span-12 font-display text-4xl font-semibold tracking-tight md:col-span-3 md:col-start-2">
             Writing
           </h2>
-          <div className="col-span-12 grid grid-cols-subgrid md:col-span-7">
-            {posts.map((p, i) => (
-              <div
-                key={p.title}
-                style={{ "--i": i + 1 } as CSSProperties}
-                className="contents"
-              >
-                <span
-                  className={`${cell} rv-rise col-span-3 tabular-nums md:col-span-2`}
+          <div className="col-span-12 flex flex-col gap-10 md:col-span-7">
+            <div className="grid grid-cols-12 gap-x-[var(--gutter)] md:grid-cols-7">
+              {posts.map((p, i) => (
+                <div
+                  key={p.slug}
+                  style={{ "--i": i + 1 } as CSSProperties}
+                  className="contents"
                 >
-                  {p.date.replaceAll("-", ".")}
-                </span>
-                <span className={`${cell} rv-rise col-span-9 md:col-span-5`}>
-                  {p.title}
-                </span>
-              </div>
-            ))}
+                  <time
+                    dateTime={p.date}
+                    className={`${cell} rv-rise col-span-4 tabular-nums md:col-span-2`}
+                  >
+                    {ledgerDate(p.date)}
+                  </time>
+                  <Link
+                    href={`/blog/${p.slug}`}
+                    className={`${cell} rv-rise col-span-8 transition-colors duration-150 hover:bg-accent md:col-span-5`}
+                  >
+                    {p.title}
+                  </Link>
+                </div>
+              ))}
+            </div>
+            <Link
+              href="/blog"
+              style={{ "--i": posts.length + 1 } as CSSProperties}
+              className="rv-rise w-fit text-xs font-medium tracking-[0.08em] uppercase transition-colors duration-150 hover:bg-accent"
+            >
+              All writing →
+            </Link>
           </div>
         </section>
 

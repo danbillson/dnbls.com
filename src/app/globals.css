@@ -306,3 +306,213 @@
     animation-duration: 0s;
   }
 }
+
+/* Post bodies (/blog/[slug]). Kept in the components layer so utilities on
+   MDX components still win; `.not-prose` opts a subtree out. */
+@layer components {
+  .prose {
+    max-width: 64ch;
+    font-size: 1rem;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  .prose > :first-child {
+    margin-top: 0;
+  }
+
+  .prose :where(p):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 1.25em;
+  }
+
+  .prose :where(h2, h3, h4):not(:where(.not-prose, .not-prose *)) {
+    scroll-margin-top: 2rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
+    margin-top: 3.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-size: 1.625rem;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  .prose :where(h3):not(:where(.not-prose, .not-prose *)) {
+    margin-top: 2.5rem;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  /* Minor headings read as kickers. */
+  .prose :where(h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
+    margin-top: 2rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .prose :where(h2, h3, h4) + p {
+    margin-top: 0.75em;
+  }
+
+  .prose :where(a):not(:where(.not-prose, .not-prose *)) {
+    text-decoration: underline;
+    text-decoration-color: var(--muted);
+    text-underline-offset: 3px;
+    transition: background-color 150ms;
+  }
+
+  .prose :where(a):not(:where(.not-prose, .not-prose *)):hover {
+    background: var(--accent);
+    text-decoration-color: currentColor;
+  }
+
+  .prose :where(strong):not(:where(.not-prose, .not-prose *)) {
+    font-weight: 600;
+  }
+
+  .prose :where(ul, ol):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 1.25em;
+    padding-left: 1.25rem;
+  }
+
+  .prose :where(ul):not(:where(.not-prose, .not-prose *)) {
+    list-style: disc;
+  }
+
+  .prose :where(ol):not(:where(.not-prose, .not-prose *)) {
+    list-style: decimal;
+  }
+
+  .prose :where(li):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 0.4em;
+    padding-left: 0.25rem;
+  }
+
+  .prose :where(li):not(:where(.not-prose, .not-prose *))::marker {
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .prose :where(li > p):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 0.4em;
+  }
+
+  .prose :where(blockquote):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 2.5rem;
+    padding-left: 1.25rem;
+    border-left: 2px solid var(--foreground);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    text-wrap: pretty;
+  }
+
+  .prose :where(blockquote p):not(:where(.not-prose, .not-prose *)) {
+    margin-block: 0.75em;
+  }
+
+  /* Section break: a short heavy rule rather than a page-wide hairline. */
+  .prose :where(hr):not(:where(.not-prose, .not-prose *)) {
+    width: 3rem;
+    margin-block: 4rem;
+    border: 0;
+    border-top: 2px solid var(--foreground);
+  }
+
+  .prose :where(img):not(:where(.not-prose, .not-prose *)) {
+    width: 100%;
+    height: auto;
+  }
+
+  .prose :where(table):not(:where(.not-prose, .not-prose *)) {
+    width: 100%;
+    margin-block: 2rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .prose :where(th):not(:where(.not-prose, .not-prose *)) {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--foreground);
+    text-align: left;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .prose :where(td):not(:where(.not-prose, .not-prose *)) {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+
+  .prose :where(code):not(:where(pre *, .not-prose, .not-prose *)) {
+    padding: 0.1em 0.35em;
+    background: color-mix(in oklab, var(--foreground) 6%, transparent);
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+  }
+
+  /* Code blocks (rehype-pretty-code). Paper-white on the off-white page. */
+  .prose :where(figure[data-rehype-pretty-code-figure]) {
+    margin-block: 2rem;
+    border: 1px solid var(--rule);
+    background: #fff;
+  }
+
+  .prose :where(figure[data-rehype-pretty-code-figure] pre) {
+    overflow-x: auto;
+    padding-block: 1rem;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
+  .prose :where(figure[data-rehype-pretty-code-figure] code) {
+    display: grid;
+    min-width: 100%;
+    font-family: var(--font-mono);
+  }
+
+  .prose :where([data-line]) {
+    padding-inline: 1.25rem;
+  }
+
+  .prose :where([data-highlighted-line]) {
+    background: color-mix(in oklab, var(--accent) 35%, transparent);
+  }
+
+  .prose :where([data-highlighted-chars]) {
+    padding: 0.1em 0.2em;
+    background: color-mix(in oklab, var(--accent) 50%, transparent);
+  }
+
+  .prose :where([data-rehype-pretty-code-title]) {
+    padding: 0.5rem 1.25rem;
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  @media (min-width: 48rem) {
+    .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
+      font-size: 1.875rem;
+    }
+
+    .prose :where(blockquote):not(:where(.not-prose, .not-prose *)) {
+      font-size: 1.5rem;
+    }
+  }
+}

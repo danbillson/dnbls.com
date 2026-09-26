@@ -20,7 +20,7 @@ export const nav = [
   { label: "Work", href: "/work" },
   { label: "Projects", href: "/#projects" },
   { label: "About", href: "/about" },
-  { label: "Writing", href: "/#writing" },
+  { label: "Writing", href: "/blog" },
   { label: "Contact", href: "/#contact" },
 ];
 
@@ -201,16 +201,6 @@ export const projects = [
     href: "https://pouring.at",
     description: "Find craft beer by location, brewery or style.",
   },
-];
-
-export const posts = [
-  { title: "Top 10 pubs in London in 2025", date: "2025-11-28" },
-  { title: "How to Learn Web Development in 2025", date: "2025-11-02" },
-  { title: "Animating height in React", date: "2025-07-27" },
-  { title: "How much time does this demand?", date: "2025-06-29" },
-  { title: "Setting up a new M4 MacBook Air", date: "2025-05-04" },
-  { title: "AI vs Advent of Code", date: "2025-03-01" },
-  { title: "Top 10 bars/pubs in London", date: "2024-11-19" },
 ];
 
 // Draft copy for /about — facts need checking before this ships.

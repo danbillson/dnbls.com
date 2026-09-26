@@ -1,0 +1,390 @@
+export const metadata = {
+  title: "Creating a blog with Next.js and Markdown",
+  date: "2024-06-15",
+  description: "A guide on the process for creating a blog using Next.js, Contentlayer and mdx",
+};
+
+<Callout>
+  I’m taking a very meta approach and making my first blog post about creating
+  this very blog.
+</Callout>
+
+#### Minor backstory
+
+> I’ve recently re-done my personal website as the previous version was built back in 2020, and as we know technology and preferences, especially around the JS ecosystem change very quickly so now felt like a great time to ditch the pages router and styled-components in favour of the app router and tailwind.
+
+> In the past, I’ve done the odd medium post or document at work but have never really had a platform to just speak my mind or ever had the want to do so, but at SoPost I’ve been working much closer to the product side. We’ve been adopting some of the ideas and processes from the team at [37signals](https://37signals.com/) which has been inspiring and has lead to me reading [Getting Real](https://basecamp.com/gettingreal) and wanting to do some more side projects and document my learnings as I attempt things like infrastructure as code, product design and marketing from the perspective of a Software Engineer.
+
+## Getting started
+
+<Callout>
+  This guide assumes that you have basic knowledge of working with git, the
+  command line and Next.js, if you aren’t too familiar with Next.js, I’d
+  recommend going through [Next.js Learn](https://nextjs.org/learn).
+</Callout>
+
+If you're starting from scratch you'll want to create a new app with [create-next-app](https://nextjs.org/docs/app/api-reference/create-next-app) making sure that you are using tailwind and typescript (accepting all the defaults is pretty safe), you can call this whatever you want i.e. `dnbls.com` or `blog`, etc. optionally, I'd also recommend getting set up with [shadcn/ui](https://ui.shadcn.com/docs/installation/next), now we can start setting up Contentlayer which will be a very similar guide to the one of [their site](https://contentlayer.dev/docs/getting-started-cddd76b7#install-dependencies).
+
+### Install dependencies
+
+Install contentlayer, the Next.js plugin, a set of date formatting utils, and [tailwind typography](https://contentlayer.dev/docs/getting-started-cddd76b7#install-dependencies).
+
+```bash
+npm install contentlayer next-contentlayer date-fns @tailwindcss/typography
+```
+
+### Hook up Contentlayer
+
+This will allow us to have hot reloading when editing markdown files thanks to the `withContentLayer` higher-order function.
+
+```jsx
+// next.config.mjs
+import { withContentlayer } from "next-contentlayer";
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+};
+
+export default withContentlayer(nextConfig);
+```
+
+### Update tsconfig.json
+
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    //  ^^^^^^^^^^^
+    "paths": {
+      "contentlayer/generated": ["./.contentlayer/generated"]
+      // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".contentlayer/generated"
+    // ^^^^^^^^^^^^^^^^^^^^^^
+  ]
+}
+```
+
+### Ignore the built files
+
+We need to make sure we aren’t committing the cached build files to git.
+
+```bash
+# .gitignore
+
+# ...
+
+# contentlayer
+.contentlayer
+```
+
+## Get ready for some content
+
+This is where we venture a little further away from the Contentlayer guide and more towards [shadcn/taxonomy](https://github.com/shadcn-ui/taxonomy) as we are going to put our blog posts on the `/blog` path and allow nested directories to support categories, if you just want the whole site to be a blog on the root then you can follow along closer to the [Contentlayer guide](https://contentlayer.dev/docs/getting-started-cddd76b7#2-define-content-schema).
+
+### Add Contentlayer config file
+
+This is where we’re going to define the schema for our blog posts.
+
+```jsx
+// contentlayer.config.js
+import { defineDocumentType, makeSource } from "contentlayer/source-files";
+
+/** @type {import('contentlayer/source-files').ComputedFields} */
+const computedFields = {
+  slug: {
+    type: "string",
+    resolve: (doc) => `/${doc._raw.flattenedPath}`,
+  },
+  slugAsParams: {
+    type: "string",
+    resolve: (doc) => doc._raw.flattenedPath.split("/").slice(1).join("/"),
+  },
+};
+
+export const Post = defineDocumentType(() => ({
+  name: "Post",
+  filePathPattern: `blog/**/*.md`,
+  fields: {
+    title: { type: "string", required: true },
+    description: { type: "string" },
+    date: { type: "date", required: true },
+    published: {
+      type: "boolean",
+      default: true,
+    },
+  },
+  computedFields,
+}));
+
+export default makeSource({
+  contentDirPath: "./content",
+  documentTypes: [Post],
+});
+```
+
+This expects us to put all of our markdown files in the `content/blog` directory.
+
+### Create your first post
+
+Create a new file at `content/blog/post-01.md` and start writing your first post, an example of this file could look like this:
+
+```markdown
+---
+title: My First Post
+description: This is my first blog post
+date: 2024-06-15
+---
+
+Mum, get the camera 📷
+```
+
+## Add the blog routes
+
+Spin up the development server with `npm run dev` (or your package manager equivalent) which should generate the blog posts which can be imported.
+
+### Blog listings
+
+Create a new file at `app/blog/page.tsx` which will be the page to list all of the blog posts, copy and edit the following as you see fit:
+
+```jsx
+// app/blog/page.tsx
+import { formatDate } from "@/lib/utils";
+import { allPosts } from "contentlayer/generated";
+import { compareDesc } from "date-fns";
+import type { Metadata } from "next";
+import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Blog"
+};
+
+export default function Blog() {
+  const posts = allPosts.sort((a, b) =>
+    compareDesc(new Date(a.date), new Date(b.date)),
+  );
+
+  return (
+    <section>
+      <h1 className="font-medium text-2xl mt-14 mb-8 tracking-tighter">blog</h1>
+
+      {posts?.length ? (
+        <div className="grid gap-10 sm:grid-cols-2">
+          {posts.map((post, index) => (
+            <article key={post._id} className="group relative flex flex-col">
+              <h2 className="text-2xl font-medium">{post.title}</h2>
+              {post.date && (
+                <time
+                  dateTime={post.date}
+                  className="text-sm text-muted-foreground"
+                >
+                  {formatDate(post.date)}
+                </time>
+              )}
+              {post.description && (
+                <p className="text-muted-foreground mt-4">{post.description}</p>
+              )}
+              <Link href={post.slug} className="absolute inset-0">
+                <span className="sr-only">View Article</span>
+              </Link>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <p>No posts published.</p>
+      )}
+    </section>
+  );
+}
+```
+
+Now if you go to [`localhost:3000/blog`](http://localhost:3000/blog) you should be greeted with a nice, fresh blog listings page.
+
+### Blog posts
+
+If you’ve tried clicking through to your post, you may have noticed that you get a 404, now we’ll add the route to handle blog posts. Create a new file at `app/blog/[...slug]/page.tsx` and add the following:
+
+```jsx
+// app/blog/[...slug]/page.tsx
+import { formatDate } from "@/lib/utils";
+import { allPosts } from "contentlayer/generated";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+
+type BlogPostProps = {
+  params: { slug: string[] };
+};
+
+async function getPostFromParams(params: BlogPostProps["params"]) {
+  const slug = params?.slug?.join("/");
+  const post = allPosts.find((post) => post.slugAsParams === slug);
+
+  if (!post) {
+    null;
+  }
+
+  return post;
+}
+
+export async function generateMetadata({
+  params,
+}: BlogPostProps): Promise<Metadata> {
+  const post = await getPostFromParams(params);
+
+  if (!post) {
+    return {};
+  }
+
+  return { title: post.title, description: post.description };
+}
+
+export const generateStaticParams = async () =>
+  allPosts.map((post) => ({ slug: post.slugAsParams.split("/") }));
+
+export default async function BlogPost({ params }: BlogPostProps) {
+  const post = await getPostFromParams(params);
+
+  if (!post) {
+    notFound();
+  }
+
+  return (
+    <article className="py-8">
+      <div className="mb-8 text-center prose prose-neutral">
+        <time dateTime={post.date} className="mb-1 text-xs text-gray-600">
+          {formatDate(post.date)}
+        </time>
+        <h1 className="text-3xl font-medium">{post.title}</h1>
+      </div>
+      <div
+        className="[&>*]:mb-3 [&>*:last-child]:mb-0"
+        dangerouslySetInnerHTML={{ __html: post.body.html }}
+      />
+    </article>
+  );
+}
+
+```
+
+<Callout>
+  If things aren’t quite working as expected, you can check out this [pull
+  request](https://github.com/danbillson/dnbls.com/pull/1) to see all of
+  the changes that were added whilst I was setting up this blog.
+</Callout>
+
+This should now be enough to get you up and running with a simple blog using markdown, you can now continue creating files in the `content/blog` directory or we can keep going and add support for [MDX](https://mdxjs.com/).
+
+## Bonus round: MDX
+
+If you’re considering starting a blog that involves some sort of coding discipline then you may want to continue as we’re going to look at how to get these super nice code snippets and be able to render custom React components in markdown.
+
+<Callout>
+  This section is a little more involved in the last section so here is a link
+  to the [pull request](https://github.com/danbillson/dnbls.com/pull/2)
+  that added support for MDX as you’ll probably want to copy and paste
+  `components/mdx-components.tsx` , `content/blog/engineering/test-03.mdx` ,
+  `styles/mdx.css` and maybe a couple of others if you want.
+</Callout>
+
+### Install more dependencies
+
+We're going to grab a few packages from the team at [@unifiedjs](https://github.com/unifiedjs) such as [remark](https://github.com/remarkjs/remark) for MDX parsing and [rehype](https://github.com/rehypejs/rehype) for code highlighting.
+
+```jsx
+npm install -D rehype rehype-autolink-headings rehype-pretty-code rehype-slug remark remark-gfm@3.0.1
+```
+
+### Update Contentlayer config
+
+This just shows some of the additions, not the whole file
+
+```jsx
+// contentlayer.config.js
+
+// add new imports
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
+
+// update our posts to use mdx
+export const Post = defineDocumentType(() => ({
+  name: "Post",
+  filePathPattern: `blog/**/*.mdx`,
+  contentType: "mdx",
+  ...
+}));
+
+// add remark and rehype plugins
+export default makeSource({
+  contentDirPath: "./content",
+  documentTypes: [Post],
+  mdx: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [
+      rehypeSlug,
+      [
+        rehypePrettyCode,
+        {
+          theme: "snazzy-light",
+          onVisitLine(node) {
+            if (node.children.length === 0) {
+              node.children = [{ type: "text", value: " " }];
+            }
+          },
+        },
+      ],
+      [
+        rehypeAutolinkHeadings,
+        {
+          properties: {
+            className: ["subheading-anchor"],
+            ariaLabel: "Link to section",
+          },
+        },
+      ],
+    ],
+  },
+});
+```
+
+### Add MDX components
+
+Copy any new files from this [pull request](https://github.com/danbillson/dnbls.com/pull/2/files#diff-18f8a46c0c7267228f09602da973c922e45bd61a872bb9dbfa8edf5145d4a292)
+
+- `components/mdx-components.tsx`
+- `components/mdx-card.tsx`
+- `components/callout.tsx`
+- `styles/mdx.css`
+
+### Update the blog post page
+
+Import and use the new `Mdx` component
+
+```jsx {2,3,9}
+// app/blog/[...slug]/page.tsx
++      import { Mdx } from "@/components/mdx-components";
++.     import "@/styles/mdx.css";
+
+-      <div
+-       className="[&>*]:mb-3 [&>*:last-child]:mb-0"
+-        dangerouslySetInnerHTML={{ __html: post.body.html }}
+-      />
++      <Mdx code={post.body.code} />
+```
+
+With this, you should be able to test the [example .mdx](https://github.com/danbillson/dnbls.com/pull/2/files#diff-f054cb896a220d4d935d783c788b4c366eec9cf000c2d4a347bcb5a485f117a4) file to make sure everything is working properly, if not, double-check the changes made in the [pull request](https://github.com/danbillson/dnbls.com/pull/2) to see if anything has been missed.
+
+## Start your blog
+
+Now it’s time to write your own blog post, since this is my first post I don't have too much valuable advice but, start with the things that you're passionate about or learning at the moment and don't be afraid to write about topics that you think are obvious or that people wouldn’t get much value from; _something that is obvious to you might be really interesting or inspiring to someone else_.
+
+For further advice on starting a blog, I’d recommend going and watching [Ali Abdaal’s video](https://youtu.be/vyVpRiqOvt4?feature=shared) on how he went about starting a blog and the lessons he has learned from doing so.
