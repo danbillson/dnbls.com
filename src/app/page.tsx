@@ -100,7 +100,7 @@ export default async function Home() {
           <div className="col-span-12 flex flex-col gap-16 md:col-span-7">
             <Lines
               paragraphs={[profile.statement]}
-              className="max-w-[32ch] font-display text-3xl leading-tight font-medium tracking-tight text-pretty md:text-4xl"
+              className="max-w-[32ch] font-display text-3xl leading-[1.15] font-medium tracking-tight text-pretty md:text-4xl"
             />
             <Link
               href="/about"

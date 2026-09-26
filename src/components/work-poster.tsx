@@ -163,7 +163,7 @@ export function WorkPoster({ jobs }: { jobs: Job[] }) {
           <li
             key={j.slug}
             style={stagger(i)}
-            className="-mb-[0.3em] overflow-hidden pt-[0.1em] pb-[0.3em]"
+            className="overflow-hidden pt-[0.1em] pb-[0.3em] md:-mb-[0.3em]"
           >
             <Link
               href={`/work/${j.slug}`}
