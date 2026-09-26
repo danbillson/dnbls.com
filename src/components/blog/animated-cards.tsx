@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import Image from "next/image";
 import { type ReactNode, useState } from "react";
 import useMeasure from "react-use-measure";
@@ -76,17 +76,19 @@ export function AnimatedCard2() {
   const [ref, bounds] = useMeasure();
   const [open, setOpen] = useState(false);
   return (
-    <motion.div
-      animate={{ height: bounds.height }}
-      transition={{ type: "spring", duration: 0.5, bounce: 0 }}
-      className={`${frame} overflow-hidden`}
-    >
-      <div ref={ref}>
-        <CardBody open={open} onToggle={() => setOpen(!open)}>
-          {open && <p className="text-muted">{copy}</p>}
-        </CardBody>
-      </div>
-    </motion.div>
+    <MotionConfig reducedMotion="user">
+      <motion.div
+        animate={{ height: bounds.height }}
+        transition={{ type: "spring", duration: 0.5, bounce: 0 }}
+        className={`${frame} overflow-hidden`}
+      >
+        <div ref={ref}>
+          <CardBody open={open} onToggle={() => setOpen(!open)}>
+            {open && <p className="text-muted">{copy}</p>}
+          </CardBody>
+        </div>
+      </motion.div>
+    </MotionConfig>
   );
 }
 
@@ -94,32 +96,34 @@ export function AnimatedCard3() {
   const [ref, bounds] = useMeasure();
   const [open, setOpen] = useState(false);
   return (
-    <motion.div
-      animate={{ height: bounds.height }}
-      transition={{ type: "spring", duration: 0.5, bounce: 0 }}
-      className={`${frame} overflow-hidden`}
-    >
-      <div ref={ref}>
-        <CardBody open={open} onToggle={() => setOpen(!open)}>
-          <AnimatePresence>
-            {open && (
-              <motion.p
-                initial={{ opacity: 0, filter: "blur(4px)" }}
-                animate={{ opacity: 1, filter: "blur(0px)" }}
-                exit={{
-                  opacity: 0,
-                  filter: "blur(4px)",
-                  transition: { duration: 0.1 },
-                }}
-                transition={{ delay: 0.2 }}
-                className="text-muted"
-              >
-                {copy}
-              </motion.p>
-            )}
-          </AnimatePresence>
-        </CardBody>
-      </div>
-    </motion.div>
+    <MotionConfig reducedMotion="user">
+      <motion.div
+        animate={{ height: bounds.height }}
+        transition={{ type: "spring", duration: 0.5, bounce: 0 }}
+        className={`${frame} overflow-hidden`}
+      >
+        <div ref={ref}>
+          <CardBody open={open} onToggle={() => setOpen(!open)}>
+            <AnimatePresence>
+              {open && (
+                <motion.p
+                  initial={{ opacity: 0, filter: "blur(4px)" }}
+                  animate={{ opacity: 1, filter: "blur(0px)" }}
+                  exit={{
+                    opacity: 0,
+                    filter: "blur(4px)",
+                    transition: { duration: 0.1 },
+                  }}
+                  transition={{ delay: 0.2 }}
+                  className="text-muted"
+                >
+                  {copy}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </CardBody>
+        </div>
+      </motion.div>
+    </MotionConfig>
   );
 }

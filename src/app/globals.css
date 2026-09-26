@@ -4,7 +4,8 @@
   --background: #f9f9f9;
   --foreground: #171717;
   --accent: #e4ff02;
-  --muted: color-mix(in oklab, var(--foreground) 50%, transparent);
+  /* 62% → #6d6d6d on the page bg, 4.9:1 (AA at small sizes). */
+  --muted: color-mix(in oklab, var(--foreground) 62%, transparent);
   --rule: color-mix(in oklab, var(--foreground) 15%, transparent);
 
   --margin: 1rem;
@@ -43,6 +44,11 @@
 ::selection {
   background: var(--accent);
   color: var(--foreground);
+}
+
+/* Lightbox open: the page beneath shouldn't rubber-band under a touch drag. */
+body:has(dialog[open]) {
+  overflow: hidden;
 }
 
 /* Fixed header copy: slides in on scroll up, out on scroll down. Leaving is
@@ -362,6 +368,11 @@
     margin-top: 0.75em;
   }
 
+  /* Long bare URLs and paths shouldn't widen the column on phones. */
+  .prose :where(a, code):not(:where(pre *, .not-prose, .not-prose *)) {
+    overflow-wrap: anywhere;
+  }
+
   .prose :where(a):not(:where(.not-prose, .not-prose *)) {
     text-decoration: underline;
     text-decoration-color: var(--muted);
@@ -435,7 +446,9 @@
   }
 
   .prose :where(table):not(:where(.not-prose, .not-prose *)) {
+    display: block;
     width: 100%;
+    overflow-x: auto;
     margin-block: 2rem;
     font-size: 0.875rem;
     font-weight: 500;

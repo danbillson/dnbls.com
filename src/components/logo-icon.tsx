@@ -7,7 +7,7 @@ export function LogoIcon(props: React.SVGProps<SVGSVGElement>) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Dan Billson logo"
+      aria-label="Dan Billson — home"
       {...props}
     >
       <path

@@ -2,9 +2,11 @@ import "server-only";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { imageSize } from "image-size";
+import { cache } from "react";
 
 // Drop photos into public/images/<category>/ — no imports or manifest needed.
 // Filenames become alt text: `dolomites-lago-di-braies.jpg` → "Dolomites lago di braies".
+// A leading order prefix (`03-ooh.jpg`) is dropped.
 
 export type Photo = {
   src: string;
@@ -18,7 +20,11 @@ const ROOT = path.join(process.cwd(), "public", "images");
 const EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
 
 function toAlt(file: string) {
-  const name = path.parse(file).name.replace(/[-_]+/g, " ").trim();
+  const name = path
+    .parse(file)
+    .name.replace(/^\d+[-_]+/, "")
+    .replace(/[-_]+/g, " ")
+    .trim();
   return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
@@ -37,7 +43,7 @@ function walk(dir: string): string[] {
 }
 
 /** Images in `public/images/<category>` (recursive). e.g. "travel", "work/attio". */
-export function getImages(category = ""): Photo[] {
+export const getImages = cache((category = ""): Photo[] => {
   return walk(path.join(ROOT, category)).map((file) => {
     const { width, height, orientation } = imageSize(readFileSync(file));
     // EXIF 5–8 = rotated 90°; the optimiser auto-rotates so swap to match.
@@ -51,7 +57,7 @@ export function getImages(category = ""): Photo[] {
       category: path.dirname(rel).split(path.sep).join("/"),
     };
   });
-}
+});
 
 /** Round-robin across categories so a mixed set doesn't clump. */
 export function interleave(...groups: Photo[][]): Photo[] {

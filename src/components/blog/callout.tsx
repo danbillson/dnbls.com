@@ -9,11 +9,14 @@ export function Callout({
   children: ReactNode;
 }) {
   return (
-    <aside className="my-10 flex flex-col gap-2 border-l-2 border-foreground pl-5 [&_p]:m-0">
+    <div
+      role="note"
+      className="my-10 flex flex-col gap-2 border-l-2 border-foreground pl-5 [&_p]:m-0"
+    >
       <span className="text-xs font-medium tracking-[0.08em] uppercase">
         {label}
       </span>
       <div className="text-muted">{children}</div>
-    </aside>
+    </div>
   );
 }

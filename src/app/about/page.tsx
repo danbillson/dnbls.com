@@ -55,7 +55,11 @@ export default function About() {
         <SiteHeader />
       </div>
 
-      <main className="flex flex-col gap-40 pt-16 text-sm font-medium md:pt-24">
+      <main
+        id="main"
+        tabIndex={-1}
+        className="flex flex-col gap-40 pt-16 text-[15px] font-medium outline-none md:pt-24 md:text-sm"
+      >
         {/* Pre-marked in: plays as the load intro. */}
         <section data-reveal data-in className="page-grid gap-y-10">
           <div className="col-span-12 flex flex-col justify-between gap-12 md:col-span-7">
@@ -63,10 +67,11 @@ export default function About() {
               <Words text={about.headline} />
             </h1>
             {lead && (
-              <div className="rv-img max-h-[70svh] bg-foreground/5 [--d:250ms]">
+              <div className="rv-img max-h-[70svh] bg-foreground/5 [--d:100ms]">
                 <Image
                   src={lead.src}
                   alt="Dan playing volleyball"
+                  priority
                   width={lead.width}
                   height={lead.height}
                   sizes="(min-width: 768px) 58vw, 100vw"
@@ -114,7 +119,7 @@ export default function About() {
               style={{ "--i": 6 } as CSSProperties}
               className={`rv-rise col-span-12 flex min-h-32 items-center justify-center border border-foreground p-6 text-center transition-colors duration-150 hover:bg-accent md:col-span-4 md:col-start-9 lg:col-span-3 lg:col-start-10 ${kicker}`}
             >
-              {about.beer.link.label} →
+              {about.beer.link.label} <span aria-hidden>→</span>
             </Link>
           </div>
           <PhotoBento
@@ -144,7 +149,7 @@ export default function About() {
               aria-hidden
               className="absolute inset-0 bg-linear-to-b from-black/30 via-transparent to-black/60"
             />
-            <p className={`rv-rise relative ${kicker}`}>Travel › Places</p>
+            <h2 className={`rv-rise relative ${kicker}`}>Travel › Places</h2>
             <p
               style={{ "--i": 1 } as CSSProperties}
               className="rv-rise relative max-w-[36ch] indent-[12%] font-display text-[clamp(1.75rem,3.6vw,3.75rem)] leading-[1.1] font-medium tracking-[-0.02em] text-pretty"

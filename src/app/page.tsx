@@ -32,20 +32,32 @@ export default async function Home() {
   return (
     <>
       <ScrollReveal />
-      <Hero images={heroImages} />
+      <Hero images={heroImages.map(({ src }) => ({ src }))} />
 
-      <main className="flex flex-col gap-40 pt-32 pb-40 text-sm font-medium">
+      <main
+        id="main"
+        tabIndex={-1}
+        className="flex flex-col gap-40 pt-32 pb-40 text-[15px] font-medium outline-none md:text-sm"
+      >
         <section id="work" className="scroll-mt-8">
           <WorkPoster
             jobs={experience.map((e) => ({
-              ...e,
+              slug: e.slug,
+              company: e.company,
+              role: e.role,
+              period: e.period,
+              short: e.short,
               photo: e.photos ? getImages(e.photos)[0] : undefined,
             }))}
           />
         </section>
 
         <section id="projects" className="flex scroll-mt-8 flex-col gap-24">
-          <LedgerHeading mark="+" lines={["Side", "Proj-", "ects"]} />
+          <LedgerHeading
+            mark="+"
+            label="Side projects"
+            lines={["Side", "Proj-", "ects"]}
+          />
           <LedgerTable>
             {projects.map((p, i) => (
               <div
@@ -58,11 +70,13 @@ export default async function Home() {
                 </span>
                 <a
                   href={p.href}
-                  className={`${cell} rv-rise col-span-4 transition-colors duration-150 hover:bg-accent md:col-span-3`}
+                  className={`${cell} rv-rise col-span-10 transition-colors duration-150 hover:bg-accent md:col-span-3`}
                 >
                   {p.title}
                 </a>
-                <span className={`${cell} rv-rise col-span-6 md:col-span-4`}>
+                <span
+                  className={`${cell} rv-rise hidden md:col-span-4 md:block`}
+                >
                   {p.description}
                 </span>
                 <span
@@ -93,7 +107,7 @@ export default async function Home() {
               style={{ "--i": 6 } as CSSProperties}
               className="rv-rise w-fit text-xs font-medium tracking-[0.08em] uppercase transition-colors duration-150 hover:bg-accent"
             >
-              Read more →
+              Read more <span aria-hidden>→</span>
             </Link>
           </div>
         </section>
@@ -134,7 +148,7 @@ export default async function Home() {
               style={{ "--i": posts.length + 1 } as CSSProperties}
               className="rv-rise w-fit text-xs font-medium tracking-[0.08em] uppercase transition-colors duration-150 hover:bg-accent"
             >
-              All writing →
+              All writing <span aria-hidden>→</span>
             </Link>
           </div>
         </section>

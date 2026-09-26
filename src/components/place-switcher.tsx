@@ -79,9 +79,9 @@ export function PlaceSwitcher({ places }: { places: Place[] }) {
 
   return (
     <div data-reveal className="page-grid gap-y-10">
-      <p className="rv-rise col-span-12 text-xs font-medium tracking-[0.08em] uppercase">
+      <h3 className="rv-rise col-span-12 text-xs font-medium tracking-[0.08em] uppercase">
         Explore by place
-      </p>
+      </h3>
 
       <ul className="col-span-12 md:col-span-6">
         {places.map((p, i) => (
@@ -92,7 +92,7 @@ export function PlaceSwitcher({ places }: { places: Place[] }) {
           >
             <button
               type="button"
-              aria-current={i === active}
+              aria-pressed={i === active}
               onClick={() => setActive(i)}
               onFocus={() => setActive(i)}
               onPointerEnter={(e) => e.pointerType === "mouse" && setActive(i)}

@@ -20,14 +20,18 @@ const fruit = (): ScrambleMutation => ({
  */
 export function LedgerHeading({
   mark,
+  label,
   lines,
 }: {
   mark: string;
+  /** Accessible name; the visual rows are hyphenated and scrambled. */
+  label: string;
   lines: [string, string, string];
 }) {
   const [first, second, third] = lines;
   return (
     <h2
+      aria-label={label}
       data-reveal
       className="page-grid font-display text-[clamp(2.75rem,7.5vw,8rem)] leading-[0.92] font-semibold tracking-[-0.04em] [--rv-step:110ms] [--rv-word-ms:600ms]"
     >

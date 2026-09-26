@@ -155,24 +155,32 @@ export function WorkViewer({ jobs }: { jobs: Job[] }) {
       : bento(items);
 
   return (
-    <div className="page-grid min-h-dvh text-sm font-medium" data-dir={dir}>
+    <div
+      className="page-grid min-h-dvh text-[15px] font-medium md:text-sm"
+      data-dir={dir}
+    >
       {/* The site header is split across the two columns so the logo lives in
           the sticky sidebar and the nav scrolls with the photos. Same grid
           positions as SiteHeader, so it lines up with every other page. */}
-      <aside className="col-span-12 flex flex-col gap-16 py-[var(--margin)] md:sticky md:top-0 md:col-span-5 md:h-dvh md:gap-8 md:self-start">
-        <header className="flex h-9 items-center justify-between text-[13px] md:text-sm">
+      <div className="col-span-12 flex flex-col gap-16 py-[var(--margin)] md:sticky md:top-0 md:col-span-5 md:h-dvh md:gap-8 md:self-start">
+        <header className="flex h-9 items-center justify-between overflow-x-clip text-xs min-[390px]:text-[13px] md:text-sm">
           <Link href="/" className="flex items-center">
             <LogoIcon className="size-9" />
           </Link>
-          <nav className="flex gap-3.5 md:hidden">
+          <nav
+            aria-label="Site"
+            className="flex gap-2.5 min-[390px]:gap-3.5 md:hidden"
+          >
             <NavLinks />
           </nav>
         </header>
 
         {/* Remounts per job so the entrance replays. */}
-        <div
+        <main
           key={job.slug}
-          className="flex flex-col gap-8 md:flex-1 md:overflow-y-auto"
+          id="main"
+          tabIndex={-1}
+          className="flex flex-col gap-8 outline-none md:flex-1 md:overflow-y-auto"
         >
           <h1
             className="work-in font-display text-[clamp(2.75rem,5vw,5rem)] leading-[0.92] font-semibold tracking-[-0.04em]"
@@ -186,15 +194,15 @@ export function WorkViewer({ jobs }: { jobs: Job[] }) {
             {details.map(([label, value], i) => (
               <div
                 key={label}
-                className="work-in col-span-5 grid grid-cols-subgrid"
+                className="work-in col-span-5 grid grid-cols-subgrid gap-y-1"
                 style={stagger(i + 1)}
               >
-                <dt className="text-muted">{label}</dt>
-                <dd className="col-span-4">{value}</dd>
+                <dt className="col-span-5 text-muted md:col-span-1">{label}</dt>
+                <dd className="col-span-5 md:col-span-4">{value}</dd>
               </div>
             ))}
           </dl>
-        </div>
+        </main>
 
         <nav aria-label="Jobs">
           <p className="mb-2 text-muted">Experience</p>
@@ -205,7 +213,7 @@ export function WorkViewer({ jobs }: { jobs: Job[] }) {
                   href={`/work/${j.slug}`}
                   scroll={false}
                   aria-current={i === index ? "page" : undefined}
-                  className="col-span-5 grid h-7 grid-cols-subgrid items-center border-rule border-b transition-colors duration-150 hover:bg-accent"
+                  className="col-span-5 grid h-9 grid-cols-subgrid items-center border-rule border-b transition-colors duration-150 hover:bg-accent md:h-7"
                 >
                   {/* Active row reads in ink, the rest recede. */}
                   <span
@@ -224,13 +232,16 @@ export function WorkViewer({ jobs }: { jobs: Job[] }) {
             ))}
           </ol>
         </nav>
-      </aside>
+      </div>
 
       <section
         aria-label={`${job.company} photos`}
         className="col-span-12 grid grid-cols-subgrid content-start gap-y-[var(--gutter)] pb-[var(--margin)] md:col-span-7 md:py-[var(--margin)]"
       >
-        <nav className="col-span-6 col-start-2 hidden h-9 items-center justify-between md:flex">
+        <nav
+          aria-label="Site"
+          className="col-span-6 col-start-2 hidden h-9 items-center justify-between md:flex"
+        >
           <NavLinks />
         </nav>
         <div
@@ -291,7 +302,8 @@ export function WorkViewer({ jobs }: { jobs: Job[] }) {
                           ? heroTileSizes
                           : "(min-width: 768px) 29vw, 50vw"
                       }
-                      loading={i < 2 ? "eager" : undefined}
+                      priority={i === 0}
+                      loading={i === 1 ? "eager" : undefined}
                       className="object-cover"
                     />
                   </figure>

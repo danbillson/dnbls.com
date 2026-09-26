@@ -21,9 +21,10 @@ export function InfoLinks({
           href={l.href}
           target="_blank"
           rel="noreferrer"
-          className="text-muted transition-colors duration-150 hover:bg-accent hover:text-foreground"
+          className="-my-2 py-2 text-muted transition-colors duration-150 hover:bg-accent hover:text-foreground"
         >
-          {l.label} ↗
+          {l.label} <span aria-hidden>↗</span>
+          <span className="sr-only"> (opens in new tab)</span>
         </a>
       ))}
     </p>

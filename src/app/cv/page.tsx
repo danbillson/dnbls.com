@@ -29,7 +29,11 @@ export default function CV() {
         <SiteHeader />
       </div>
 
-      <main className="flex flex-col gap-32 pt-16 pb-40 text-sm font-medium md:pt-24 print:gap-10 print:pt-0 print:pb-0">
+      <main
+        id="main"
+        tabIndex={-1}
+        className="flex flex-col gap-32 pt-16 pb-40 text-[15px] font-medium outline-none md:pt-24 md:text-sm print:gap-10 print:pt-0 print:pb-0"
+      >
         <section data-reveal data-in className="page-grid gap-y-10">
           <div className="col-span-12 md:col-span-7 print:col-span-7">
             <h1 className="rv-words font-display text-[clamp(3.25rem,8.5vw,9.5rem)] leading-[0.92] font-semibold tracking-[-0.045em] print:text-6xl">
@@ -97,7 +101,7 @@ export default function CV() {
                     <a href={job.href} className="hover:underline">
                       {job.company}
                     </a>
-                    <span className="ml-3 font-sans text-sm font-medium text-muted">
+                    <span className="block font-sans text-sm font-medium text-muted md:ml-3 md:inline">
                       {job.roles.toReversed().join(" · ")}
                     </span>
                   </h3>

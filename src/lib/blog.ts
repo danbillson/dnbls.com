@@ -1,6 +1,7 @@
 import "server-only";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { cache } from "react";
 
 export type PostMeta = {
   title: string;
@@ -14,31 +15,53 @@ export type Post = {
   minutes: number;
 } & PostMeta;
 
-type MDXModule = { metadata?: PostMeta };
-
 const DIR = join(process.cwd(), "src", "content", "blog");
 
-function readingTime(slug: string) {
-  const src = readFileSync(join(DIR, `${slug}.mdx`), "utf8")
+function readingTime(src: string) {
+  const text = src
     .replace(/```[\s\S]*?```/g, "")
     .replace(/<[^>]+>/g, "")
-    .replace(/^export const metadata[\s\S]*?};/m, "");
-  const words = src.split(/\s+/).filter(Boolean).length;
+    .replace(/^export const metadata[\s\S]*?};/m, "")
+    .replace(/^import [\s\S]*?;$/gm, "");
+  const words = text.split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.round(words / 220));
 }
 
-export async function getPost(slug: string): Promise<Post | null> {
+/**
+ * Read `export const metadata = { … }` off the source. Importing the module
+ * would work, but a templated `import()` puts every post's client components
+ * (and their deps) in the bundle of every page that lists posts.
+ */
+function parseMeta(src: string): PostMeta | null {
+  const block = src.match(/^export const metadata\s*=\s*\{([\s\S]*?)\};/m)?.[1];
+  if (!block) return null;
+  const str = (key: string) =>
+    block
+      .match(new RegExp(`\\b${key}:\\s*"((?:[^"\\\\]|\\\\.)*)"`))?.[1]
+      ?.replace(/\\(.)/g, "$1");
+  const title = str("title");
+  const date = str("date");
+  if (!title || !date) return null;
+  return { title, date, description: str("description") };
+}
+
+const SLUG = /^[a-z0-9-]+$/;
+
+export const getPost = cache(async (slug: string): Promise<Post | null> => {
+  if (!SLUG.test(slug)) return null;
+  let src: string;
   try {
-    const mod = (await import(`@/content/blog/${slug}.mdx`)) as MDXModule;
-    if (!mod.metadata) return null;
-    return { slug, minutes: readingTime(slug), ...mod.metadata };
+    src = readFileSync(join(DIR, `${slug}.mdx`), "utf8");
   } catch {
     return null;
   }
-}
+  const meta = parseMeta(src);
+  if (!meta) return null;
+  return { slug, minutes: readingTime(src), ...meta };
+});
 
 /** All posts, newest first. */
-export async function getPosts(): Promise<Post[]> {
+export const getPosts = cache(async (): Promise<Post[]> => {
   const slugs = readdirSync(DIR)
     .filter((f) => f.endsWith(".mdx"))
     .map((f) => f.replace(/\.mdx$/, ""));
@@ -46,7 +69,7 @@ export async function getPosts(): Promise<Post[]> {
   return posts
     .filter((p): p is Post => p !== null)
     .sort((a, b) => b.date.localeCompare(a.date));
-}
+});
 
 /** "2025-11-28" → "28.11.2025", matching the ledger rows on the homepage. */
 export function ledgerDate(date: string) {

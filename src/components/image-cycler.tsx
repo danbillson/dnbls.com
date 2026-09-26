@@ -21,7 +21,7 @@ export function ImageCycler({
   interval?: number;
   active?: boolean;
   sizes: string;
-  /** Load every frame up front (hero). Otherwise the browser decides. */
+  /** First frame eager + high priority; the rest load once cycling starts. */
   eager?: boolean;
   className?: string;
 }) {
@@ -61,7 +61,7 @@ export function ImageCycler({
       alt=""
       fill
       sizes={sizes}
-      loading={eager ? "eager" : undefined}
+      loading={eager && (i === 0 || active) ? "eager" : "lazy"}
       fetchPriority={eager && i === 0 ? "high" : undefined}
       className={`object-cover ${i === index ? "" : "invisible"} ${className}`}
     />

@@ -59,7 +59,11 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
         <SiteHeader />
       </div>
 
-      <main className="pt-16 pb-40 text-sm font-medium md:pt-24">
+      <main
+        id="main"
+        tabIndex={-1}
+        className="pt-16 pb-40 text-sm font-medium outline-none md:pt-24"
+      >
         <article>
           {/* Pre-marked in: plays as the load intro. */}
           <header data-reveal data-in className="page-grid gap-y-10">
@@ -132,7 +136,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
                       href="/blog"
                       className="w-fit transition-colors duration-150 hover:bg-accent"
                     >
-                      All writing →
+                      All writing <span aria-hidden>→</span>
                     </Link>
                   )}
                 </div>

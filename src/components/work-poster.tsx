@@ -1,11 +1,5 @@
 "use client";
 
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "motion/react";
 import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import {
@@ -34,7 +28,7 @@ const pad = (n: number) => String(n + 1).padStart(2, "0");
 const stagger = (i: number) => ({ "--i": i }) as CSSProperties;
 
 /** Lead photo, else the company mark on its tile colour, else the lost-footage card. */
-function Picture({ job, priority }: { job: Job; priority?: boolean }) {
+function Picture({ job }: { job: Job }) {
   const logo = companyLogos[job.slug];
   if (job.photo) {
     return (
@@ -42,7 +36,6 @@ function Picture({ job, priority }: { job: Job; priority?: boolean }) {
         src={job.photo.src}
         alt=""
         fill
-        priority={priority}
         sizes="100vw"
         className="object-cover"
       />
@@ -76,7 +69,7 @@ function Picture({ job, priority }: { job: Job; priority?: boolean }) {
  * picture; clicking morphs the picture into the work page's first tile.
  * Names rise out of a line mask, staggered, once the top of the list is on screen
  * (see `.poster-rise` in globals.css). The picture drifts a little slower
- * than the page as the panel scrolls through.
+ * than the page as the panel scrolls through (`.rv-parallax`, reveal.css).
  */
 export function WorkPoster({ jobs }: { jobs: Job[] }) {
   const ref = useRef<HTMLElement>(null);
@@ -119,15 +112,6 @@ export function WorkPoster({ jobs }: { jobs: Job[] }) {
     return () => io.disconnect();
   }, []);
 
-  // Parallax: the picture layer has 8% overscan top and bottom and moves
-  // ±6% of its own height across the panel's journey through the viewport.
-  const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const drift = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
-
   return (
     <section
       ref={ref}
@@ -137,18 +121,15 @@ export function WorkPoster({ jobs }: { jobs: Job[] }) {
     >
       {/* Every picture stays mounted; opacity swaps so a fast hover interrupts cleanly.
           Only the active one carries the shared-element name. */}
-      <motion.div
-        aria-hidden
-        style={{ y: reduce ? 0 : drift }}
-        className="absolute inset-x-0 -inset-y-[8%]"
-      >
+      {/* 8% overscan top and bottom; scroll-linked drift of ±6% via CSS. */}
+      <div aria-hidden className="rv-parallax absolute inset-x-0 -inset-y-[8%]">
         {jobs.map((j, i) => {
           const layer = (
             <div
               key={j.slug}
               className={`absolute inset-0 transition-opacity duration-500 ease-out motion-reduce:duration-200 ${i === active ? "opacity-100" : "opacity-0"}`}
             >
-              <Picture job={j} priority={i === 0} />
+              <Picture job={j} />
             </div>
           );
           return i === active ? (
@@ -164,7 +145,7 @@ export function WorkPoster({ jobs }: { jobs: Job[] }) {
             layer
           );
         })}
-      </motion.div>
+      </div>
       <div
         aria-hidden
         className="absolute inset-0 bg-linear-to-b from-black/40 via-black/20 to-black/60"
@@ -190,7 +171,7 @@ export function WorkPoster({ jobs }: { jobs: Job[] }) {
               onPointerEnter={(e) => e.pointerType === "mouse" && setActive(i)}
               onFocus={() => setActive(i)}
               onNavigate={markMorph}
-              className={`poster-link relative inline-flex items-baseline gap-2 font-display text-[clamp(2rem,4.5vw,4.5rem)] leading-none font-semibold tracking-[-0.03em] transition-colors duration-200 outline-none focus-visible:underline ${i === active ? "text-background" : "text-background/55"}`}
+              className={`poster-link relative inline-flex items-baseline gap-2 font-display text-[clamp(2rem,4.5vw,4.5rem)] leading-none font-semibold tracking-[-0.03em] transition-colors duration-200 outline-none focus-visible:underline ${i === active ? "text-background" : "text-background/70"}`}
             >
               {j.company}
               <span className="font-sans text-xs font-medium tracking-normal tabular-nums">
