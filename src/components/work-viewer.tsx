@@ -132,6 +132,9 @@ export function WorkViewer({ jobs }: { jobs: Job[] }) {
 
   return (
     <div className="page-grid min-h-dvh text-sm font-medium" data-dir={dir}>
+      {/* Sidebar keeps its bottom on the viewport bottom: it sticks at the
+          header offset and is sized to the remaining height, so the header
+          scrolls away above it while the job index stays anchored. */}
       <aside className="col-span-12 flex flex-col gap-16 py-[var(--margin)] md:sticky md:top-(--header) md:col-span-5 md:h-[calc(100dvh-var(--header))] md:gap-8 md:self-start">
         {/* Remounts per job so the entrance replays. */}
         <div
