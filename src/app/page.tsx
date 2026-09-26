@@ -1,6 +1,7 @@
 import { ContactGrid } from "@/components/contact-grid";
 import { Hero } from "@/components/hero";
 import { introScript } from "@/components/hero-intro";
+import { InlineScript } from "@/components/inline-script";
 import { cell, LedgerHeading, LedgerTable } from "@/components/ledger";
 import { WorkTable } from "@/components/work-table";
 import { experience, links, posts, profile, projects } from "@/lib/content";
@@ -57,10 +58,7 @@ export default function Home() {
 
   return (
     <>
-      <script
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: static inline script
-        dangerouslySetInnerHTML={{ __html: introScript(openers.length) }}
-      />
+      <InlineScript html={introScript(openers.length)} />
       <Hero images={heroImages} openers={openers} />
 
       <main className="flex flex-col gap-40 pt-32 pb-40 text-sm font-medium">

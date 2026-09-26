@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { type PointerEvent, useRef, useState } from "react";
+import { companyLogos } from "@/components/company-logos";
 import { ImageCycler } from "@/components/image-cycler";
 import { cell, LedgerTable } from "@/components/ledger";
 
@@ -94,8 +95,18 @@ export function WorkTable({ rows }: { rows: Row[] }) {
         aria-hidden
         className="pointer-events-none fixed top-0 left-0 z-40 aspect-[4/3] w-[clamp(14rem,22vw,22rem)]"
       >
-        {rows.map((r) =>
-          r.photos.length === 0 ? (
+        {rows.map((r) => {
+          const logo = companyLogos[r.slug];
+          // No photos: the company mark stands in, as on the work page.
+          return r.photos.length === 0 && logo ? (
+            <div
+              key={r.company}
+              className={`absolute inset-0 flex items-center justify-center ${active === r.company ? "" : "invisible"}`}
+              style={{ background: logo.background }}
+            >
+              <logo.Mark className="max-h-[22%] w-[22%]" />
+            </div>
+          ) : r.photos.length === 0 ? (
             <div
               key={r.company}
               className={`absolute inset-0 flex flex-col justify-between bg-accent p-3 text-foreground ${active === r.company ? "" : "invisible"}`}
@@ -119,8 +130,8 @@ export function WorkTable({ rows }: { rows: Row[] }) {
                 className="grayscale"
               />
             </div>
-          ),
-        )}
+          );
+        })}
       </div>
     </>
   );
