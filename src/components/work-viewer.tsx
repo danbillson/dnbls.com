@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type CSSProperties, type ReactNode, useEffect, useState } from "react";
+import { companyLogos } from "@/components/company-logos";
 import type { Photo } from "@/lib/images";
 
 type Job = {
@@ -21,30 +22,30 @@ type Job = {
 };
 
 type Layout = "grid" | "column";
-type Tile =
-  | { kind: "photo"; photo: Photo; span: "full" | "half" }
-  | { kind: "filler" };
+type Span = "full" | "half";
+type Item = { kind: "photo"; photo: Photo } | { kind: "logo" };
+type Tile = (Item & { span: Span }) | { kind: "filler" };
 
-const isLandscape = (p: Photo) => p.width > p.height;
+// Logos sit in the grid like a portrait, so they always take a half slot.
+const isLandscape = (t: Item) =>
+  t.kind === "photo" && t.photo.width > t.photo.height;
 
 /** Alternate a full-width landscape row with a pair; an odd one out gets a caption tile. */
-function bento(photos: Photo[]): Tile[] {
-  const queue = [...photos];
+function bento(items: Item[]): Tile[] {
+  const queue = [...items];
   const out: Tile[] = [];
   let full = true;
   while (queue.length) {
     const i = full ? queue.findIndex(isLandscape) : -1;
     if (i >= 0) {
-      out.push({ kind: "photo", photo: queue.splice(i, 1)[0], span: "full" });
+      out.push({ ...queue.splice(i, 1)[0], span: "full" });
     } else {
       const [a, b] = queue.splice(0, 2);
       if (!b && isLandscape(a)) {
-        out.push({ kind: "photo", photo: a, span: "full" });
+        out.push({ ...a, span: "full" });
       } else {
-        out.push({ kind: "photo", photo: a, span: "half" });
-        out.push(
-          b ? { kind: "photo", photo: b, span: "half" } : { kind: "filler" },
-        );
+        out.push({ ...a, span: "half" });
+        out.push(b ? { ...b, span: "half" } : { kind: "filler" });
       }
     }
     full = !full;
@@ -124,10 +125,20 @@ export function WorkViewer({
     ...(job.stack ? [["Stack", job.stack.join(", ")] as [string, string]] : []),
   ];
 
+  // Company mark leads the set; with no photos it stands in for them.
+  const logo = companyLogos[job.slug];
+  const items: Item[] = [
+    ...(logo ? [{ kind: "logo" } as const] : []),
+    ...job.photos.map((photo) => ({ kind: "photo", photo }) as const),
+  ];
   const tiles: Tile[] =
-    layout === "grid"
-      ? bento(job.photos)
-      : job.photos.map((photo) => ({ kind: "photo", photo, span: "full" }));
+    job.photos.length === 0
+      ? logo
+        ? [{ kind: "logo", span: "full" }]
+        : []
+      : layout === "grid"
+        ? bento(items)
+        : items.map((item) => ({ ...item, span: "full" }));
 
   const navLinks = nav.map((item) => (
     <Link
@@ -269,7 +280,15 @@ export function WorkViewer({
                     <span className="text-muted">{job.period}</span>
                   </span>
                 </div>
-              ) : (
+              ) : t.kind === "logo" && logo ? (
+                <div
+                  key="logo"
+                  className={`work-reveal flex items-center justify-center overflow-hidden ${t.span === "full" ? "col-span-2 aspect-[3/2]" : "aspect-[4/5]"}`}
+                  style={{ ...stagger(i), background: logo.background }}
+                >
+                  <logo.Mark className="max-h-[22%] w-[22%]" />
+                </div>
+              ) : t.kind === "photo" ? (
                 <figure
                   key={t.photo.src}
                   className={`work-reveal relative overflow-hidden bg-foreground/5 ${t.span === "full" ? "col-span-2" : ""}`}
@@ -296,7 +315,7 @@ export function WorkViewer({
                     className="object-cover"
                   />
                 </figure>
-              ),
+              ) : null,
             )
           )}
         </div>
