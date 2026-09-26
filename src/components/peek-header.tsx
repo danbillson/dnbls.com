@@ -50,7 +50,7 @@ export function PeekHeader() {
     <div
       data-shown={shown || undefined}
       inert={!shown}
-      className="peek-header fixed inset-x-0 top-0 z-40 border-rule border-b bg-background/85 py-[var(--margin)] backdrop-blur-md"
+      className="peek-header fixed inset-x-0 top-0 z-40 border-rule border-b bg-background py-[var(--margin)]"
     >
       <SiteHeader />
     </div>
