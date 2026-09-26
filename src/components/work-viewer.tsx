@@ -59,13 +59,7 @@ const stagger = (i: number) => ({ "--i": i }) as CSSProperties;
  * Active job comes from the URL, so links, back/forward and deep links all work.
  * Moving down the index reveals upward, moving up reveals downward.
  */
-export function WorkViewer({
-  jobs,
-  nav,
-}: {
-  jobs: Job[];
-  nav: { label: string; href: string }[];
-}) {
+export function WorkViewer({ jobs }: { jobs: Job[] }) {
   const pathname = usePathname();
   const slug = pathname.split("/")[2] ?? jobs[0].slug;
   const index = Math.max(
@@ -136,29 +130,9 @@ export function WorkViewer({
         : []
       : bento(items);
 
-  const navLinks = nav.map((item) => (
-    <Link
-      key={item.label}
-      href={item.href}
-      className={item.label === "Work" ? "underline" : "hover:underline"}
-    >
-      {item.label}
-    </Link>
-  ));
-
   return (
     <div className="page-grid min-h-dvh text-sm font-medium" data-dir={dir}>
       <aside className="col-span-12 flex flex-col gap-16 py-[var(--margin)] md:sticky md:top-0 md:col-span-5 md:h-dvh md:gap-8 md:self-start">
-        <header className="flex h-8 items-center justify-between text-[13px] md:text-sm">
-          <Link
-            href="/"
-            className="flex size-8 items-center justify-center rounded-full border-[1.5px] border-foreground font-display text-xs font-bold"
-          >
-            DB
-          </Link>
-          <nav className="flex gap-3.5 md:hidden">{navLinks}</nav>
-        </header>
-
         {/* Remounts per job so the entrance replays. */}
         <div
           key={job.slug}
@@ -227,10 +201,6 @@ export function WorkViewer({
         aria-label={`${job.company} photos`}
         className="col-span-12 flex flex-col gap-[var(--gutter)] pb-[var(--margin)] md:col-span-7 md:py-[var(--margin)]"
       >
-        <nav className="hidden h-8 items-center justify-end md:flex md:gap-3.5">
-          {navLinks}
-        </nav>
-
         <div key={job.slug} className="grid grid-cols-2 gap-[var(--gutter)]">
           {tiles.length === 0 ? (
             <div

@@ -1,5 +1,6 @@
+import { SiteHeader } from "@/components/site-header";
 import { WorkViewer } from "@/components/work-viewer";
-import { experience, nav } from "@/lib/content";
+import { experience } from "@/lib/content";
 import { getImages } from "@/lib/images";
 
 // The viewer lives in the layout so it stays mounted across /work/[slug]
@@ -12,7 +13,10 @@ export default function WorkLayout({ children }: LayoutProps<"/work">) {
 
   return (
     <>
-      <WorkViewer jobs={jobs} nav={nav} />
+      <div className="py-[var(--margin)]">
+        <SiteHeader />
+      </div>
+      <WorkViewer jobs={jobs} />
       {children}
     </>
   );
