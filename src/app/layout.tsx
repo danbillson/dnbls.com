@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { GridOverlay } from "@/components/grid-overlay";
 import { PeekHeader } from "@/components/peek-header";
@@ -40,6 +42,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <PeekHeader />
         {children}
         {process.env.NODE_ENV === "development" && <GridOverlay />}
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
