@@ -11,11 +11,7 @@ const heroExtras = [
   "/images/work/paddle/focus.jpg",
   "/images/work/sopost/award.jpg",
 ];
-const heroExclude = [
-  "/images/me/volleyball.jpg",
-  "/images/me/team-england.jpg",
-  "/images/me/cheer-partner-stunt.jpg",
-];
+const heroExclude = ["/images/me/volleyball.jpg"];
 
 // Full-bleed candidates for the first-visit intro.
 const openerSrcs = [
@@ -23,7 +19,6 @@ const openerSrcs = [
   "/images/me/friends.jpg",
   "/images/me/child.jpg",
   "/images/me/baby.jpg",
-  "/images/me/stunt.jpg",
   "/images/work/attio/bar.jpg",
 ];
 

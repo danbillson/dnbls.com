@@ -17,8 +17,13 @@ const beerOrder = [
   "pilsner",
   "augustiner",
   "pliny",
-  "mikkeller-copenhagen",
   "westveleteren",
+  "westie-pour",
+  "westie-close",
+  "pannepot",
+  "emperors",
+  "axis",
+  "i-cant-swim-beer",
   "grainfather",
   "homebrew",
   "ingredients",
@@ -30,7 +35,7 @@ function pick(photos: Photo[], srcs: string[]) {
 
 export default function About() {
   const all = getImages();
-  const lead = all.find((p) => p.src === "/images/me/team-england.jpg");
+  const lead = all.find((p) => p.src === "/images/me/portrait.jpg");
   const inset = all.find((p) => p.src === "/images/running/track.jpg");
   const beer = pick(
     getImages("beer"),
@@ -58,7 +63,7 @@ export default function About() {
             {lead && (
               <Image
                 src={lead.src}
-                alt="Team England on stage at the cheer world championships"
+                alt="Portrait of Dan"
                 width={lead.width}
                 height={lead.height}
                 sizes="(min-width: 768px) 58vw, 100vw"
