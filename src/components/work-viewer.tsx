@@ -21,7 +21,6 @@ type Job = {
   photos: Photo[];
 };
 
-type Layout = "grid" | "column";
 type Span = "full" | "half";
 type Item = { kind: "photo"; photo: Photo } | { kind: "logo" };
 type Tile = (Item & { span: Span }) | { kind: "filler" };
@@ -75,7 +74,6 @@ export function WorkViewer({
   );
   const job = jobs[index];
 
-  const [layout, setLayout] = useState<Layout>("grid");
   // Direction of travel through the index, derived when the job changes.
   const [prev, setPrev] = useState(index);
   const [dir, setDir] = useState<1 | -1>(1);
@@ -136,9 +134,7 @@ export function WorkViewer({
       ? logo
         ? [{ kind: "logo", span: "full" }]
         : []
-      : layout === "grid"
-        ? bento(items)
-        : items.map((item) => ({ ...item, span: "full" }));
+      : bento(items);
 
   const navLinks = nav.map((item) => (
     <Link
@@ -231,28 +227,11 @@ export function WorkViewer({
         aria-label={`${job.company} photos`}
         className="col-span-12 flex flex-col gap-[var(--gutter)] pb-[var(--margin)] md:col-span-7 md:py-[var(--margin)]"
       >
-        <div className="flex h-8 items-center justify-between">
-          <fieldset className="flex gap-3.5">
-            <legend className="sr-only">Layout</legend>
-            {(["grid", "column"] as const).map((l) => (
-              <button
-                key={l}
-                type="button"
-                aria-pressed={layout === l}
-                onClick={() => setLayout(l)}
-                className={`capitalize transition-colors duration-150 ${layout === l ? "" : "text-muted hover:text-foreground"}`}
-              >
-                {l}
-              </button>
-            ))}
-          </fieldset>
-          <nav className="hidden gap-3.5 md:flex">{navLinks}</nav>
-        </div>
+        <nav className="hidden h-8 items-center justify-end md:flex md:gap-3.5">
+          {navLinks}
+        </nav>
 
-        <div
-          key={`${job.slug}-${layout}`}
-          className="grid grid-cols-2 gap-[var(--gutter)]"
-        >
+        <div key={job.slug} className="grid grid-cols-2 gap-[var(--gutter)]">
           {tiles.length === 0 ? (
             <div
               className="work-reveal col-span-2 flex aspect-[3/2] flex-col justify-between bg-accent p-3 text-foreground"
@@ -294,12 +273,7 @@ export function WorkViewer({
                   className={`work-reveal relative overflow-hidden bg-foreground/5 ${t.span === "full" ? "col-span-2" : ""}`}
                   style={{
                     ...stagger(i),
-                    aspectRatio:
-                      layout === "column"
-                        ? `${t.photo.width} / ${t.photo.height}`
-                        : t.span === "full"
-                          ? "3 / 2"
-                          : "4 / 5",
+                    aspectRatio: t.span === "full" ? "3 / 2" : "4 / 5",
                   }}
                 >
                   <Image
