@@ -15,7 +15,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${fontVariables} h-full antialiased`}>
+    // suppressHydrationWarning: the hero intro script sets data-hero pre-paint
+    <html
+      lang="en"
+      className={`${fontVariables} h-full antialiased`}
+      suppressHydrationWarning
+    >
       <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
         {children}
         {process.env.NODE_ENV === "development" && <GridOverlay />}
