@@ -160,3 +160,17 @@
     visibility: visible;
   }
 }
+
+/* Print: everything visible, nothing pending. */
+@media print {
+  [data-reveal] :is(.rv-mask, .rv-rise, .rv-word, .rv-img > img) {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    animation: none;
+  }
+
+  [data-reveal] .rv-lines:not([data-split]) {
+    visibility: visible;
+  }
+}

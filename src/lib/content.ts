@@ -265,3 +265,62 @@ export const about = {
     ],
   },
 };
+
+// /cv — summary and per-job bullets are written for the CV; everything else
+// comes from `experience` and `projects` above.
+export const cv = {
+  role: "Design Engineer",
+  location: "London",
+  summary:
+    "Design engineer with eight years building product close to design. I care about the details most people won’t notice but everyone feels: type set properly, interactions that feel fast and intentional, systems that hold up. I’m comfortable taking work from discovery to launch, writing the RFC, and building the prototype that settles the argument.",
+  bullets: {
+    attio: [
+      "Joined the workflows team as a product engineer, building the node-based workflow editor",
+      "Moved to the creative studio as a design engineer, building the interactive parts of attio.com",
+      "Prototype in the browser with design, then ship the real thing: motion, type and the details in between",
+    ],
+    paddle: [
+      "Led cross-functional projects from discovery to launch: the developer docs homepage refresh, the Paddle MCP server, and the next-forge Paddle Billing template and migration guide",
+      "Pushed design fidelity and interaction polish across developer-facing surfaces, with Framer Motion and Tailwind",
+      "Contributed to the open-source SDKs, Paddle.js, and the internal design system",
+      "Spoke on developer tooling and DX at Paddle Forward and community meetups",
+    ],
+    sopost: [
+      "Built the core product: sampling campaign management, dynamic landing pages and emails, and the builder used to configure them",
+      "Led the rebuild of the data capture platform from Elixir/Phoenix to Next.js, RFC to production",
+      "Built the component library and design system with the design team, documented in Storybook",
+      "Started the Front-end Guild and ran the SoCode Summer School, mentoring junior engineers",
+    ],
+    "climb-creative": [
+      "Led the WTTB product page and checkout rebuild",
+      "Built the Canva integration for custom product design",
+    ],
+    marmalade: [
+      "Built the Driver Hub blog on Gatsby and headless Drupal",
+      "Puppeteer scripts running 100+ concurrent quote checks across aggregators",
+    ],
+    thg: ["Site builds for Neutrogena and Gillette, and the MyProtein rebrand"],
+  } as Record<string, string[]>,
+  projects: [
+    "pothooks",
+    "ui.dnbls.com",
+    "ink.dnbls.com",
+    "next-forge-paddle",
+    "pouring.at",
+  ],
+  skills: [
+    ["Front-end", "TypeScript, React, Next.js, Tailwind, CSS"],
+    [
+      "Motion & design",
+      "Motion (Framer Motion), CSS and WAAPI animation, design systems, prototyping, typography, Figma",
+    ],
+    ["Back-end", "Node.js, Elixir, PostgreSQL, tRPC, GraphQL"],
+    ["Tooling", "Storybook, Turborepo, GitHub Actions, MDX"],
+  ],
+  education: {
+    degree: "BSc Computer Science, 2:1",
+    school: "Edge Hill University",
+    period: "2015 – 2018",
+  },
+  interests: "Print, beer, volleyball, running, travel.",
+};

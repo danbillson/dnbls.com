@@ -516,3 +516,19 @@
     }
   }
 }
+
+/* /cv on paper */
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  :root {
+    --margin: 0px;
+    --gutter: 1rem;
+  }
+
+  body {
+    background: #fff;
+  }
+}
