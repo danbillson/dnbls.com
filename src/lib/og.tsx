@@ -27,12 +27,12 @@ async function displayFont(weight: 500 | 600 = 600) {
 export async function ogImage({
   title,
   subtitle,
-  kicker = "dnbls.com",
+  kicker,
   titleSize = 132,
 }: {
   title: string;
   subtitle: string;
-  kicker?: string;
+  kicker: string;
   titleSize?: number;
 }) {
   const font = await displayFont();
@@ -169,7 +169,9 @@ export async function heroImage({ role }: { role: string }) {
               overflow: "hidden",
               width: slot.width,
               height: slot.height,
-              marginLeft: size * 0.06,
+              // Even gaps to the ink: n has more side bearing than B.
+              marginLeft: size * 0.04,
+              marginRight: size * 0.02,
               marginBottom: size * 0.14,
               background: "rgba(23, 23, 23, 0.05)",
             }}
