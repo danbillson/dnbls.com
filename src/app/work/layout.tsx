@@ -1,4 +1,3 @@
-import { SiteHeader } from "@/components/site-header";
 import { WorkViewer } from "@/components/work-viewer";
 import { experience } from "@/lib/content";
 import { getImages } from "@/lib/images";
@@ -13,9 +12,6 @@ export default function WorkLayout({ children }: LayoutProps<"/work">) {
 
   return (
     <>
-      <div className="py-[var(--margin)]">
-        <SiteHeader />
-      </div>
       <WorkViewer jobs={jobs} />
       {children}
     </>

@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type CSSProperties, type ReactNode, useEffect, useState } from "react";
 import { companyLogos } from "@/components/company-logos";
+import { LogoIcon } from "@/components/logo-icon";
+import { NavLinks } from "@/components/site-header";
 import type { Photo } from "@/lib/images";
 
 type Job = {
@@ -132,10 +134,19 @@ export function WorkViewer({ jobs }: { jobs: Job[] }) {
 
   return (
     <div className="page-grid min-h-dvh text-sm font-medium" data-dir={dir}>
-      {/* Sidebar keeps its bottom on the viewport bottom: it sticks at the
-          header offset and is sized to the remaining height, so the header
-          scrolls away above it while the job index stays anchored. */}
-      <aside className="col-span-12 flex flex-col gap-16 py-[var(--margin)] md:sticky md:top-(--header) md:col-span-5 md:h-[calc(100dvh-var(--header))] md:gap-8 md:self-start">
+      {/* The site header is split across the two columns so the logo lives in
+          the sticky sidebar and the nav scrolls with the photos. Same grid
+          positions as SiteHeader, so it lines up with every other page. */}
+      <aside className="col-span-12 flex flex-col gap-16 py-[var(--margin)] md:sticky md:top-0 md:col-span-5 md:h-dvh md:gap-8 md:self-start">
+        <header className="flex h-9 items-center justify-between text-[13px] md:text-sm">
+          <Link href="/" className="flex items-center">
+            <LogoIcon className="size-9" />
+          </Link>
+          <nav className="flex gap-3.5 md:hidden">
+            <NavLinks />
+          </nav>
+        </header>
+
         {/* Remounts per job so the entrance replays. */}
         <div
           key={job.slug}
@@ -202,9 +213,15 @@ export function WorkViewer({ jobs }: { jobs: Job[] }) {
 
       <section
         aria-label={`${job.company} photos`}
-        className="col-span-12 flex flex-col gap-[var(--gutter)] pb-[var(--margin)] md:col-span-7 md:py-[var(--margin)]"
+        className="col-span-12 grid grid-cols-subgrid gap-y-[var(--gutter)] pb-[var(--margin)] md:col-span-7 md:py-[var(--margin)]"
       >
-        <div key={job.slug} className="grid grid-cols-2 gap-[var(--gutter)]">
+        <nav className="col-span-6 col-start-2 hidden h-9 items-center justify-between md:flex">
+          <NavLinks />
+        </nav>
+        <div
+          key={job.slug}
+          className="col-span-full grid grid-cols-2 gap-[var(--gutter)]"
+        >
           {tiles.length === 0 ? (
             <div
               className="work-reveal col-span-2 flex aspect-[3/2] flex-col justify-between bg-accent p-3 text-foreground"
