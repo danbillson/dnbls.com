@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ContactGrid } from "@/components/contact-grid";
 import { Hero } from "@/components/hero";
 import { introScript } from "@/components/hero-intro";
@@ -22,25 +23,6 @@ const openerSrcs = [
   "/images/me/child.jpg",
   "/images/me/baby.jpg",
   "/images/work/attio/bar.jpg",
-];
-
-const pastimes = [
-  {
-    label: "Travel",
-    category: "travel",
-    detail: "Valencia, Belgium, New York, Dolomites",
-  },
-  {
-    label: "Beer",
-    category: "beer",
-    detail: "Craft, cask, and the odd top ten list",
-  },
-  { label: "Running", category: "running", detail: "London, mostly" },
-  {
-    label: "Me",
-    category: "me",
-    detail: "Ex-Team England cheer, now volleyball",
-  },
 ];
 
 export default function Home() {
@@ -99,6 +81,23 @@ export default function Home() {
           </LedgerTable>
         </section>
 
+        <section id="about" className="page-grid scroll-mt-8 gap-y-8">
+          <h2 className="col-span-12 font-display text-4xl font-semibold tracking-tight md:col-span-3 md:col-start-2">
+            About
+          </h2>
+          <div className="col-span-12 flex flex-col gap-16 md:col-span-7">
+            <p className="max-w-[32ch] font-display text-3xl leading-tight font-medium tracking-tight text-pretty md:text-4xl">
+              {profile.statement}
+            </p>
+            <Link
+              href="/about"
+              className="w-fit text-xs font-medium tracking-[0.08em] uppercase transition-colors duration-150 hover:bg-accent"
+            >
+              Read more →
+            </Link>
+          </div>
+        </section>
+
         <section id="writing" className="page-grid scroll-mt-8 gap-y-8">
           <h2 className="col-span-12 font-display text-4xl font-semibold tracking-tight md:col-span-3 md:col-start-2">
             Writing
@@ -116,30 +115,6 @@ export default function Home() {
                 </span>
               </div>
             ))}
-          </div>
-        </section>
-
-        <section id="about" className="page-grid scroll-mt-8 gap-y-8">
-          <h2 className="col-span-12 font-display text-4xl font-semibold tracking-tight md:col-span-3 md:col-start-2">
-            About
-          </h2>
-          <div className="col-span-12 flex flex-col gap-16 md:col-span-7">
-            <p className="max-w-[32ch] font-display text-3xl leading-tight font-medium tracking-tight text-pretty md:text-4xl">
-              {profile.statement}
-            </p>
-            <div className="grid grid-cols-7 gap-x-[var(--gutter)]">
-              {pastimes.map((p) => (
-                <div key={p.label} className="contents">
-                  <span className={`${cell} col-span-2`}>{p.label}</span>
-                  <span className={`${cell} col-span-4`}>{p.detail}</span>
-                  <span
-                    className={`${cell} text-right text-muted tabular-nums`}
-                  >
-                    {getImages(p.category).length}
-                  </span>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 

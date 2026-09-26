@@ -6,7 +6,7 @@ export const profile = {
   intro:
     "I’m a design engineer at Attio. I like things made with care — interactions, typefaces, a proper pint of cask. The rest of the time you’ll find me on a volleyball court or out on a run.",
   statement:
-    "A design-driven engineer specialising in interaction, UX and front-end systems. Blending product thinking with engineering discipline to ship experiences that feel fast, intentional and deeply polished.",
+    "Design engineer in Attio’s little creative studio. Most of my career has been building product very close to design. Off the clock it’s volleyball, running when I’m not injured, and beer — the traditional stuff and the weird stuff.",
 };
 
 export const links = [
@@ -19,8 +19,8 @@ export const links = [
 export const nav = [
   { label: "Work", href: "/work" },
   { label: "Projects", href: "/#projects" },
-  { label: "Writing", href: "/#writing" },
   { label: "About", href: "/about" },
+  { label: "Writing", href: "/#writing" },
   { label: "Contact", href: "/#contact" },
 ];
 
@@ -217,17 +217,21 @@ export const posts = [
 export const about = {
   headline: "Pixels, Pints and PBs",
   body: [
-    "I’m a design engineer in London, currently at Attio — first on the workflows team building the node-based editor, now in marketing building attio.com. Before that: developer experience at Paddle, the platform team at SoPost, and a run of agency roles going back to a graduate job at THG in 2018.",
-    "The through-line is care. Interfaces that feel fast and intentional, type that’s been set properly, the details most people won’t notice but everyone feels. Most of my side projects are an excuse to go deeper on one of those.",
-    "Away from the desk I spent years as a cheerleader, competing for Team England in 2019 — usually the one at the bottom of the stunt. These days it’s volleyball, and running with a club across London a few times a week.",
-    "And beer. Craft, cask, Trappist, whatever’s pouring. Most trips end up planned around at least one brewery.",
+    "Hi, I’m Dan. I’m a design engineer at Attio in London, working in our little creative studio. I’ve spent most of my time building products very close to design but have also tried my hand at developer experience, open source and agency work, with my first work experience as a graphic designer for the local paper.",
+    "Lately I’ve been into print. Which is funny, because I’ve worked for my friend Ryan at a cheer apparel company doing screen printing and at one of the UK’s biggest print groups, and didn’t care about it much either time. Turns out I just needed it to be my own.",
+    "I spent a few years cheerleading and competed for Team England. These days it’s volleyball and running whenever I’m not injured.",
+    "And beer. That gets its own section.",
   ],
   beer: {
     headline: "A Proper Pint",
     columns: [
       [
-        "Craft beer is the hobby that’s stuck longest. A hazy IPA, a Czech pilsner poured with a proper foam head, a cask pint in an old London boozer — I’ll happily cross a city for any of them.",
-        "It’s shaped where I travel too: Trappist abbeys in Belgium, Mikkeller in Copenhagen, the beer gardens of Munich.",
+        "I’m a traditionalist at heart. Czech pilsner with a thick foam head, a Munich helles, Belgian Trappist, lambic that tastes like a farmhouse, and a well-kept pint of cask in a British pub.",
+        "Styles that have been made the same way for a very long time, for good reason.",
+      ],
+      [
+        "That’s turned into a bit of a pilgrimage habit: the cellars at Pilsner Urquell, the Augustiner Bierkeller in Munich, Cantillon in Brussels, and breweries all over the UK.",
+        "I’ve still got plenty of time for the weird stuff — Omnipollo, Emperor’s — and a solid pale from Beak or Baron.",
       ],
       [
         "At home I brew the odd batch on a Grainfather, with mixed results and a lot of cleaning.",
@@ -242,7 +246,7 @@ export const about = {
   travel: {
     hero: "travel/dolomites/mountain-02.jpg",
     intro:
-      "I travel for mountains, food and beer — ideally all three in one day. Mostly Europe, the odd long-haul, always too many photos of buildings.",
+      "I travel for the culture, the beer and the food — ideally all three before lunch. Mostly Europe, the odd long-haul, always too many photos of buildings.",
     places: [
       {
         name: "Valencia",
