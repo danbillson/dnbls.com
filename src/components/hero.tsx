@@ -1,8 +1,6 @@
 "use client";
 
-import { animate } from "motion/react";
-import { useLayoutEffect, useRef, useState } from "react";
-import { type IntroCtx, introAt, introSequence } from "@/components/hero-intro";
+import { type CSSProperties, useLayoutEffect, useRef, useState } from "react";
 import { ImageCycler } from "@/components/image-cycler";
 import { Scramble } from "@/components/scramble";
 import { wordsIn } from "@/components/scramble-wave";
@@ -34,87 +32,84 @@ const swaps = {
   run: "🏃",
 };
 
+const at = (ms: number) => ({ "--at": `${ms}ms` }) as CSSProperties;
+
 /**
- * Wordmark hero with an opening sequence (see hero-intro.ts). Any input
- * skips to the end.
+ * Wordmark hero. The opening sequence is CSS (hero.css) so it runs from first
+ * paint; this only picks up the running animations to know when it's over,
+ * skips them on any input, and layers the intro line's word stagger on top.
  */
 export function Hero({ images }: { images: { src: string }[] }) {
   const [start, setStart] = useState(0);
   const [done, setDone] = useState(false);
-
   const section = useRef<HTMLElement>(null);
-  const slotInner = useRef<HTMLSpanElement>(null);
-  const dan = useRef<HTMLSpanElement>(null);
-  const billson = useRef<HTMLSpanElement>(null);
 
   useLayoutEffect(() => {
     const root = section.current;
-    if (!root || !slotInner.current || !dan.current || !billson.current) return;
+    if (!root) return;
     // A different first frame each visit.
     setStart(Math.floor(Math.random() * images.length));
 
     let cancelled = false;
-    let controls: ReturnType<typeof animate> | undefined;
     let waveTimer = 0;
     let wave: ReturnType<typeof wordsIn> | undefined;
-    let skipped = false;
+    const intro = root.querySelector<HTMLElement>('[data-enter="intro"]');
+    const anims = root
+      .getAnimations({ subtree: true })
+      .filter(
+        (a): a is CSSAnimation =>
+          a instanceof CSSAnimation && a.animationName.startsWith("hero-"),
+      );
+
     const skip = () => {
-      skipped = true;
-      controls?.complete();
+      window.clearTimeout(waveTimer);
+      wave?.finish();
+      for (const a of anims) a.finish();
     };
     const events = ["pointerdown", "keydown", "wheel", "touchstart", "resize"];
     const unlisten = () => {
       for (const e of events) window.removeEventListener(e, skip);
     };
 
-    const finish = () => {
-      unlisten();
-      // The word stagger outlasts the sequence; only a skip cuts it short.
-      if (skipped) {
-        window.clearTimeout(waveTimer);
-        wave?.finish();
+    // Reloaded mid-page: don't perform to an empty room.
+    if (window.scrollY > window.innerHeight / 2) skip();
+    for (const e of events) window.addEventListener(e, skip, { passive: true });
+
+    // The intro line's words stagger in, tinted, as it fades (scramble-wave.ts).
+    // Timed off the fade itself, so it lines up however late we hydrate; if
+    // the fade is already over, the line has simply faded in and that's that.
+    const fade = anims.find(
+      (a) => (a.effect as KeyframeEffect | null)?.target === intro,
+    );
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (intro && fade && !reduce) {
+      const { delay, duration } = fade.effect?.getTiming() ?? {};
+      const now = Number(fade.currentTime ?? 0);
+      const start = Number(delay ?? 0);
+      if (now < start + Number(duration ?? 0)) {
+        waveTimer = window.setTimeout(
+          () => {
+            wave = wordsIn(intro);
+          },
+          Math.max(0, start - now),
+        );
       }
-      if (cancelled) return;
-      root.dataset.state = "done";
-      setDone(true);
-    };
+    }
 
-    const ctx: IntroCtx = {
-      el: {
-        slotInner: slotInner.current,
-        dan: dan.current,
-        billson: billson.current,
-        logo: root.querySelector("header > a") as HTMLElement,
-        nav: [...root.querySelectorAll<HTMLElement>("header nav a")],
-        intro: root.querySelector('[data-enter="intro"]') as HTMLElement,
-        arrow: root.querySelector('[data-enter="arrow"]') as HTMLElement,
-      },
-    };
-
-    (async () => {
-      await document.fonts.ready;
-      if (cancelled) return;
-      // Reloaded mid-page: don't perform to an empty room.
-      if (window.scrollY > window.innerHeight / 2) return finish();
-
-      const reduce = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-      controls = animate(introSequence(ctx, reduce));
-      // The intro line's words stagger in, tinted, as it fades (scramble-wave.ts).
-      if (!reduce)
-        waveTimer = window.setTimeout(() => {
-          wave = wordsIn(ctx.el.intro);
-        }, introAt * 1000);
-      for (const e of events)
-        window.addEventListener(e, skip, { passive: true });
-      await controls.finished;
-      finish();
-    })();
+    Promise.all(anims.map((a) => a.finished))
+      .then(() => {
+        if (cancelled) return;
+        unlisten();
+        root.dataset.state = "done";
+        setDone(true);
+      })
+      // Rejected when an animation is cancelled, i.e. on unmount.
+      .catch(() => {});
 
     return () => {
       cancelled = true;
-      controls?.stop();
       window.clearTimeout(waveTimer);
       wave?.finish();
       unlisten();
@@ -127,14 +122,14 @@ export function Hero({ images }: { images: { src: string }[] }) {
     <section
       ref={section}
       data-state={done ? "done" : "intro"}
-      className="hero relative flex min-h-dvh flex-col overflow-x-clip py-[var(--margin)]"
+      className="hero relative flex min-h-svh flex-col overflow-x-clip py-[var(--margin)]"
     >
       <SiteHeader />
 
       <div className="flex flex-1 items-center justify-center page-x">
         <h1 className="font-display text-[clamp(3rem,20vw,15rem)] leading-[0.85] font-semibold tracking-[-0.045em] whitespace-nowrap md:text-[clamp(3rem,13vw,15rem)]">
           <span data-mask className="inline-block">
-            <span ref={dan} data-word className="inline-block">
+            <span data-word style={at(100)} className="inline-block">
               <Scramble radius={140} grow="left">
                 Dan
               </Scramble>
@@ -146,11 +141,7 @@ export function Hero({ images }: { images: { src: string }[] }) {
             aria-hidden
             className="relative ml-[0.06em] inline-block h-[0.7em] w-[1.07em] overflow-hidden"
           >
-            <span
-              ref={slotInner}
-              data-slot-inner
-              className="absolute inset-0 bg-foreground/5"
-            >
+            <span data-slot-inner className="absolute inset-0 bg-foreground/5">
               <ImageCycler
                 images={frames}
                 active={done}
@@ -163,7 +154,7 @@ export function Hero({ images }: { images: { src: string }[] }) {
           {/* Phones: surname on its own line so the type can stay big. */}
           <br className="md:hidden" />
           <span data-mask className="inline-block">
-            <span ref={billson} data-word className="inline-block">
+            <span data-word style={at(160)} className="inline-block">
               <Scramble radius={140} grow="right">
                 Billson
               </Scramble>
