@@ -64,7 +64,7 @@ export function PeekHeader() {
       data-shown={shown || undefined}
       data-near={near || undefined}
       inert={!shown}
-      className="peek-header fixed inset-x-0 top-0 z-40 bg-background py-[var(--margin)]"
+      className="peek-header fixed inset-x-0 top-0 z-40 bg-background py-[var(--margin)] print:hidden"
     >
       <SiteHeader />
     </div>

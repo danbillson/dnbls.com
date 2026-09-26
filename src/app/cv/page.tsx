@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 const kicker = "text-xs font-medium tracking-[0.08em] uppercase";
 const heading =
-  "rv-rise col-span-12 font-display text-4xl font-semibold tracking-tight md:col-span-3 md:col-start-2";
+  "rv-rise col-span-12 font-display text-4xl font-semibold tracking-tight md:col-span-3 md:col-start-2 print:text-3xl";
 const at = (i: number) => ({ "--i": i }) as CSSProperties;
 
 const email = links.find((l) => l.label === "Email");
@@ -66,7 +66,7 @@ export default function CV() {
           <h2 className={heading}>Summary</h2>
           <p
             style={at(1)}
-            className="rv-rise col-span-12 max-w-[60ch] font-display text-xl leading-snug font-medium tracking-[-0.015em] text-pretty md:col-span-7 md:text-2xl"
+            className="rv-rise col-span-12 max-w-[60ch] font-display text-xl leading-snug font-medium tracking-[-0.015em] text-pretty md:col-span-7 md:text-2xl print:text-lg"
           >
             {cv.summary}
           </p>
@@ -81,16 +81,18 @@ export default function CV() {
               <li
                 key={job.slug}
                 data-reveal
-                className="grid grid-cols-7 gap-x-[var(--gutter)] gap-y-3 print:break-inside-avoid"
+                className="grid grid-cols-7 gap-x-[var(--gutter)] gap-y-3"
               >
                 <div className="rv-rise col-span-7 flex flex-col text-muted md:col-span-2">
-                  <span className="tabular-nums">{job.period}</span>
+                  <span className="tabular-nums print:whitespace-nowrap">
+                    {job.period}
+                  </span>
                   {job.location && <span>{job.location}</span>}
                 </div>
                 <div className="col-span-7 flex flex-col gap-3 md:col-span-5">
                   <h3
                     style={at(1)}
-                    className="rv-rise font-display text-2xl font-semibold tracking-tight"
+                    className="rv-rise font-display text-2xl font-semibold tracking-tight print:break-after-avoid"
                   >
                     <a href={job.href} className="hover:underline">
                       {job.company}
@@ -131,7 +133,7 @@ export default function CV() {
               <div
                 key={p.title}
                 style={at(i + 1)}
-                className="rv-rise col-span-7 grid grid-cols-subgrid border-rule border-t py-1.5"
+                className="rv-rise col-span-7 grid grid-cols-subgrid border-rule border-t py-1.5 print:border-0 print:py-1"
               >
                 <a
                   href={p.href}
@@ -158,7 +160,7 @@ export default function CV() {
               <div
                 key={label}
                 style={at(i + 1)}
-                className="rv-rise col-span-7 grid grid-cols-subgrid border-rule border-t py-1.5"
+                className="rv-rise col-span-7 grid grid-cols-subgrid border-rule border-t py-1.5 print:border-0 print:py-1"
               >
                 <dt className="col-span-7 text-muted md:col-span-2">{label}</dt>
                 <dd className="col-span-7 text-pretty md:col-span-5">
