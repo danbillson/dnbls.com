@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { GridOverlay } from "@/components/grid-overlay";
+import { PeekHeader } from "@/components/peek-header";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { fontVariables } from "@/lib/fonts";
 import "./globals.css";
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
         <SmoothScroll />
+        <PeekHeader />
         {children}
         {process.env.NODE_ENV === "development" && <GridOverlay />}
       </body>
