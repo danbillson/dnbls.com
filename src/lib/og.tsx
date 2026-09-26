@@ -23,7 +23,7 @@ async function displayFont(weight: 500 | 600 = 600) {
   }
 }
 
-/** Ink card: kicker top-left, big title, muted subtitle. */
+/** Paper card: highlighted kicker top-left, big title, muted subtitle. */
 export async function ogImage({
   title,
   subtitle,
@@ -45,13 +45,23 @@ export async function ogImage({
         flexDirection: "column",
         justifyContent: "space-between",
         padding: 64,
-        background: "#171717",
-        color: "#f9f9f9",
+        background: "#f9f9f9",
+        color: "#171717",
         fontFamily: font ? "Host Grotesk" : "sans-serif",
       }}
     >
-      <div style={{ fontSize: 28, fontWeight: 600, color: "#e4ff02" }}>
-        {kicker}
+      {/* Accent can't carry text on paper, so it's the highlight instead. */}
+      <div style={{ display: "flex" }}>
+        <div
+          style={{
+            fontSize: 28,
+            fontWeight: 600,
+            padding: "2px 10px",
+            background: "#e4ff02",
+          }}
+        >
+          {kicker}
+        </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         <div
