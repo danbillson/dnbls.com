@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { type CSSProperties, useState } from "react";
 import { Lightbox } from "@/components/lightbox";
 import type { Photo } from "@/lib/images";
 
@@ -78,21 +78,25 @@ export function PlaceSwitcher({ places }: { places: Place[] }) {
   const current = arranged[active];
 
   return (
-    <div className="page-grid gap-y-10">
-      <p className="col-span-12 text-xs font-medium tracking-[0.08em] uppercase">
+    <div data-reveal className="page-grid gap-y-10">
+      <p className="rv-rise col-span-12 text-xs font-medium tracking-[0.08em] uppercase">
         Explore by place
       </p>
 
       <ul className="col-span-12 md:col-span-6">
         {places.map((p, i) => (
-          <li key={p.name}>
+          <li
+            key={p.name}
+            style={{ "--i": i + 1 } as CSSProperties}
+            className="rv-mask"
+          >
             <button
               type="button"
               aria-current={i === active}
               onClick={() => setActive(i)}
               onFocus={() => setActive(i)}
               onPointerEnter={(e) => e.pointerType === "mouse" && setActive(i)}
-              className={`flex items-start gap-3 text-left font-display text-[clamp(2.75rem,7vw,7rem)] leading-[1.02] font-semibold tracking-[-0.04em] transition-colors duration-150 outline-none focus-visible:underline ${i === active ? "text-foreground" : "text-muted"}`}
+              className={`rv-word flex items-start gap-3 text-left font-display text-[clamp(2.75rem,7vw,7rem)] leading-[1.02] font-semibold tracking-[-0.04em] transition-colors duration-150 outline-none focus-visible:underline ${i === active ? "text-foreground" : "text-muted"}`}
             >
               {p.name}
               <span className="mt-[0.9em] font-sans text-xs font-medium tracking-normal">
@@ -103,7 +107,10 @@ export function PlaceSwitcher({ places }: { places: Place[] }) {
         ))}
       </ul>
 
-      <figure className="col-span-12 flex flex-col gap-3 md:col-span-6 md:col-start-7 md:self-start">
+      <figure
+        style={{ "--i": 2 } as CSSProperties}
+        className="rv-rise col-span-12 flex flex-col gap-3 md:col-span-6 md:col-start-7 md:self-start"
+      >
         {/* Every bento stays mounted in one cell so switching is instant. */}
         <div className="grid">
           {arranged.map((p, i) => (
