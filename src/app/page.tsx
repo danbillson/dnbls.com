@@ -1,15 +1,9 @@
 import { ContactGrid } from "@/components/contact-grid";
 import { ImageCycler } from "@/components/image-cycler";
 import { cell, LedgerHeading, LedgerTable } from "@/components/ledger";
+import { SiteHeader } from "@/components/site-header";
 import { WorkTable } from "@/components/work-table";
-import {
-  experience,
-  links,
-  nav,
-  posts,
-  profile,
-  projects,
-} from "@/lib/content";
+import { experience, links, posts, profile, projects } from "@/lib/content";
 import { getImages, interleave } from "@/lib/images";
 
 // Hero = photos of me, mostly from Attio, plus a few picks from other jobs.
@@ -53,25 +47,7 @@ export default function Home() {
   return (
     <>
       <section className="flex min-h-dvh flex-col py-[var(--margin)]">
-        <header className="page-grid items-center text-[13px] font-medium md:text-sm">
-          <a
-            href="/"
-            className="col-span-2 flex size-8 items-center justify-center rounded-full border-[1.5px] border-foreground font-display text-xs font-bold"
-          >
-            DB
-          </a>
-          <nav className="col-span-10 flex justify-end gap-3.5 md:col-span-6 md:col-start-7 md:justify-between">
-            {nav.map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="hover:underline"
-              >
-                {item}
-              </a>
-            ))}
-          </nav>
-        </header>
+        <SiteHeader />
 
         <div className="flex flex-1 items-center justify-center page-x">
           <h1 className="font-display text-[clamp(3rem,13vw,15rem)] leading-none font-semibold tracking-[-0.045em] whitespace-nowrap">

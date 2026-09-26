@@ -16,7 +16,13 @@ export const links = [
   { label: "Email", href: "mailto:dbillson@outlook.com" },
 ];
 
-export const nav = ["Work", "Projects", "Writing", "About", "Contact"];
+export const nav = [
+  { label: "Work", href: "/#work" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Writing", href: "/#writing" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/#contact" },
+];
 
 export const experience = [
   {
@@ -126,3 +132,62 @@ export const posts = [
   { title: "AI vs Advent of Code", date: "2025-03-01" },
   { title: "Top 10 bars/pubs in London", date: "2024-11-19" },
 ];
+
+// Draft copy for /about — facts need checking before this ships.
+export const about = {
+  headline: "Pixels, Pints and PBs",
+  body: [
+    "I’m a design engineer in London, currently at Attio — first on the workflows team building the node-based editor, now in marketing building attio.com. Before that: developer experience at Paddle, the platform team at SoPost, and a run of agency roles going back to a graduate job at THG in 2018.",
+    "The through-line is care. Interfaces that feel fast and intentional, type that’s been set properly, the details most people won’t notice but everyone feels. Most of my side projects are an excuse to go deeper on one of those.",
+    "Away from the desk I spent years as a cheerleader, competing for Team England in 2019 — usually the one at the bottom of the stunt. These days it’s volleyball, and running with a club across London a few times a week.",
+    "And beer. Craft, cask, Trappist, whatever’s pouring. Most trips end up planned around at least one brewery.",
+  ],
+  beer: {
+    headline: "A Proper Pint",
+    columns: [
+      [
+        "Craft beer is the hobby that’s stuck longest. A hazy IPA, a Czech pilsner poured with a proper foam head, a cask pint in an old London boozer — I’ll happily cross a city for any of them.",
+        "It’s shaped where I travel too: Trappist abbeys in Belgium, Mikkeller in Copenhagen, the beer gardens of Munich.",
+      ],
+      [
+        "At home I brew the odd batch on a Grainfather, with mixed results and a lot of cleaning.",
+        "I also keep a running list of the best pubs in London, updated every year — good beer, good people, music quiet enough to talk over.",
+      ],
+    ],
+    link: {
+      label: "Top 10 pubs in London, 2025",
+      href: "/blog/top-10-pubs-in-london-2025",
+    },
+  },
+  travel: {
+    hero: "travel/dolomites/mountain-02.jpg",
+    intro:
+      "I travel for mountains, food and beer — ideally all three in one day. Mostly Europe, the odd long-haul, always too many photos of buildings.",
+    places: [
+      {
+        name: "Valencia",
+        country: "Spain",
+        photos: "travel/valencia",
+        note: "Calatrava’s City of Arts and Sciences, beach volleyball and clóchinas by the sea.",
+      },
+      {
+        name: "Belgium",
+        country: "Ghent & around",
+        photos: "travel/belgium",
+        note: "Canal-side gables, Trappist beer and a long afternoon at the Waterhuis aan de Bierkant.",
+      },
+      {
+        name: "New York",
+        country: "USA",
+        photos: "travel/new-york",
+        note: "Bridges, the Oculus and craning up at the Woolworth Building.",
+      },
+      {
+        name: "Dolomites",
+        country: "Italy",
+        photos: "travel/dolomites",
+        note: "Hiking with friends under jagged peaks, wildflowers all the way up.",
+      },
+    ],
+  },
+};
