@@ -9,6 +9,8 @@
 
   --margin: 1rem;
   --gutter: 1rem;
+  /* SiteHeader: logo height plus its page padding. Sticky layouts sit beneath it. */
+  --header: calc(2.25rem + 2 * var(--margin));
 }
 
 @media (min-width: 64rem) {

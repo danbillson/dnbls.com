@@ -13,7 +13,8 @@ export default function WorkLayout({ children }: LayoutProps<"/work">) {
 
   return (
     <>
-      <div className="py-[var(--margin)]">
+      {/* Sticky on desktop so the full-height sidebar can sit beneath it. */}
+      <div className="z-10 bg-background py-[var(--margin)] md:sticky md:top-0">
         <SiteHeader />
       </div>
       <WorkViewer jobs={jobs} />
