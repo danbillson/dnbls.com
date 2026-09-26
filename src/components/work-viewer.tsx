@@ -59,7 +59,13 @@ const stagger = (i: number) => ({ "--i": i }) as CSSProperties;
  * Active job comes from the URL, so links, back/forward and deep links all work.
  * Moving down the index reveals upward, moving up reveals downward.
  */
-export function WorkViewer({ jobs, nav }: { jobs: Job[]; nav: string[] }) {
+export function WorkViewer({
+  jobs,
+  nav,
+}: {
+  jobs: Job[];
+  nav: { label: string; href: string }[];
+}) {
   const pathname = usePathname();
   const slug = pathname.split("/")[2] ?? jobs[0].slug;
   const index = Math.max(
@@ -125,11 +131,11 @@ export function WorkViewer({ jobs, nav }: { jobs: Job[]; nav: string[] }) {
 
   const navLinks = nav.map((item) => (
     <Link
-      key={item}
-      href={item === "Work" ? "/work" : `/#${item.toLowerCase()}`}
-      className={item === "Work" ? "underline" : "hover:underline"}
+      key={item.label}
+      href={item.label === "Work" ? "/work" : item.href}
+      className={item.label === "Work" ? "underline" : "hover:underline"}
     >
-      {item}
+      {item.label}
     </Link>
   ));
 

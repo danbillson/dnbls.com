@@ -1,7 +1,7 @@
 import { ContactGrid } from "@/components/contact-grid";
-import { ImageCycler } from "@/components/image-cycler";
+import { Hero } from "@/components/hero";
+import { introScript } from "@/components/hero-intro";
 import { cell, LedgerHeading, LedgerTable } from "@/components/ledger";
-import { SiteHeader } from "@/components/site-header";
 import { WorkTable } from "@/components/work-table";
 import { experience, links, posts, profile, projects } from "@/lib/content";
 import { getImages, interleave } from "@/lib/images";
@@ -15,6 +15,16 @@ const heroExclude = [
   "/images/me/volleyball.jpg",
   "/images/me/team-england.jpg",
   "/images/me/cheer-partner-stunt.jpg",
+];
+
+// Full-bleed candidates for the first-visit intro.
+const openerSrcs = [
+  "/images/work/attio/presentation.jpg",
+  "/images/me/friends.jpg",
+  "/images/me/child.jpg",
+  "/images/me/baby.jpg",
+  "/images/me/stunt.jpg",
+  "/images/work/attio/bar.jpg",
 ];
 
 const pastimes = [
@@ -43,44 +53,20 @@ export default function Home() {
     ),
     getImages("me").filter((p) => !heroExclude.includes(p.src)),
   );
+  const openers = openerSrcs.flatMap((src) => {
+    const photo = heroImages.find((p) => p.src === src);
+    return photo
+      ? [{ src: photo.src, width: photo.width, height: photo.height }]
+      : [];
+  });
 
   return (
     <>
-      <section className="flex min-h-dvh flex-col py-[var(--margin)]">
-        <SiteHeader />
-
-        <div className="flex flex-1 items-center justify-center page-x">
-          <h1 className="font-display text-[clamp(3rem,13vw,15rem)] leading-none font-semibold tracking-[-0.045em] whitespace-nowrap">
-            Dan
-            {/* Cap-height tall, sitting on the baseline: Host Grotesk caps = 0.7em */}
-            <span
-              aria-hidden
-              className="relative mx-[0.06em] inline-block h-[0.7em] w-[1.07em] overflow-hidden bg-foreground/5"
-            >
-              <ImageCycler
-                images={heroImages}
-                eager
-                sizes="(min-width: 1024px) 15vw, 25vw"
-                className="grayscale"
-              />
-            </span>
-            Billson
-          </h1>
-        </div>
-
-        <footer className="page-grid items-end">
-          {/* Leading ≥1.2 so the next line's selection doesn't clip descenders */}
-          <p className="col-span-11 max-w-[42ch] font-display text-xl leading-[1.2] font-medium tracking-[-0.015em] text-pretty md:col-span-8 md:text-[1.75rem]">
-            {profile.intro}
-          </p>
-          <span
-            aria-hidden
-            className="col-start-12 text-right text-sm font-medium text-muted"
-          >
-            ↓
-          </span>
-        </footer>
-      </section>
+      <script
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: static inline script
+        dangerouslySetInnerHTML={{ __html: introScript(openers.length) }}
+      />
+      <Hero images={heroImages} openers={openers} />
 
       <main className="flex flex-col gap-40 pt-32 pb-40 text-sm font-medium">
         <section id="work" className="flex scroll-mt-8 flex-col gap-24">
