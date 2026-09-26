@@ -1,3 +1,4 @@
+import { ContactGrid } from "@/components/contact-grid";
 import { ImageCycler } from "@/components/image-cycler";
 import { cell, LedgerHeading, LedgerTable } from "@/components/ledger";
 import { WorkTable } from "@/components/work-table";
@@ -192,28 +193,11 @@ export default function Home() {
           <h2 className="col-span-12 font-display text-4xl font-semibold tracking-tight md:col-span-3 md:col-start-2">
             Contact
           </h2>
-          <ul className="col-span-12 grid grid-cols-subgrid md:col-span-7">
-            {links.map((l) => (
-              <li key={l.label} className="contents">
-                <a
-                  href={l.href}
-                  className={`${cell} col-span-12 flex justify-between transition-colors duration-150 hover:bg-accent md:col-span-7`}
-                >
-                  {l.label}
-                  <span aria-hidden>↗</span>
-                </a>
-              </li>
-            ))}
-          </ul>
+          <div className="col-span-12 md:col-span-7">
+            <ContactGrid links={links} />
+          </div>
         </section>
       </main>
-
-      <footer className="page-x pb-[var(--margin)]" aria-hidden>
-        <div className="flex items-end justify-between border-foreground border-b font-display text-[clamp(3rem,11vw,12rem)] leading-[0.8] font-semibold tracking-[-0.05em] text-foreground/10">
-          <span>dan</span>
-          <span>billson</span>
-        </div>
-      </footer>
     </>
   );
 }
