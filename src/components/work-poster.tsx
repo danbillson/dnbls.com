@@ -71,10 +71,10 @@ function Picture({ job, priority }: { job: Job; priority?: boolean }) {
 }
 
 /**
- * Homepage work section: one full-bleed picture with the companies as a line
- * of display type over it. Hovering a name crossfades to that company's
+ * Homepage work section: one full-bleed picture with the companies stacked
+ * down its left edge as display type. Hovering a name crossfades to that company's
  * picture; clicking morphs the picture into the work page's first tile.
- * Names rise out of a line mask, staggered, once the whole row is on screen
+ * Names rise out of a line mask, staggered, once the top of the list is on screen
  * (see `.poster-rise` in globals.css). The picture drifts a little slower
  * than the page as the panel scrolls through.
  */
@@ -113,7 +113,7 @@ export function WorkPoster({ jobs }: { jobs: Job[] }) {
           io.disconnect();
         }
       },
-      { threshold: 1, rootMargin: "0px 0px -24px 0px" },
+      { threshold: 0.25, rootMargin: "0px 0px -24px 0px" },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -133,7 +133,7 @@ export function WorkPoster({ jobs }: { jobs: Job[] }) {
       ref={ref}
       data-in={inView || undefined}
       aria-labelledby="work-heading"
-      className="poster-rise relative flex min-h-[85svh] flex-col justify-between gap-16 overflow-hidden bg-foreground p-[var(--margin)] text-background"
+      className="poster-rise relative flex min-h-[85svh] flex-col gap-8 overflow-hidden bg-foreground p-[var(--margin)] text-background"
     >
       {/* Every picture stays mounted; opacity swaps so a fast hover interrupts cleanly.
           Only the active one carries the shared-element name. */}
@@ -167,7 +167,7 @@ export function WorkPoster({ jobs }: { jobs: Job[] }) {
       </motion.div>
       <div
         aria-hidden
-        className="absolute inset-0 bg-linear-to-b from-black/30 via-transparent to-black/60"
+        className="absolute inset-0 bg-linear-to-b from-black/40 via-black/20 to-black/60"
       />
 
       <header className="relative flex justify-between text-xs font-medium tracking-[0.08em] uppercase">
@@ -177,46 +177,39 @@ export function WorkPoster({ jobs }: { jobs: Job[] }) {
         </p>
       </header>
 
-      <div className="relative">
-        <ul
-          ref={row}
-          className="flex flex-wrap gap-x-[clamp(1.25rem,3vw,3rem)]"
-        >
-          {jobs.map((j, i) => (
-            <li
-              key={j.slug}
-              style={stagger(i)}
-              className="-mb-[0.3em] overflow-hidden pt-[0.1em] pb-[0.3em]"
+      <ul ref={row} className="relative flex flex-col items-start">
+        {jobs.map((j, i) => (
+          <li
+            key={j.slug}
+            style={stagger(i)}
+            className="-mb-[0.3em] overflow-hidden pt-[0.1em] pb-[0.3em]"
+          >
+            <Link
+              href={`/work/${j.slug}`}
+              data-active={i === active}
+              onPointerEnter={(e) => e.pointerType === "mouse" && setActive(i)}
+              onFocus={() => setActive(i)}
+              onNavigate={markMorph}
+              className={`poster-link relative inline-flex items-baseline gap-2 font-display text-[clamp(2rem,4.5vw,4.5rem)] leading-none font-semibold tracking-[-0.03em] transition-colors duration-200 outline-none focus-visible:underline ${i === active ? "text-background" : "text-background/55"}`}
             >
-              <Link
-                href={`/work/${j.slug}`}
-                data-active={i === active}
-                onPointerEnter={(e) =>
-                  e.pointerType === "mouse" && setActive(i)
-                }
-                onFocus={() => setActive(i)}
-                onNavigate={markMorph}
-                className={`poster-link relative inline-flex items-baseline gap-2 font-display text-[clamp(1.75rem,3.4vw,3.25rem)] leading-none font-semibold tracking-[-0.03em] transition-colors duration-200 outline-none focus-visible:underline ${i === active ? "text-background" : "text-background/55"}`}
-              >
-                {j.company}
-                <span className="font-sans text-xs font-medium tracking-normal tabular-nums">
-                  {j.short}
-                </span>
-                <span aria-hidden className="poster-arrow text-[0.6em]">
-                  ↗
-                </span>
-                <span aria-hidden className="poster-rule" />
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <p
-          style={stagger(jobs.length)}
-          className="poster-caption mt-6 text-xs font-medium text-background/70"
-        >
-          {job.role} · {job.period}
-        </p>
-      </div>
+              {j.company}
+              <span className="font-sans text-xs font-medium tracking-normal tabular-nums">
+                {j.short}
+              </span>
+              <span aria-hidden className="poster-arrow text-[0.6em]">
+                ↗
+              </span>
+              <span aria-hidden className="poster-rule" />
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <p
+        style={stagger(jobs.length)}
+        className="poster-caption relative mt-auto text-xs font-medium text-background/70"
+      >
+        {job.role} · {job.period}
+      </p>
     </section>
   );
 }
