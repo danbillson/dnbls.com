@@ -3,7 +3,7 @@ import { Hero } from "@/components/hero";
 import { introScript } from "@/components/hero-intro";
 import { InlineScript } from "@/components/inline-script";
 import { cell, LedgerHeading, LedgerTable } from "@/components/ledger";
-import { WorkTable } from "@/components/work-table";
+import { WorkPoster } from "@/components/work-poster";
 import { experience, links, posts, profile, projects } from "@/lib/content";
 import { getImages, interleave } from "@/lib/images";
 
@@ -62,12 +62,11 @@ export default function Home() {
       <Hero images={heroImages} openers={openers} />
 
       <main className="flex flex-col gap-40 pt-32 pb-40 text-sm font-medium">
-        <section id="work" className="flex scroll-mt-8 flex-col gap-24">
-          <LedgerHeading mark="&" lines={["Work", "Experi-", "ence"]} />
-          <WorkTable
-            rows={experience.map((e) => ({
+        <section id="work" className="scroll-mt-8">
+          <WorkPoster
+            jobs={experience.map((e) => ({
               ...e,
-              photos: e.photos ? getImages(e.photos) : [],
+              photo: e.photos ? getImages(e.photos)[0] : undefined,
             }))}
           />
         </section>

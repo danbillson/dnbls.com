@@ -3,18 +3,25 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { type CSSProperties, type ReactNode, useEffect, useState } from "react";
+import {
+  type CSSProperties,
+  type ReactNode,
+  useEffect,
+  useState,
+  ViewTransition,
+} from "react";
 import { companyLogos } from "@/components/company-logos";
 import { LogoIcon } from "@/components/logo-icon";
 import { NavLinks } from "@/components/site-header";
 import type { Photo } from "@/lib/images";
+import { consumeMorph } from "@/lib/work-morph";
 
 type Job = {
   slug: string;
   company: string;
   href: string;
   roles: string[];
-  team?: string;
+  team?: string[];
   location?: string;
   period: string;
   about: string;
@@ -56,6 +63,15 @@ function bento(items: Item[]): Tile[] {
 
 const stagger = (i: number) => ({ "--i": i }) as CSSProperties;
 
+/** Chronological list shown newest first; earlier entries recede. */
+function Latest({ items }: { items: string[] }) {
+  return items.toReversed().map((item, i) => (
+    <span key={item} className={`block ${i > 0 ? "text-muted" : ""}`}>
+      {item}
+    </span>
+  ));
+}
+
 /**
  * Split work view: sticky details + job index on the left, photos on the right.
  * Active job comes from the URL, so links, back/forward and deep links all work.
@@ -78,6 +94,12 @@ export function WorkViewer({ jobs }: { jobs: Job[] }) {
     setPrev(index);
   }
 
+  // Arriving from the homepage poster, its picture morphs into this job's
+  // first tile, which then skips its own reveal. Later jobs reveal as usual.
+  const [morphed] = useState(() => (consumeMorph() ? job.slug : null));
+  const reveal = (i: number) =>
+    i === 0 && job.slug === morphed ? "" : "work-reveal";
+
   // New job starts at the top of its photos.
   // biome-ignore lint/correctness/useExhaustiveDependencies: runs per job
   useEffect(() => {
@@ -85,20 +107,16 @@ export function WorkViewer({ jobs }: { jobs: Job[] }) {
   }, [index]);
 
   const details: [string, ReactNode][] = [
-    [
-      "Role",
-      // Earlier titles recede; the last one is where I ended up.
-      job.roles.map((r, i) => (
-        <span
-          key={r}
-          className={`block ${i < job.roles.length - 1 ? "text-muted" : ""}`}
-        >
-          {r}
-        </span>
-      )),
-    ],
+    ["Role", <Latest key="roles" items={job.roles} />],
     ["Period", job.period],
-    ...(job.team ? [["Team", job.team] as [string, string]] : []),
+    ...(job.team
+      ? [
+          ["Team", <Latest key="team" items={job.team} />] as [
+            string,
+            ReactNode,
+          ],
+        ]
+      : []),
     ...(job.location ? [["Location", job.location] as [string, string]] : []),
     [
       "About",
@@ -228,52 +246,66 @@ export function WorkViewer({ jobs }: { jobs: Job[] }) {
               </span>
             </div>
           ) : (
-            tiles.map((t, i) =>
-              t.kind === "filler" ? (
-                <div
-                  key="filler"
-                  aria-hidden
-                  className="work-reveal flex aspect-[4/5] flex-col justify-end bg-foreground/5 p-3"
-                  style={stagger(i)}
+            tiles.map((t, i) => {
+              const tile =
+                t.kind === "filler" ? (
+                  <div
+                    key="filler"
+                    aria-hidden
+                    className="work-reveal flex aspect-[4/5] flex-col justify-end bg-foreground/5 p-3"
+                    style={stagger(i)}
+                  >
+                    <span className="font-display text-2xl leading-none font-semibold tracking-tight">
+                      {job.company}
+                      <br />
+                      <span className="text-muted">{job.period}</span>
+                    </span>
+                  </div>
+                ) : t.kind === "logo" && logo ? (
+                  <div
+                    key="logo"
+                    className={`${reveal(i)} flex items-center justify-center overflow-hidden ${t.span === "full" ? "col-span-2 aspect-[3/2]" : "aspect-[4/5]"}`}
+                    style={{ ...stagger(i), background: logo.background }}
+                  >
+                    <logo.Mark className="max-h-[22%] w-[22%]" />
+                  </div>
+                ) : t.kind === "photo" ? (
+                  <figure
+                    key={t.photo.src}
+                    className={`${reveal(i)} relative overflow-hidden bg-foreground/5 ${t.span === "full" ? "col-span-2" : ""}`}
+                    style={{
+                      ...stagger(i),
+                      aspectRatio: t.span === "full" ? "3 / 2" : "4 / 5",
+                    }}
+                  >
+                    <Image
+                      src={t.photo.src}
+                      alt={t.photo.alt}
+                      fill
+                      sizes={
+                        t.span === "full"
+                          ? "(min-width: 768px) 58vw, 100vw"
+                          : "(min-width: 768px) 29vw, 50vw"
+                      }
+                      loading={i < 2 ? "eager" : undefined}
+                      className="object-cover"
+                    />
+                  </figure>
+                ) : null;
+              // The first tile is the shared element the poster's picture becomes.
+              return i === 0 ? (
+                <ViewTransition
+                  key="hero"
+                  name="work-hero"
+                  share="morph"
+                  default="none"
                 >
-                  <span className="font-display text-2xl leading-none font-semibold tracking-tight">
-                    {job.company}
-                    <br />
-                    <span className="text-muted">{job.period}</span>
-                  </span>
-                </div>
-              ) : t.kind === "logo" && logo ? (
-                <div
-                  key="logo"
-                  className={`work-reveal flex items-center justify-center overflow-hidden ${t.span === "full" ? "col-span-2 aspect-[3/2]" : "aspect-[4/5]"}`}
-                  style={{ ...stagger(i), background: logo.background }}
-                >
-                  <logo.Mark className="max-h-[22%] w-[22%]" />
-                </div>
-              ) : t.kind === "photo" ? (
-                <figure
-                  key={t.photo.src}
-                  className={`work-reveal relative overflow-hidden bg-foreground/5 ${t.span === "full" ? "col-span-2" : ""}`}
-                  style={{
-                    ...stagger(i),
-                    aspectRatio: t.span === "full" ? "3 / 2" : "4 / 5",
-                  }}
-                >
-                  <Image
-                    src={t.photo.src}
-                    alt={t.photo.alt}
-                    fill
-                    sizes={
-                      t.span === "full"
-                        ? "(min-width: 768px) 58vw, 100vw"
-                        : "(min-width: 768px) 29vw, 50vw"
-                    }
-                    loading={i < 2 ? "eager" : undefined}
-                    className="object-cover"
-                  />
-                </figure>
-              ) : null,
-            )
+                  {tile}
+                </ViewTransition>
+              ) : (
+                tile
+              );
+            })
           )}
         </div>
       </section>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { GridOverlay } from "@/components/grid-overlay";
+import { SmoothScroll } from "@/components/smooth-scroll";
 import { fontVariables } from "@/lib/fonts";
 import "./globals.css";
 
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
+        <SmoothScroll />
         {children}
         {process.env.NODE_ENV === "development" && <GridOverlay />}
       </body>

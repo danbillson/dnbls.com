@@ -118,3 +118,132 @@
     animation: none;
   }
 }
+
+/* Homepage work poster — names rise out of a line mask once the panel is in
+   view ([data-in]); each carries a rule that fills accent on hover. Explicit
+   end frames because the resting styles hide the names. */
+@keyframes poster-rise {
+  from {
+    transform: translateY(115%);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+@keyframes poster-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.poster-rise .poster-link {
+  transform: translateY(115%);
+}
+
+.poster-rise .poster-caption {
+  opacity: 0;
+}
+
+.poster-rise[data-in] .poster-link {
+  animation: poster-rise 800ms cubic-bezier(0.19, 1, 0.22, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+.poster-rise[data-in] .poster-caption {
+  animation: poster-fade 400ms ease both;
+  animation-delay: calc(var(--i, 0) * 60ms + 200ms);
+}
+
+.poster-rule {
+  position: absolute;
+  inset: auto 0 -0.14em 0;
+  height: 2px;
+  background: color-mix(in oklab, currentColor 35%, transparent);
+}
+
+.poster-rule::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 320ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.poster-link[data-active="true"] .poster-rule::after {
+  transform: scaleX(1);
+}
+
+.poster-arrow {
+  display: inline-block;
+  opacity: 0;
+  transform: translate(-0.15em, 0.15em);
+  transition:
+    opacity 160ms ease,
+    transform 320ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.poster-link[data-active="true"] .poster-arrow {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .poster-rise .poster-link {
+    transform: none;
+  }
+
+  .poster-rise[data-in] .poster-link {
+    animation: poster-fade 300ms ease both;
+    animation-delay: 0ms;
+  }
+
+  .poster-rule::after,
+  .poster-arrow {
+    transition: opacity 160ms ease;
+    transform: none;
+  }
+}
+
+/* Home → work: the poster's picture morphs into the first tile
+   (<ViewTransition name="work-hero" share="morph">). */
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+::view-transition-group(.morph) {
+  animation-duration: 560ms;
+  animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+::view-transition-old(.morph),
+::view-transition-new(.morph) {
+  height: 100%;
+  object-fit: cover;
+  overflow: clip;
+}
+
+/* Reduced motion: cut straight to the new page. Same selectors as above so
+   these win by order, without !important. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-group(.morph),
+  ::view-transition-old(.morph),
+  ::view-transition-new(.morph) {
+    animation-duration: 0s;
+  }
+}
