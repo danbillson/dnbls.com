@@ -12,3 +12,6 @@ export function consumeMorph() {
   pending = false;
   return was;
 }
+
+/** Full-width tile `sizes`, shared so the poster can preload the exact variant. */
+export const heroTileSizes = "(min-width: 768px) 58vw, 100vw";

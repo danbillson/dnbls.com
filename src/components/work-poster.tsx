@@ -6,7 +6,7 @@ import {
   useScroll,
   useTransform,
 } from "motion/react";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import {
   type CSSProperties,
@@ -15,9 +15,10 @@ import {
   useState,
   ViewTransition,
 } from "react";
+import { preload } from "react-dom";
 import { companyLogos } from "@/components/company-logos";
 import type { Photo } from "@/lib/images";
-import { markMorph } from "@/lib/work-morph";
+import { heroTileSizes, markMorph } from "@/lib/work-morph";
 
 type Job = {
   slug: string;
@@ -83,6 +84,24 @@ export function WorkPoster({ jobs }: { jobs: Job[] }) {
   const [inView, setInView] = useState(false);
   const [active, setActive] = useState(0);
   const job = jobs[active];
+
+  // The work page's first tile is narrower than the poster, so it picks a
+  // different srcset candidate. Fetch it while the name is hovered so the
+  // morph lands on a painted photo rather than a grey box that fills later.
+  useEffect(() => {
+    if (!job.photo) return;
+    const { props } = getImageProps({
+      src: job.photo.src,
+      alt: "",
+      fill: true,
+      sizes: heroTileSizes,
+    });
+    preload(props.src, {
+      as: "image",
+      imageSrcSet: props.srcSet,
+      imageSizes: props.sizes,
+    });
+  }, [job.photo]);
 
   useEffect(() => {
     const el = row.current;

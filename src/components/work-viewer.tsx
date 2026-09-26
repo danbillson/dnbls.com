@@ -6,15 +6,16 @@ import { usePathname } from "next/navigation";
 import {
   type CSSProperties,
   type ReactNode,
-  useEffect,
+  useLayoutEffect,
   useState,
   ViewTransition,
 } from "react";
 import { companyLogos } from "@/components/company-logos";
 import { LogoIcon } from "@/components/logo-icon";
 import { NavLinks } from "@/components/site-header";
+import { jumpTo } from "@/components/smooth-scroll";
 import type { Photo } from "@/lib/images";
-import { consumeMorph } from "@/lib/work-morph";
+import { consumeMorph, heroTileSizes } from "@/lib/work-morph";
 
 type Job = {
   slug: string;
@@ -100,10 +101,13 @@ export function WorkViewer({ jobs }: { jobs: Job[] }) {
   const reveal = (i: number) =>
     i === 0 && job.slug === morphed ? "" : "work-reveal";
 
-  // New job starts at the top of its photos.
+  // New job starts at the top of its photos. Layout effect, not passive: it
+  // has to land before React measures the morph target and the browser
+  // snapshots the new page, else the first tile is captured mid-scroll (or
+  // off screen entirely, which drops the shared element altogether).
   // biome-ignore lint/correctness/useExhaustiveDependencies: runs per job
-  useEffect(() => {
-    window.scrollTo({ top: 0 });
+  useLayoutEffect(() => {
+    jumpTo(0);
   }, [index]);
 
   const details: [string, ReactNode][] = [
@@ -284,7 +288,7 @@ export function WorkViewer({ jobs }: { jobs: Job[] }) {
                       fill
                       sizes={
                         t.span === "full"
-                          ? "(min-width: 768px) 58vw, 100vw"
+                          ? heroTileSizes
                           : "(min-width: 768px) 29vw, 50vw"
                       }
                       loading={i < 2 ? "eager" : undefined}
