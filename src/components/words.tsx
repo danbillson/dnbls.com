@@ -17,7 +17,8 @@ export function Words({
   const words = text.split(" ");
   const last = Math.max(words.length - 1, 1);
   return words.map((word, i) => (
-    <Fragment key={word}>
+    // biome-ignore lint/suspicious/noArrayIndexKey: words are positional and can repeat
+    <Fragment key={i}>
       <span
         style={
           {
