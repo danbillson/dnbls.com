@@ -127,66 +127,77 @@ export async function heroImage({ role }: { role: string }) {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: 36,
         background: "#f9f9f9",
         color: "#171717",
         fontFamily: fonts.length ? "Host Grotesk" : "sans-serif",
       }}
     >
+      {/* Role hangs off the wordmark's left edge, not the page centre. */}
       <div
         style={{
           display: "flex",
-          alignItems: "flex-end",
-          fontSize: size,
-          fontWeight: 600,
-          letterSpacing: "-0.045em",
-          lineHeight: 1,
+          flexDirection: "column",
+          alignItems: "flex-start",
         }}
       >
-        <span>Dan</span>
-        {/* Sits on the baseline: lift it by the descent below the caps. */}
         <div
           style={{
             display: "flex",
-            position: "relative",
-            overflow: "hidden",
-            width: slot.width,
-            height: slot.height,
-            marginLeft: size * 0.06,
-            marginBottom: size * 0.14,
-            background: "rgba(23, 23, 23, 0.05)",
+            alignItems: "flex-end",
+            fontSize: size,
+            fontWeight: 600,
+            letterSpacing: "-0.045em",
+            lineHeight: 1,
           }}
         >
-          {/* biome-ignore lint/performance/noImgElement: rendered by Satori, not the browser */}
-          <img
-            src={`data:image/jpeg;base64,${photo.toString("base64")}`}
-            alt=""
-            width={PHOTO.width * scale}
-            height={PHOTO.height * scale}
+          <span>Dan</span>
+          {/* Sits on the baseline: lift it by the descent below the caps. */}
+          <div
             style={{
-              position: "absolute",
-              left: -PHOTO.crop.x * scale,
-              top: -PHOTO.crop.y * scale,
-              filter: "grayscale(1)",
+              display: "flex",
+              position: "relative",
+              overflow: "hidden",
+              width: slot.width,
+              height: slot.height,
+              marginLeft: size * 0.06,
+              marginBottom: size * 0.14,
+              background: "rgba(23, 23, 23, 0.05)",
             }}
-          />
+          >
+            {/* biome-ignore lint/performance/noImgElement: rendered by Satori, not the browser */}
+            <img
+              src={`data:image/jpeg;base64,${photo.toString("base64")}`}
+              alt=""
+              width={PHOTO.width * scale}
+              height={PHOTO.height * scale}
+              style={{
+                position: "absolute",
+                left: -PHOTO.crop.x * scale,
+                top: -PHOTO.crop.y * scale,
+                filter: "grayscale(1)",
+              }}
+            />
+          </div>
+          <span>Billson</span>
         </div>
-        <span>Billson</span>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          fontSize: 56,
-          fontWeight: 500,
-          letterSpacing: "-0.015em",
-        }}
-      >
-        {letters.map(({ ch, color }, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: static text, order is identity
-          <span key={i} style={{ color, whiteSpace: "pre" }}>
-            {ch}
-          </span>
-        ))}
+        <div
+          style={{
+            display: "flex",
+            // Big D's side bearing is wider: nudge in so the stems line up,
+            // and tuck up into the wordmark's descender space.
+            margin: "-14px 0 0 6px",
+            fontSize: 56,
+            fontWeight: 500,
+            letterSpacing: "-0.015em",
+          }}
+        >
+          {letters.map(({ ch, color }, i) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: static text, order is identity
+            <span key={i} style={{ color, whiteSpace: "pre" }}>
+              {ch}
+            </span>
+          ))}
+        </div>
       </div>
     </div>,
     { ...ogSize, fonts: fonts.length ? fonts : undefined },
