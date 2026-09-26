@@ -2,8 +2,6 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { ContactGrid } from "@/components/contact-grid";
 import { Hero } from "@/components/hero";
-import { introScript } from "@/components/hero-intro";
-import { InlineScript } from "@/components/inline-script";
 import { cell, LedgerTable } from "@/components/ledger";
 import { LedgerHeading } from "@/components/ledger-heading";
 import { Lines } from "@/components/lines";
@@ -19,15 +17,6 @@ const heroExtras = [
 ];
 const heroExclude = ["/images/me/volleyball.jpg"];
 
-// Full-bleed candidates for the first-visit intro.
-const openerSrcs = [
-  "/images/work/attio/presentation.jpg",
-  "/images/me/friends.jpg",
-  "/images/me/child.jpg",
-  "/images/me/baby.jpg",
-  "/images/work/attio/bar.jpg",
-];
-
 export default function Home() {
   const heroImages = interleave(
     getImages("work").filter(
@@ -35,18 +24,10 @@ export default function Home() {
     ),
     getImages("me").filter((p) => !heroExclude.includes(p.src)),
   );
-  const openers = openerSrcs.flatMap((src) => {
-    const photo = heroImages.find((p) => p.src === src);
-    return photo
-      ? [{ src: photo.src, width: photo.width, height: photo.height }]
-      : [];
-  });
-
   return (
     <>
-      <InlineScript html={introScript(openers.length)} />
       <ScrollReveal />
-      <Hero images={heroImages} openers={openers} />
+      <Hero images={heroImages} />
 
       <main className="flex flex-col gap-40 pt-32 pb-40 text-sm font-medium">
         <section id="work" className="scroll-mt-8">

@@ -1,10 +1,9 @@
-/* Pre-intro states. `html[data-hero]` is set before paint by `introScript`;
-   Motion's inline styles take over once the sequence starts. */
-.hero[data-state="intro"] :is(header a, [data-enter]) {
-  opacity: 0;
-}
-
-html[data-hero="return"] .hero[data-state="intro"] {
+/* Pre-intro states: everything hidden in place until the sequence (hero-intro.ts)
+   starts; Motion's inline styles take over from there. */
+.hero[data-state="intro"] {
+  & :is(header a, [data-enter]) {
+    opacity: 0;
+  }
   & [data-word] {
     transform: translateY(110%);
   }
@@ -16,41 +15,12 @@ html[data-hero="return"] .hero[data-state="intro"] {
   }
 }
 
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  display: none;
-  overflow: hidden;
-  container-type: size;
-  pointer-events: none;
-  background: var(--background);
-}
-
-html[data-hero="full"] .hero[data-state="intro"] .hero-overlay {
-  display: block;
-}
-
-/* Natural-aspect box covering the stage, centred. Scaling it uniformly keeps
-   the crop honest, so it lands exactly on the slot's object-cover frame. */
-.hero-photo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: max(100cqw, calc(100cqh * var(--ar)));
-  aspect-ratio: var(--ar);
-  translate: -50% -50%;
-  transform-origin: center;
-  display: none;
-}
-
-/* display (not visibility) so lazy images only fetch the chosen opener */
-.hero-photo[data-show] {
-  display: block;
-}
-
 @media (scripting: none) {
   .hero[data-state] :is(header a, [data-enter]) {
     opacity: 1;
+  }
+
+  .hero[data-state] :is([data-word], [data-slot-inner]) {
+    transform: none;
   }
 }

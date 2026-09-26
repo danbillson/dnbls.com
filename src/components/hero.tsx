@@ -1,21 +1,14 @@
 "use client";
 
 import { animate } from "motion/react";
-import Image from "next/image";
-import { type CSSProperties, useLayoutEffect, useRef, useState } from "react";
-import {
-  type IntroCtx,
-  type IntroMode,
-  introSequence,
-  type Rect,
-} from "@/components/hero-intro";
+import { useLayoutEffect, useRef, useState } from "react";
+import { type IntroCtx, introAt, introSequence } from "@/components/hero-intro";
 import { ImageCycler } from "@/components/image-cycler";
 import { Scramble } from "@/components/scramble";
+import { wordsIn } from "@/components/scramble-wave";
 import { SiteHeader } from "@/components/site-header";
 import { profile } from "@/lib/content";
 import "./hero.css";
-
-type Photo = { src: string; width: number; height: number };
 
 /** Attio mark in the text colour, cap-height tall on the baseline. */
 function AttioMark() {
@@ -41,82 +34,34 @@ const swaps = {
   run: "🏃",
 };
 
-function relative(el: Element, stage: DOMRect): Rect {
-  const r = el.getBoundingClientRect();
-  return {
-    top: r.top - stage.top,
-    left: r.left - stage.left,
-    right: r.right - stage.left,
-    bottom: r.bottom - stage.top,
-    width: r.width,
-    height: r.height,
-  };
-}
-
 /**
- * Wordmark hero with an opening sequence (see hero-intro.ts). Pair with
- * `introScript` inline before it. Any input skips to the end.
+ * Wordmark hero with an opening sequence (see hero-intro.ts). Any input
+ * skips to the end.
  */
-export function Hero({
-  images,
-  openers,
-}: {
-  /** Cycler frames; rotated so the opener is frame one. */
-  images: { src: string }[];
-  /** Full-bleed candidates, in the order `introScript` indexes. */
-  openers: Photo[];
-}) {
-  const [pick, setPick] = useState<number | null>(null);
+export function Hero({ images }: { images: { src: string }[] }) {
+  const [start, setStart] = useState(0);
   const [done, setDone] = useState(false);
-  const intro = useRef<{ mode: IntroMode; pick: number } | null>(null);
 
   const section = useRef<HTMLElement>(null);
-  const overlay = useRef<HTMLDivElement>(null);
-  const photos = useRef<(HTMLDivElement | null)[]>([]);
-  const slot = useRef<HTMLSpanElement>(null);
   const slotInner = useRef<HTMLSpanElement>(null);
   const dan = useRef<HTMLSpanElement>(null);
   const billson = useRef<HTMLSpanElement>(null);
 
   useLayoutEffect(() => {
-    // Hard load: the inline script decided. Client navigation: already seen.
-    intro.current ??= window.__hero ?? {
-      mode: "return",
-      pick: Math.floor(Math.random() * openers.length),
-    };
-    window.__hero = undefined;
-    const { mode, pick: p } = intro.current;
-    document.documentElement.dataset.hero = mode;
-
     const root = section.current;
-    const layer = overlay.current;
-    const photo = photos.current[p];
-    if (
-      !root ||
-      !layer ||
-      !photo ||
-      !slot.current ||
-      !slotInner.current ||
-      !dan.current ||
-      !billson.current
-    )
-      return;
-    const els = {
-      slot: slot.current,
-      slotInner: slotInner.current,
-      dan: dan.current,
-      billson: billson.current,
-    };
-
-    photos.current.forEach((el, i) => {
-      el?.toggleAttribute("data-show", i === p);
-    });
-    layer.dataset.ready = "";
-    setPick(p);
+    if (!root || !slotInner.current || !dan.current || !billson.current) return;
+    // A different first frame each visit.
+    setStart(Math.floor(Math.random() * images.length));
 
     let cancelled = false;
     let controls: ReturnType<typeof animate> | undefined;
-    const skip = () => controls?.complete();
+    let waveTimer = 0;
+    let wave: ReturnType<typeof wordsIn> | undefined;
+    let skipped = false;
+    const skip = () => {
+      skipped = true;
+      controls?.complete();
+    };
     const events = ["pointerdown", "keydown", "wheel", "touchstart", "resize"];
     const unlisten = () => {
       for (const e of events) window.removeEventListener(e, skip);
@@ -124,66 +69,43 @@ export function Hero({
 
     const finish = () => {
       unlisten();
+      // The word stagger outlasts the sequence; only a skip cuts it short.
+      if (skipped) {
+        window.clearTimeout(waveTimer);
+        wave?.finish();
+      }
       if (cancelled) return;
-      // Flip synchronously so there's no frame between overlay and slot.
       root.dataset.state = "done";
       setDone(true);
     };
 
+    const ctx: IntroCtx = {
+      el: {
+        slotInner: slotInner.current,
+        dan: dan.current,
+        billson: billson.current,
+        logo: root.querySelector("header > a") as HTMLElement,
+        nav: [...root.querySelectorAll<HTMLElement>("header nav a")],
+        intro: root.querySelector('[data-enter="intro"]') as HTMLElement,
+        arrow: root.querySelector('[data-enter="arrow"]') as HTMLElement,
+      },
+    };
+
     (async () => {
-      await Promise.all([
-        document.fonts.ready,
-        mode === "full" &&
-          photo
-            .querySelector("img")
-            ?.decode()
-            .catch(() => {}),
-      ]);
+      await document.fonts.ready;
       if (cancelled) return;
       // Reloaded mid-page: don't perform to an empty room.
       if (window.scrollY > window.innerHeight / 2) return finish();
 
-      const stage = root.getBoundingClientRect();
-      const W = stage.width;
-      const H = stage.height;
-      const ar = openers[p].width / openers[p].height;
-      // Width of the natural-aspect box that covers a w×h frame.
-      const coverWidth = (w: number, h: number) => Math.max(w, h * ar);
-
-      const ctx: IntroCtx = {
-        width: W,
-        height: H,
-        slot: relative(els.slot, stage),
-        dan: relative(els.dan, stage),
-        billson: relative(els.billson, stage),
-        el: {
-          overlay: layer,
-          photo,
-          slotInner: els.slotInner,
-          dan: els.dan,
-          billson: els.billson,
-          logo: root.querySelector("header > a") as HTMLElement,
-          nav: [...root.querySelectorAll<HTMLElement>("header nav a")],
-          intro: root.querySelector('[data-enter="intro"]') as HTMLElement,
-          arrow: root.querySelector('[data-enter="arrow"]') as HTMLElement,
-        },
-        clip: (r) =>
-          r
-            ? `inset(${r.top}px ${W - r.right}px ${H - r.bottom}px ${r.left}px)`
-            : "inset(0px 0px 0px 0px)",
-        cover: (r) => {
-          if (!r) return "translate(0px, 0px) scale(1)";
-          const dx = r.left + r.width / 2 - W / 2;
-          const dy = r.top + r.height / 2 - H / 2;
-          const s = coverWidth(r.width, r.height) / coverWidth(W, H);
-          return `translate(${dx}px, ${dy}px) scale(${s})`;
-        },
-      };
-
       const reduce = window.matchMedia(
         "(prefers-reduced-motion: reduce)",
       ).matches;
-      controls = animate(introSequence(ctx, mode, reduce));
+      controls = animate(introSequence(ctx, reduce));
+      // The intro line's words stagger in, tinted, as it fades (scramble-wave.ts).
+      if (!reduce)
+        waveTimer = window.setTimeout(() => {
+          wave = wordsIn(ctx.el.intro);
+        }, introAt * 1000);
       for (const e of events)
         window.addEventListener(e, skip, { passive: true });
       await controls.finished;
@@ -193,15 +115,13 @@ export function Hero({
     return () => {
       cancelled = true;
       controls?.stop();
+      window.clearTimeout(waveTimer);
+      wave?.finish();
       unlisten();
     };
-  }, [openers]);
+  }, [images.length]);
 
-  // Cycler starts on whatever the intro landed on.
-  const start =
-    pick === null ? -1 : images.findIndex((f) => f.src === openers[pick].src);
-  const frames =
-    start < 0 ? images : [...images.slice(start), ...images.slice(0, start)];
+  const frames = [...images.slice(start), ...images.slice(0, start)];
 
   return (
     <section
@@ -209,30 +129,6 @@ export function Hero({
       data-state={done ? "done" : "intro"}
       className="hero relative flex min-h-dvh flex-col overflow-x-clip py-[var(--margin)]"
     >
-      {!done && (
-        <div ref={overlay} aria-hidden className="hero-overlay">
-          {openers.map((photo, i) => (
-            <div
-              key={photo.src}
-              ref={(el) => {
-                photos.current[i] = el;
-              }}
-              data-i={i}
-              className="hero-photo"
-              style={{ "--ar": photo.width / photo.height } as CSSProperties}
-            >
-              <Image
-                src={photo.src}
-                alt=""
-                fill
-                sizes="100vw"
-                className="object-cover grayscale"
-              />
-            </div>
-          ))}
-        </div>
-      )}
-
       <SiteHeader />
 
       <div className="flex flex-1 items-center justify-center page-x">
@@ -247,7 +143,6 @@ export function Hero({
           {/* Cap-height tall, sitting on the baseline: Host Grotesk caps = 0.7em.
               No right margin: B's side bearing (~0.06em) already matches the left gap. */}
           <span
-            ref={slot}
             aria-hidden
             className="relative ml-[0.06em] inline-block h-[0.7em] w-[1.07em] overflow-hidden"
           >
