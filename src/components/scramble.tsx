@@ -32,6 +32,8 @@ export type ScrambleProps = {
   radius?: number;
   /** How long a hit char stays mutated, ms. */
   hold?: number;
+  /** On tap/click, hits spread out from the point: ms to reach the radius edge. */
+  ripple?: number;
   /** What a hit char becomes. Return null to leave it alone. Default: `spectrum`. */
   mutate?: (hit: ScrambleHit) => ScrambleMutation;
   /** Re-run `mutate` on a hit char every `tick` ms until it's released. */
@@ -168,14 +170,16 @@ type Lines = { text: string; rows: string[][] };
  * Text whose characters mutate as the pointer passes near them, then settle
  * back after `hold`. Line breaks are frozen from the natural layout, so a
  * swapped glyph pushes its line longer rather than rewrapping it. Selecting
- * any of the text snaps it all back to the real string. Pointer-only (no
- * touch) and DOM-driven: nothing re-renders on pointermove.
+ * any of the text snaps it all back to the real string. Follows the mouse, or
+ * a finger via touchmove (which keeps firing through a scroll, unlike
+ * pointermove). DOM-driven: nothing re-renders on move.
  */
 export function Scramble({
   as = "span",
   children: text,
   radius = 80,
   hold = 2000,
+  ripple = 250,
   mutate = spectrum,
   tick = 0,
   revert = "snap",
@@ -228,8 +232,6 @@ export function Scramble({
   useEffect(() => {
     const el = root.current;
     if (!el) return;
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches)
-      return;
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -351,6 +353,14 @@ export function Scramble({
     let frame = 0;
     let px = 0;
     let py = 0;
+    /** ms per unit t for the pending frame; 0 = hit everything at once. */
+    let spread = 0;
+    const later = (s: Slot, ms: number, fn: () => void) => {
+      if (ms <= 0) return fn();
+      window.clearTimeout(s.timer);
+      s.busy = true;
+      s.timer = window.setTimeout(fn, ms);
+    };
     const tickFrame = () => {
       frame = 0;
       if (selecting) return;
@@ -373,19 +383,29 @@ export function Scramble({
         if (w?.alt && !w.rolled) {
           w.rolled = true;
           if (Math.random() < swapChance) {
-            flip(w);
+            later(s, t * spread, () => flip(w));
             continue;
           }
         }
-        hit(s, t);
+        later(s, t * spread, () => hit(s, t));
       }
+      spread = 0;
     };
-    const onMove = (e: PointerEvent) => {
-      px = e.clientX;
-      py = e.clientY;
+    const at = (x: number, y: number, ms = 0) => {
+      px = x;
+      py = y;
+      spread = Math.max(spread, ms);
       if (!frame) frame = requestAnimationFrame(tickFrame);
     };
+    const onMove = (e: PointerEvent) => at(e.clientX, e.clientY);
+    const onDown = (e: PointerEvent) => at(e.clientX, e.clientY, ripple);
+    const onTouch = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (t) at(t.clientX, t.clientY);
+    };
     document.addEventListener("pointermove", onMove, { passive: true });
+    document.addEventListener("pointerdown", onDown, { passive: true });
+    document.addEventListener("touchmove", onTouch, { passive: true });
 
     // Highlighting the text reveals the real string; hits pause until it's cleared.
     const onSelect = () => {
@@ -405,13 +425,15 @@ export function Scramble({
 
     return () => {
       document.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerdown", onDown);
+      document.removeEventListener("touchmove", onTouch);
       document.removeEventListener("selectionchange", onSelect);
       cancelAnimationFrame(frame);
       ro.disconnect();
       for (const w of words) unflip(w);
       for (const s of slots) settle(s);
     };
-  }, [radius, hold, mutate, tick, revert, escalate, swapChance, fixed]);
+  }, [radius, hold, ripple, mutate, tick, revert, escalate, swapChance, fixed]);
 
   const live = (
     <span

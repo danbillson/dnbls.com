@@ -236,7 +236,7 @@ export function Hero({
       <SiteHeader />
 
       <div className="flex flex-1 items-center justify-center page-x">
-        <h1 className="font-display text-[clamp(3rem,13vw,15rem)] leading-none font-semibold tracking-[-0.045em] whitespace-nowrap">
+        <h1 className="font-display text-[clamp(3rem,20vw,15rem)] leading-[0.85] font-semibold tracking-[-0.045em] whitespace-nowrap md:text-[clamp(3rem,13vw,15rem)]">
           <span data-mask className="inline-block">
             <span ref={dan} data-word className="inline-block">
               <Scramble radius={140} grow="left">
@@ -265,6 +265,8 @@ export function Hero({
               />
             </span>
           </span>
+          {/* Phones: surname on its own line so the type can stay big. */}
+          <br className="md:hidden" />
           <span data-mask className="inline-block">
             <span ref={billson} data-word className="inline-block">
               <Scramble radius={140} grow="right">
