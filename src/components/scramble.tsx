@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { PALETTE } from "@/lib/palette";
 import "./scramble.css";
 
 export type ScrambleHit = {
@@ -118,18 +119,6 @@ export const shapeSwap = (ch: string) => {
   const s = SHAPE[ch];
   return s ? pick([...s]) : undefined;
 };
-
-// Tuned for the light background: saturated enough to read at body size.
-const PALETTE = [
-  "#ffb400",
-  "#ff6a00",
-  "#ff2e7e",
-  "#8a4dff",
-  "#9a7bff",
-  "#3ea63a",
-  "#2f6df6",
-  "#e0141c",
-];
 
 /** Random palette colour, and about a third of the time a look-alike glyph. */
 export const spectrum = ({ char }: ScrambleHit): ScrambleMutation => ({
