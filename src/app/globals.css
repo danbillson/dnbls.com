@@ -107,10 +107,6 @@
   animation-delay: inherit;
 }
 
-.work-marker {
-  transition: transform 300ms cubic-bezier(0.645, 0.045, 0.355, 1);
-}
-
 /* Reduced motion: keep the change legible with a plain fade, drop movement. */
 @media (prefers-reduced-motion: reduce) {
   .work-in,
@@ -120,9 +116,5 @@
 
   .work-reveal > :is(img, svg) {
     animation: none;
-  }
-
-  .work-marker {
-    transition: none;
   }
 }

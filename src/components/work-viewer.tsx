@@ -176,15 +176,7 @@ export function WorkViewer({ jobs }: { jobs: Job[] }) {
 
         <nav aria-label="Jobs">
           <p className="mb-2 text-muted">Experience</p>
-          <ol className="relative grid grid-cols-5 gap-x-[var(--gutter)]">
-            {/* One marker that travels between rows, like a ledger cursor. */}
-            <span
-              aria-hidden
-              className="work-marker pointer-events-none absolute top-0 left-0 flex h-7 items-center"
-              style={{ transform: `translateY(${index * 100}%)` }}
-            >
-              <span className="size-2.5 bg-foreground" />
-            </span>
+          <ol className="grid grid-cols-5 gap-x-[var(--gutter)]">
             {jobs.map((j, i) => (
               <li key={j.slug} className="col-span-5 grid grid-cols-subgrid">
                 <Link
@@ -193,8 +185,9 @@ export function WorkViewer({ jobs }: { jobs: Job[] }) {
                   aria-current={i === index ? "page" : undefined}
                   className="col-span-5 grid h-7 grid-cols-subgrid items-center border-rule border-b transition-colors duration-150 hover:bg-accent"
                 >
+                  {/* Active row reads in ink, the rest recede. */}
                   <span
-                    className={`tabular-nums transition-opacity duration-150 ${i === index ? "opacity-0" : "text-muted"}`}
+                    className={`tabular-nums transition-colors duration-150 ${i === index ? "" : "text-muted"}`}
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
@@ -213,7 +206,7 @@ export function WorkViewer({ jobs }: { jobs: Job[] }) {
 
       <section
         aria-label={`${job.company} photos`}
-        className="col-span-12 grid grid-cols-subgrid gap-y-[var(--gutter)] pb-[var(--margin)] md:col-span-7 md:py-[var(--margin)]"
+        className="col-span-12 grid grid-cols-subgrid content-start gap-y-[var(--gutter)] pb-[var(--margin)] md:col-span-7 md:py-[var(--margin)]"
       >
         <nav className="col-span-6 col-start-2 hidden h-9 items-center justify-between md:flex">
           <NavLinks />
