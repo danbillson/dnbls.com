@@ -44,3 +44,85 @@
   background: var(--accent);
   color: var(--foreground);
 }
+
+/* Work page — switching jobs. Direction comes from [data-dir] on the viewer:
+   1 = moving down the index, -1 = moving up. */
+@keyframes work-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--dir, 1) * 8px));
+    filter: blur(2px);
+  }
+}
+
+@keyframes work-reveal-up {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+}
+
+@keyframes work-reveal-down {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+@keyframes work-settle {
+  from {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes work-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+[data-dir="1"] {
+  --dir: 1;
+}
+
+[data-dir="-1"] {
+  --dir: -1;
+}
+
+.work-in {
+  animation: work-in 450ms cubic-bezier(0.19, 1, 0.22, 1) backwards;
+  animation-delay: calc(var(--i, 0) * 35ms);
+}
+
+.work-reveal {
+  animation: work-reveal-up 800ms cubic-bezier(0.19, 1, 0.22, 1) backwards;
+  animation-delay: calc(min(var(--i, 0), 5) * 70ms);
+}
+
+[data-dir="-1"] .work-reveal {
+  animation-name: work-reveal-down;
+}
+
+/* Photo settles inside its frame while the frame opens. */
+.work-reveal > img {
+  animation: work-settle 1000ms cubic-bezier(0.19, 1, 0.22, 1) backwards;
+  animation-delay: inherit;
+}
+
+.work-marker {
+  transition: transform 300ms cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+/* Reduced motion: keep the change legible with a plain fade, drop movement. */
+@media (prefers-reduced-motion: reduce) {
+  .work-in,
+  .work-reveal {
+    animation: work-fade 200ms ease backwards;
+  }
+
+  .work-reveal > img {
+    animation: none;
+  }
+
+  .work-marker {
+    transition: none;
+  }
+}
