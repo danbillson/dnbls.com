@@ -1,4 +1,12 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { Scramble, type ScrambleMutation } from "@/components/scramble";
+
+const FRUIT = [..."🍎🍐🍊🍋🍌🍉🍇🍓🫐🍒🍑🥭🍍🥝🍈"];
+const fruit = (): ScrambleMutation => ({
+  glyph: FRUIT[Math.floor(Math.random() * FRUIT.length)],
+});
 
 /**
  * Stepped, hyphenated section heading: `mark` hangs left of the second line.
@@ -15,18 +23,28 @@ export function LedgerHeading({
   const [first, second, third] = lines;
   return (
     <h2 className="page-grid font-display text-[clamp(2.75rem,7.5vw,8rem)] leading-[0.92] font-semibold tracking-[-0.04em]">
-      <span className="col-span-9 col-start-4 mix-blend-darken">{first}</span>
+      <span className="col-span-9 col-start-4 mix-blend-darken">
+        <Scramble radius={120} grow="right">
+          {first}
+        </Scramble>
+      </span>
       <span
         className="col-span-2 col-start-2 row-start-2 mix-blend-darken"
         aria-hidden
       >
-        {mark}
+        <Scramble radius={120} grow="right" mutate={fruit}>
+          {mark}
+        </Scramble>
       </span>
       <span className="col-span-9 col-start-4 row-start-2 mix-blend-darken">
-        {second}
+        <Scramble radius={120} grow="right">
+          {second}
+        </Scramble>
       </span>
       <span className="col-span-7 col-start-6 row-start-3 mix-blend-darken">
-        {third}
+        <Scramble radius={120} grow="right">
+          {third}
+        </Scramble>
       </span>
     </h2>
   );

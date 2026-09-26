@@ -153,16 +153,23 @@ export const experience = [
 
 export const projects = [
   {
+    title: "wardrobe.dnbls.com",
+    type: "Clothes classifier",
+    year: "2026",
+    href: "https://wardrobe.dnbls.com",
+    description: "Clothing classified and filtered by occasion with jev.",
+  },
+  {
     title: "pothooks",
     type: "Type tool",
-    year: "2025",
+    year: "2026",
     href: "https://pothooks.com",
     description: "Create and download your own hand-drawn fonts.",
   },
   {
     title: "ink.dnbls.com",
     type: "Shader experiment",
-    year: "2025",
+    year: "2026",
     href: "https://ink.dnbls.com",
     description: "Ink-like shaders giving a drawn effect to a 3D model.",
   },
