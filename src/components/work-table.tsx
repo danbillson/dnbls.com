@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { type PointerEvent, useRef, useState } from "react";
 import { ImageCycler } from "@/components/image-cycler";
 import { cell, LedgerTable } from "@/components/ledger";
 
 type Row = {
+  slug: string;
   company: string;
   role: string;
   years: string;
@@ -67,9 +69,12 @@ export function WorkTable({ rows }: { rows: Row[] }) {
                 <span className={`${cell} col-span-2 tabular-nums ${dim}`}>
                   {r.short}
                 </span>
-                <span className={`${cell} col-span-4 md:col-span-3 ${dim}`}>
+                <Link
+                  href={`/work/${r.slug}`}
+                  className={`${cell} col-span-4 hover:bg-accent md:col-span-3 ${dim}`}
+                >
                   {r.company}
-                </span>
+                </Link>
                 <span className={`${cell} col-span-6 md:col-span-4 ${dim}`}>
                   {r.role}
                 </span>

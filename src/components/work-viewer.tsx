@@ -143,7 +143,7 @@ export function WorkViewer({
   const navLinks = nav.map((item) => (
     <Link
       key={item.label}
-      href={item.label === "Work" ? "/work" : item.href}
+      href={item.href}
       className={item.label === "Work" ? "underline" : "hover:underline"}
     >
       {item.label}
