@@ -91,18 +91,17 @@ export default function Home() {
           </h1>
         </div>
 
-        <footer className="page-grid items-end text-sm leading-tight font-medium">
-          <p className="col-span-6 md:col-span-3">
-            <span className="block text-muted">Currently</span>
-            {profile.role} at {profile.currently.company}
-          </p>
-          <p className="col-span-12 row-start-2 mt-4 max-w-[44ch] md:col-span-4 md:col-start-5 md:row-start-auto md:mt-0">
+        <footer className="page-grid items-end">
+          {/* Leading ≥1.2 so the next line's selection doesn't clip descenders */}
+          <p className="col-span-11 max-w-[42ch] font-display text-xl leading-[1.2] font-medium tracking-[-0.015em] text-pretty md:col-span-8 md:text-[1.75rem]">
             {profile.intro}
           </p>
-          <p className="col-span-6 text-right md:col-span-3 md:col-start-10">
-            <span className="block text-muted">{profile.location}</span>
-            {profile.coords}
-          </p>
+          <span
+            aria-hidden
+            className="col-start-12 text-right text-sm font-medium text-muted"
+          >
+            ↓
+          </span>
         </footer>
       </section>
 
