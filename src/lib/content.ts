@@ -32,7 +32,7 @@ export const experience = [
     photos: "work/attio",
     role: "Design Engineer",
     roles: ["Product Engineer", "Design Engineer"],
-    team: "Workflows, then Marketing",
+    team: "Workflows, then Studio",
     location: "London",
     years: "2025–",
     period: "2025 – Present",
@@ -42,9 +42,8 @@ export const experience = [
     about:
       "Joined as a product engineer on the workflows team, building out the node-based workflow editor. Then made the jump to marketing as a design engineer, where I now build the interactive bits of attio.com.",
     highlights: [
-      "Node-based workflow editor",
-      "Switched from product to marketing engineering",
-      "Interactive pieces across attio.com",
+      "New workflows editor",
+      "Switched from product to the creative studio",
     ],
   },
   {
@@ -54,7 +53,7 @@ export const experience = [
     photos: "work/paddle",
     role: "Software Engineer",
     roles: ["Software Engineer"],
-    team: "Developer Experience",
+    team: "Developer Experience & Web2App",
     location: "London",
     years: "2024–2025",
     period: "2024 – 2025",
@@ -90,7 +89,7 @@ export const experience = [
     highlights: [
       "Component library and design system, with design",
       "Started the Front-end Guild and brown bag sessions",
-      "Ran the SoCode Summer School for juniors",
+      "Ran the SoCode Summer School",
       "Led the data capture rebuild, RFC to production",
     ],
     stack: ["TypeScript", "React", "Next.js", "Elixir", "Storybook"],
