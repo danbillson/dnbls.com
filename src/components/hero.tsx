@@ -26,8 +26,8 @@ function AttioMark() {
 const swaps = {
   design: "🎨",
   attio: <AttioMark />,
-  care: "❤️",
-  cask: "🍺",
+  foundries: "Aa",
+  buildings: "🏛️",
   volleyball: "🏐",
   run: "🏃",
 };
