@@ -2,7 +2,7 @@ export const profile = {
   name: "Dan Billson",
   role: "Design Engineer",
   intro:
-    "I’m a design engineer at Attio. I lose hours browsing type foundries and take far too many pictures of buildings. The rest of the time you’ll find me on a volleyball court or out on a run.",
+    "I’m a design engineer at Attio. I take far too many pictures of brutal buildings. The rest of the time you’ll find me on a volleyball court or out on a run.",
   statement:
     "Design engineer in Attio’s little creative studio. Most of my career has been building product very close to design. Off the clock it’s volleyball, running when I’m not injured, and beer — the traditional stuff and the weird stuff.",
 };

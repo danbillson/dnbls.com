@@ -26,8 +26,7 @@ function AttioMark() {
 const swaps = {
   design: "🎨",
   attio: <AttioMark />,
-  foundries: "Aa",
-  buildings: "🏛️",
+  buildings: "🏢",
   volleyball: "🏐",
   run: "🏃",
 };
@@ -170,7 +169,7 @@ export function Hero({ images }: { images: { src: string }[] }) {
           radius={70}
           swaps={swaps}
           data-enter="intro"
-          className="col-span-11 max-w-[42ch] font-display text-xl leading-[1.2] font-medium tracking-[-0.015em] text-pretty md:col-span-8 md:text-[1.75rem]"
+          className="col-span-11 max-w-[45ch] font-display text-xl leading-[1.2] font-medium tracking-[-0.015em] text-balance md:col-span-8 md:text-[1.75rem]"
         >
           {profile.intro}
         </Scramble>
