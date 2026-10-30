@@ -40,6 +40,11 @@ export async function generateMetadata({
 }
 
 const kicker = "text-xs font-medium tracking-[0.08em] uppercase";
+// One centred column for the whole article: header, body and footer. Capped
+// at a reading measure and centred within its span, so wide screens don't
+// leave the text hugging the left edge. The cap also overrides `.prose`'s 64ch.
+const column =
+  "col-span-12 w-full max-w-[40rem] justify-self-center md:col-span-8 md:col-start-3 lg:col-span-6 lg:col-start-4";
 
 export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
   const { slug } = await params;
@@ -67,7 +72,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
         <article>
           {/* Pre-marked in: plays as the load intro. */}
           <header data-reveal data-in className="page-grid gap-y-10">
-            <div className="col-span-12 flex gap-x-6 md:col-span-2 md:col-start-2 md:flex-col md:gap-y-1">
+            <div className={`${column} flex gap-x-6`}>
               <p className={`rv-rise ${kicker}`}>
                 <Link href="/blog" className="hover:bg-accent">
                   Writing
@@ -87,8 +92,8 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
                 {post.minutes} min read
               </p>
             </div>
-            <div className="col-span-12 flex flex-col gap-8 md:col-span-8 md:col-start-4">
-              <h1 className="rv-words max-w-[14ch] font-display text-[clamp(2.75rem,6.5vw,6.75rem)] leading-[0.95] font-semibold tracking-[-0.04em] text-balance">
+            <div className={`${column} flex flex-col gap-8`}>
+              <h1 className="rv-words max-w-[14ch] font-display text-[clamp(2.75rem,6.5vw,5rem)] leading-[0.95] font-semibold tracking-[-0.04em] text-balance">
                 <Words text={post.title} spread={350} />
               </h1>
               {post.description && (
@@ -100,20 +105,20 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
           </header>
 
           <div className="page-grid mt-16 md:mt-24">
-            <div className="prose col-span-12 md:col-span-8 md:col-start-4 lg:col-span-6 lg:col-start-4">
+            <div className={`prose ${column}`}>
               <Body />
             </div>
           </div>
 
-          <footer className="page-grid mt-24 md:mt-32">
+          <footer className="page-grid mt-24 gap-y-6 md:mt-32">
             <p
-              className={`col-span-12 border-rule border-t pt-3 text-muted md:col-span-2 md:col-start-2 ${kicker}`}
+              className={`${column} border-rule border-t pt-3 text-muted ${kicker}`}
             >
               {longDate(post.date)}
             </p>
             <nav
               aria-label="More writing"
-              className="col-span-12 grid grid-cols-subgrid md:col-span-8 md:col-start-4"
+              className={`${column} grid grid-cols-2 gap-x-[var(--gutter)]`}
             >
               {[
                 { label: "Older", post: older },
@@ -121,7 +126,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
               ].map(({ label, post: p }) => (
                 <div
                   key={label}
-                  className="col-span-6 flex flex-col gap-3 border-rule border-t pt-3 md:col-span-4"
+                  className="flex flex-col gap-3 border-rule border-t pt-3"
                 >
                   <span className={`text-muted ${kicker}`}>{label}</span>
                   {p ? (

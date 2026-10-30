@@ -28,7 +28,7 @@ const components: MDXComponents = {
       <Image
         {...props}
         alt={alt}
-        sizes="(min-width: 768px) 58vw, 100vw"
+        sizes="(min-width: 768px) min(66vw, 40rem), 100vw"
         className={`w-full bg-foreground/5 ${className ?? ""}`}
       />
       {alt && (
