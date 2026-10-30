@@ -56,6 +56,9 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
   const newer = posts[index - 1];
   const older = posts[index + 1];
   const { default: Body } = await import(`@/content/blog/${slug}.mdx`);
+  // Held-drawing posts play the title on a frame grid; snap the subtitle to it.
+  const frame = post.fps ? 1000 / post.fps : 1;
+  const subtitleDelay = Math.round(Math.round(350 / frame) * frame);
 
   return (
     <>
@@ -92,12 +95,22 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
                 {post.minutes} min read
               </p>
             </div>
-            <div className={`${column} flex flex-col gap-8`}>
+            <div
+              style={
+                post.fps
+                  ? ({ "--rv-fps": post.fps } as CSSProperties)
+                  : undefined
+              }
+              className={`${column} flex flex-col gap-8 ${post.fps ? "rv-held" : ""}`}
+            >
               <h1 className="rv-words max-w-[14ch] font-display text-[clamp(2.75rem,6.5vw,5rem)] leading-[0.95] font-semibold tracking-[-0.04em] text-balance">
-                <Words text={post.title} spread={350} />
+                <Words text={post.title} spread={350} fps={post.fps} />
               </h1>
               {post.description && (
-                <p className="rv-rise max-w-[36ch] font-display text-xl leading-snug font-medium tracking-tight text-pretty text-muted [--d:350ms] md:text-2xl">
+                <p
+                  style={{ "--d": `${subtitleDelay}ms` } as CSSProperties}
+                  className="rv-rise max-w-[36ch] font-display text-xl leading-snug font-medium tracking-tight text-pretty text-muted md:text-2xl"
+                >
                   {post.description}
                 </p>
               )}

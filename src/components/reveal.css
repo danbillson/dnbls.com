@@ -35,6 +35,60 @@
   }
 }
 
+/* Held-drawing headline word, in the style of "UI at 12fps": a blank drawing,
+   a stretched smear, overshoot, a squash on landing, settle. --tilt flips the
+   lean on alternate words. */
+@keyframes rv-word-held {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(45%) scale(0.7, 1.45)
+      rotate(calc(var(--tilt, 1) * -8deg));
+  }
+  40% {
+    transform: translateY(-20%) scale(0.92, 1.12)
+      rotate(calc(var(--tilt, 1) * 4deg));
+  }
+  60% {
+    transform: translateY(3%) scale(1.16, 0.84)
+      rotate(calc(var(--tilt, 1) * -1.5deg));
+  }
+  80% {
+    transform: scale(0.97, 1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Held-drawing block (subtitles): blank, a stretched lurch up from below,
+   overshoot, squash, settle. Smaller moves than the words, it's a paragraph. */
+@keyframes rv-rise-held {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(22px) scale(0.94, 1.14) skewX(-8deg);
+  }
+  40% {
+    transform: translateY(-8px) scale(0.98, 1.05) skewX(4deg);
+  }
+  60% {
+    transform: translateY(2px) scale(1.04, 0.95);
+  }
+  80% {
+    transform: scale(0.99, 1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @keyframes rv-fade {
   from {
     opacity: 0;
@@ -104,6 +158,30 @@
   animation-delay: var(--rv-delay);
 }
 
+/* Held drawings (.rv-held + --rv-fps): one drawing per frame, each held via
+   steps(). The mask stays on while waiting but comes off once in, so the
+   overshoot and stretch aren't clipped; the blank first drawing hides it. */
+.rv-held .rv-mask:nth-of-type(even) {
+  --tilt: -1;
+}
+
+[data-reveal][data-in] .rv-held .rv-mask {
+  clip-path: none;
+  animation: none;
+}
+
+[data-reveal][data-in] .rv-held .rv-word {
+  transform-origin: 50% 100%;
+  animation: rv-word-held calc(5s / var(--rv-fps, 12)) steps(1, end) both;
+  animation-delay: var(--rv-delay);
+}
+
+[data-reveal][data-in] .rv-held .rv-rise {
+  transform-origin: 0 100%;
+  animation: rv-rise-held calc(5s / var(--rv-fps, 12)) steps(1, end) both;
+  animation-delay: var(--rv-delay);
+}
+
 /* Line-split copy (lines.tsx): hidden until split; a post-resize re-split
    shows its final state without replaying. */
 [data-reveal] .rv-lines:not([data-split]) {
@@ -139,7 +217,8 @@
     opacity: 0;
   }
 
-  [data-reveal][data-in] :is(.rv-rise, .rv-word, .rv-img > img) {
+  [data-reveal][data-in] :is(.rv-rise, .rv-word, .rv-img > img),
+  [data-reveal][data-in] .rv-held :is(.rv-word, .rv-rise) {
     animation: rv-fade 300ms ease both;
     animation-delay: 0ms;
   }
