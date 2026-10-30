@@ -2,6 +2,7 @@
 
 import "lenis/dist/lenis.css";
 import Lenis from "lenis";
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 let lenis: Lenis | null = null;
@@ -17,10 +18,13 @@ export function jumpTo(top: number) {
 
 /**
  * Inertial scrolling for the whole site. Light lerp so it reads as weight,
- * not lag. Off under reduced motion, where native scrolling wins.
+ * not lag. Off under reduced motion, where native scrolling wins, and on the
+ * blog, where reading wants plain native scrolling.
  */
 export function SmoothScroll() {
+  const off = usePathname().startsWith("/blog");
   useEffect(() => {
+    if (off) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const instance = new Lenis({ lerp: 0.1, anchors: true, autoRaf: true });
     lenis = instance;
@@ -28,6 +32,6 @@ export function SmoothScroll() {
       instance.destroy();
       lenis = null;
     };
-  }, []);
+  }, [off]);
   return null;
 }

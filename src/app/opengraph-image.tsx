@@ -5,5 +5,5 @@ export const size = ogSize;
 export const contentType = "image/png";
 
 export default function Image() {
-  return heroImage({ role: "Design Engineer" });
+  return heroImage({ line: "Design Engineer" });
 }

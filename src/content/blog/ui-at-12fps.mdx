@@ -1,0 +1,87 @@
+import {
+  TwosCompare,
+  TwosDemos,
+  TwosScrubber,
+  TwosSlider,
+} from "@/components/blog/twos";
+
+export const metadata = {
+  title: "UI at 12fps",
+  date: "2026-10-30",
+  description: "What if UI moved like Spider-Verse?",
+};
+
+I posted a little video of this on [X](https://x.com/danbillson) and it got a lot more attention than I expected, so here is the slightly longer version. These are real [Base UI](https://base-ui.com) components animated at 12fps, the same way Spider-Verse animates its characters. Have a click around.
+
+<TwosDemos />
+
+## What is “on twos”?
+
+Film runs at 24fps. Animating on twos means each drawing is held for two of those frames, so the character only moves 12 times a second. Spider-Verse does this to the characters while the camera stays smooth, which is a big part of why it looks drawn rather than rendered.
+
+UI usually does the opposite and interpolates every frame, keeping the motion as subtle as possible. I wanted to see what happens if you don’t.
+
+## Just drop the frames
+
+The obvious first attempt is to take a normal, subtle animation and hold each frame. Both of these take the same amount of time, the one on the right just gets 2 drawings to do it in, and it ends up looking laggy rather than drawn.
+
+<TwosCompare a="smooth" b="laggy" demo="dialog" />
+
+## Push the poses
+
+Animators get around this by exaggerating. Each drawing is a pose, squashed, overshooting, stretched and then settled. Same 12fps, but now every frame actually has something to say.
+
+<TwosCompare a="laggy" b="twos" demo="dialog" />
+
+## Why not just go cartoon?
+
+You could keep the big poses and interpolate between them. That’s the left side, it’s bouncy and fun but a bit floaty because the in-betweens smooth out all of the snap. Holding the poses on the right feels punchier, even with the same keyframes and the same timing.
+
+<TwosCompare a="cartoon" b="twos" demo="controls" />
+
+## How it works
+
+There is no animation library involved. Base UI handles the state and accessibility and exposes data attributes like `data-open` and `data-closed`, then CSS draws every pose.
+
+Each keyframe stop is one drawing and `steps(1, end)` holds it until the next one, so the duration is just the number of drawings divided by the frame rate.
+
+```css
+.dialog[data-open] {
+  /* 5 drawings at 12fps */
+  animation: pop-in calc(5s / 12) steps(1, end) both;
+}
+
+@keyframes pop-in {
+  0% { transform: scale(0.45, 0.3) translateY(24px); }
+  20% { transform: scale(1.14, 0.84); }
+  40% { transform: scale(0.9, 1.12) translateY(-8px); }
+  60% { transform: scale(1.04, 0.97); }
+  80%, 100% { transform: none; }
+}
+```
+
+Here are those 5 drawings, step through them one at a time. The faded copies are the earlier drawings, like onion skinning in an animation tool, so you can see how far the dialog jumps from one drawing to the next.
+
+<TwosScrubber />
+
+Transitions are a little trickier as `steps()` can’t overshoot, but `linear()` can, and if you repeat each stop you get a held frame. That’s what drives the tabs indicator and the accordion.
+
+```css
+.tab-indicator {
+  translate: var(--active-tab-left) 0;
+  transition: translate calc(4s / 12)
+    linear(0.3 0%, 0.3 25%, 1.2 25%, 1.2 50%, 0.94 50%, 0.94 75%, 1 75%, 1 100%);
+}
+```
+
+## What stays smooth
+
+Anything you’re touching. If the slider thumb only moved 12 times a second it would just feel laggy, no matter how good the poses are. The thumb follows your pointer every frame and only the grab and the value bubble are drawn.
+
+<TwosSlider />
+
+Spider-Verse keeps the camera smooth, UI should keep the input smooth.
+
+---
+
+Got any questions? Feel free to reach out on X - [@danbillson](https://x.com/danbillson)

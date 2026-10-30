@@ -23,79 +23,6 @@ async function displayFont(weight: 500 | 600 = 600) {
   }
 }
 
-/** Paper card: highlighted kicker top-left, big title, muted subtitle. */
-export async function ogImage({
-  title,
-  subtitle,
-  kicker,
-  titleSize = 132,
-}: {
-  title: string;
-  subtitle: string;
-  kicker: string;
-  titleSize?: number;
-}) {
-  const font = await displayFont();
-  return new ImageResponse(
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        padding: 64,
-        background: "#f9f9f9",
-        color: "#171717",
-        fontFamily: font ? "Host Grotesk" : "sans-serif",
-      }}
-    >
-      {/* Accent can't carry text on paper, so it's the highlight instead. */}
-      <div style={{ display: "flex" }}>
-        <div
-          style={{
-            fontSize: 28,
-            fontWeight: 600,
-            padding: "2px 10px",
-            background: "#e4ff02",
-          }}
-        >
-          {kicker}
-        </div>
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-        <div
-          style={{
-            fontSize: titleSize,
-            fontWeight: 600,
-            letterSpacing: "-0.045em",
-            lineHeight: 0.95,
-            textWrap: "balance",
-          }}
-        >
-          {title}
-        </div>
-        <div
-          style={{
-            fontSize: 36,
-            fontWeight: 600,
-            letterSpacing: "-0.02em",
-            opacity: 0.6,
-          }}
-        >
-          {subtitle}
-        </div>
-      </div>
-    </div>,
-    {
-      ...ogSize,
-      fonts: font
-        ? [{ name: "Host Grotesk", data: font, weight: 600, style: "normal" }]
-        : undefined,
-    },
-  );
-}
-
 // The hero's slot photo, cropped to the faces: a box in the source's pixels
 // (friends.jpg is 1800×2400) at the slot's 1.07:0.7 aspect.
 const PHOTO = {
@@ -104,8 +31,19 @@ const PHOTO = {
   crop: { x: 516, y: 672, width: 840 },
 };
 
-/** The homepage hero as a card: Dan [photo] Billson, role in scramble colours. */
-export async function heroImage({ role }: { role: string }) {
+/**
+ * The homepage hero as a card: Dan [photo] Billson with a line underneath, in
+ * scramble colours by default. Posts pass a kicker and plain ink for the title.
+ */
+export async function heroImage({
+  line,
+  kicker,
+  colour = true,
+}: {
+  line: string;
+  kicker?: string;
+  colour?: boolean;
+}) {
   const [semibold, medium, photo] = await Promise.all([
     displayFont(600),
     displayFont(500),
@@ -122,7 +60,7 @@ export async function heroImage({ role }: { role: string }) {
   const scale = slot.width / PHOTO.crop.width;
   // Stride through the palette so neighbouring letters never share a colour.
   let n = 0;
-  const letters = [...role].map((ch) =>
+  const letters = [...line].map((ch) =>
     ch === " "
       ? { ch, color: undefined }
       : { ch, color: PALETTE[(n++ * 3) % PALETTE.length] },
@@ -142,6 +80,22 @@ export async function heroImage({ role }: { role: string }) {
         fontFamily: fonts.length ? "Host Grotesk" : "sans-serif",
       }}
     >
+      {/* Accent can't carry text on paper, so it's the highlight instead. */}
+      {kicker && (
+        <div
+          style={{
+            position: "absolute",
+            top: 64,
+            left: 64,
+            fontSize: 28,
+            fontWeight: 600,
+            padding: "2px 10px",
+            background: "#e4ff02",
+          }}
+        >
+          {kicker}
+        </div>
+      )}
       {/* Role hangs off the wordmark's left edge, not the page centre. */}
       <div
         style={{
@@ -197,18 +151,23 @@ export async function heroImage({ role }: { role: string }) {
             display: "flex",
             // Big D's side bearing is wider: nudge in so the stems line up,
             // and tuck up into the wordmark's descender space.
+            maxWidth: 1040,
+            textWrap: "balance",
             margin: "-14px 0 0 6px",
             fontSize: 56,
             fontWeight: 500,
             letterSpacing: "-0.015em",
           }}
         >
-          {letters.map(({ ch, color }, i) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: static text, order is identity
-            <span key={i} style={{ color, whiteSpace: "pre" }}>
-              {ch}
-            </span>
-          ))}
+          {/* Per-letter spans can't wrap between words, so plain lines stay one node. */}
+          {colour
+            ? letters.map(({ ch, color }, i) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: static text, order is identity
+                <span key={i} style={{ color, whiteSpace: "pre" }}>
+                  {ch}
+                </span>
+              ))
+            : line}
         </div>
       </div>
     </div>,

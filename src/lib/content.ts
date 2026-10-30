@@ -8,7 +8,7 @@ export const profile = {
 };
 
 export const links = [
-  { label: "X", href: "https://x.com/dbillson" },
+  { label: "X", href: "https://x.com/danbillson" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/danbillson/" },
   { label: "GitHub", href: "https://github.com/danbillson" },
   { label: "Email", href: "mailto:dbillson@outlook.com" },

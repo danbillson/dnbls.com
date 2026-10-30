@@ -1,5 +1,5 @@
 import { getPost, getPosts } from "@/lib/blog";
-import { ogImage, ogSize } from "@/lib/og";
+import { heroImage, ogSize } from "@/lib/og";
 
 export const alt = "Dan Billson — Writing";
 export const size = ogSize;
@@ -17,10 +17,9 @@ export default async function Image({
 }) {
   const { slug } = await params;
   const post = await getPost(slug);
-  return ogImage({
+  return heroImage({
     kicker: "Writing",
-    title: post?.title ?? "Writing",
-    subtitle: "Dan Billson",
-    titleSize: 88,
+    line: post?.title ?? "Writing",
+    colour: false,
   });
 }
