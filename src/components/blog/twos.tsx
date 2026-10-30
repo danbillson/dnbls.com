@@ -14,10 +14,8 @@ import {
   type CSSProperties,
   createContext,
   type ReactNode,
-  type RefObject,
   useContext,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import "./twos.css";
@@ -40,8 +38,10 @@ const at = (i: number) => ({ "--i": i }) as CSSProperties;
 
 /* ========================= scope ========================= */
 
-// Popups portal into their scope so they pick up its mode.
-const Container = createContext<RefObject<HTMLDivElement | null> | null>(null);
+// Popups portal into their scope so they pick up its mode. The element (not a
+// ref) goes in context: the toast portal mounts with the scope, before a ref is
+// attached, and would fall back to <body> for good.
+const Container = createContext<HTMLDivElement | null>(null);
 
 function Scope({
   rate,
@@ -56,7 +56,7 @@ function Scope({
   className?: string;
   children: ReactNode;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const [node, setNode] = useState<HTMLDivElement | null>(null);
   const [ready, setReady] = useState(false);
   useEffect(() => {
     const id = setTimeout(() => setReady(true), 300);
@@ -64,14 +64,14 @@ function Scope({
   }, []);
   return (
     <div
-      ref={ref}
+      ref={setNode}
       data-bt-rate={rate}
       data-bt-style={look}
       data-bt-ready={ready ? "" : undefined}
       style={{ "--bt-fps": fps } as CSSProperties}
       className={className}
     >
-      <Container value={ref}>{children}</Container>
+      <Container value={node}>{children}</Container>
     </div>
   );
 }
@@ -122,8 +122,22 @@ function DialogDemo() {
   );
 }
 
+const POST_URL = "https://dnbls.com/blog/ui-at-12fps";
+
 function PopoverDemo() {
   const container = useContainer();
+  const toasts = Toast.useToastManager();
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(POST_URL);
+      toasts.add({ title: "Copied", description: "Link copied to clipboard." });
+    } catch {
+      toasts.add({
+        title: "Unable to copy",
+        description: "Select the link and copy it instead.",
+      });
+    }
+  };
   return (
     <Popover.Root>
       <Popover.Trigger className={btn}>Share ↗</Popover.Trigger>
@@ -140,10 +154,13 @@ function PopoverDemo() {
               <input
                 readOnly
                 aria-label="Link"
-                value="dnbls.com/blog/ui-at-12fps"
+                value={POST_URL.replace("https://", "")}
                 className="min-w-0 flex-1 border border-r-0 border-rule bg-background px-2.5 text-xs font-medium outline-none"
               />
-              <Popover.Close className={`${btn} h-8 px-3 text-xs`}>
+              <Popover.Close
+                onClick={copy}
+                className={`${btn} h-8 px-3 text-xs`}
+              >
                 Copy
               </Popover.Close>
             </div>
@@ -431,6 +448,7 @@ function ToastList() {
 
 function Toasts() {
   const container = useContainer();
+  if (!container) return null;
   return (
     <Toast.Portal container={container}>
       <Toast.Viewport className="fixed bottom-4 left-4 z-50 flex flex-col-reverse gap-2 outline-none">
