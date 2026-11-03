@@ -237,28 +237,29 @@ export const about = {
       "I travel for the culture, the beer and the food — ideally all three before lunch. Mostly Europe, the odd long-haul, always too many photos of buildings.",
     places: [
       {
+        name: "Lisbon",
+        country: "Portugal",
+        photos: "travel/lisbon",
+      },
+      {
         name: "Valencia",
         country: "Spain",
         photos: "travel/valencia",
-        note: "Calatrava’s City of Arts and Sciences, beach volleyball and clóchinas by the sea.",
       },
       {
-        name: "Belgium",
-        country: "Ghent & around",
+        name: "Ghent",
+        country: "Belgium",
         photos: "travel/belgium",
-        note: "Canal-side gables, Trappist beer and a long afternoon at the Waterhuis aan de Bierkant.",
       },
       {
         name: "New York",
         country: "USA",
         photos: "travel/new-york",
-        note: "Bridges, the Oculus and craning up at the Woolworth Building.",
       },
       {
         name: "Dolomites",
         country: "Italy",
         photos: "travel/dolomites",
-        note: "Hiking with friends under jagged peaks, wildflowers all the way up.",
       },
     ],
   },

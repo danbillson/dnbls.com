@@ -8,7 +8,6 @@ import type { Photo } from "@/lib/images";
 type Place = {
   name: string;
   country: string;
-  note: string;
   photos: Photo[];
 };
 
@@ -109,7 +108,7 @@ export function PlaceSwitcher({ places }: { places: Place[] }) {
 
       <figure
         style={{ "--i": 2 } as CSSProperties}
-        className="rv-rise col-span-12 flex flex-col gap-3 md:col-span-6 md:col-start-7 md:self-start"
+        className="rv-rise col-span-12 md:col-span-6 md:col-start-7 md:self-start"
       >
         {/* Every bento stays mounted in one cell so switching is instant. */}
         <div className="grid">
@@ -151,12 +150,6 @@ export function PlaceSwitcher({ places }: { places: Place[] }) {
             </div>
           ))}
         </div>
-        <figcaption
-          aria-live="polite"
-          className="max-w-[40ch] text-sm font-medium text-pretty"
-        >
-          {current.note}
-        </figcaption>
       </figure>
 
       <Lightbox
