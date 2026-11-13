@@ -23,7 +23,8 @@ const components: MDXComponents = {
       </a>
     );
   },
-  Image: ({ className, alt, ...props }) => (
+  // Alt doubles as the caption; `caption={false}` keeps the alt, drops the caption.
+  Image: ({ className, alt, caption = true, ...props }) => (
     <figure className="my-10">
       <Image
         {...props}
@@ -31,7 +32,7 @@ const components: MDXComponents = {
         sizes="(min-width: 768px) min(66vw, 40rem), 100vw"
         className={`w-full bg-foreground/5 ${className ?? ""}`}
       />
-      {alt && (
+      {caption && alt && (
         <figcaption
           aria-hidden
           className="mt-2 text-xs font-medium tracking-[0.08em] uppercase text-muted"

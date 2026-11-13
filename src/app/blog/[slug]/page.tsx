@@ -106,7 +106,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
               <h1 className="rv-words max-w-[14ch] font-display text-[clamp(2.75rem,6.5vw,5rem)] leading-[0.95] font-semibold tracking-[-0.04em] text-balance">
                 <Words text={post.title} spread={350} fps={post.fps} />
               </h1>
-              {post.description && (
+              {post.description && post.subtitle !== false && (
                 <p
                   style={{ "--d": `${subtitleDelay}ms` } as CSSProperties}
                   className="rv-rise max-w-[36ch] font-display text-xl leading-snug font-medium tracking-tight text-pretty text-muted md:text-2xl"

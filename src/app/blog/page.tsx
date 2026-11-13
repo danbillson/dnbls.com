@@ -10,7 +10,7 @@ import { getPosts, ledgerDate } from "@/lib/blog";
 export const metadata: Metadata = {
   title: "Writing",
   description:
-    "Notes on software engineering, side projects and the odd pub crawl.",
+    "Notes on design engineering, side projects and the odd pub crawl.",
 };
 
 export default async function Blog() {

@@ -56,5 +56,5 @@ imports, so adjust paths when you copy.
 | --- | --- |
 | `src/components/blog/callout.tsx` | Aside with a kicker label and a 2px foreground left bar. |
 | `src/components/blog/info-links.tsx` | Kicker-style metadata row with `↗` external links. |
-| `src/mdx-components.tsx` | MDX mapping: external links, figure with kicker caption. |
+| `src/mdx-components.tsx` | MDX mapping: external links, figure with kicker caption (from alt; `caption={false}` hides it). |
 | `src/lib/og.tsx` | OG image: off-white card, Host Grotesk, palette-tinted lettering. |

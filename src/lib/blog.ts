@@ -9,6 +9,9 @@ export type PostMeta = {
   description?: string;
   /** Play the title reveal as held drawings at this frame rate. */
   fps?: number;
+  /** Show the description under the title. `false` keeps it for /blog and
+   * link previews only. */
+  subtitle?: boolean;
 };
 
 export type Post = {
@@ -45,7 +48,8 @@ function parseMeta(src: string): PostMeta | null {
   const date = str("date");
   if (!title || !date) return null;
   const fps = Number(block.match(/\bfps:\s*(\d+)/)?.[1]) || undefined;
-  return { title, date, description: str("description"), fps };
+  const subtitle = /\bsubtitle:\s*false\b/.test(block) ? false : undefined;
+  return { title, date, description: str("description"), fps, subtitle };
 }
 
 const SLUG = /^[a-z0-9-]+$/;

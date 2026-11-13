@@ -227,8 +227,8 @@ export const about = {
       ],
     ],
     link: {
-      label: "Top 10 pubs in London, 2025",
-      href: "/blog/top-10-pubs-in-london-2025",
+      label: "Top 10 pubs in London, 2026",
+      href: "/blog/top-10-pubs-in-london-2026",
     },
   },
   travel: {
