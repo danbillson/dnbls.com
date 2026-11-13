@@ -1,5 +1,6 @@
 "use client";
 
+import { PALETTE } from "@design/palette";
 import {
   createElement,
   Fragment,
@@ -9,7 +10,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { PALETTE } from "@/lib/palette";
 import "./scramble.css";
 
 export type ScrambleHit = {

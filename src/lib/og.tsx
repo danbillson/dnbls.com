@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { PALETTE } from "@design/palette";
 import { ImageResponse } from "next/og";
-import { PALETTE } from "@/lib/palette";
 
 export const ogSize = { width: 1200, height: 630 };
 

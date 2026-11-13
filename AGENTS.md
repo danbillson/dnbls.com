@@ -7,3 +7,12 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Design system
+
+`dnbls-design/` is the site's design system and also a global agent skill
+(symlinked into `~/.agents/skills` and `~/.claude/skills`). `tokens.css`,
+`fonts.ts` and `palette.ts` there are imported by the site (`@design/*`).
+When you change a token, a type style, a motion curve or a signature
+pattern, update `dnbls-design/SKILL.md` (and `components.md` if a
+component moves) in the same change.

@@ -1,10 +1,10 @@
+import { fontVariables } from "@design/fonts";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { GridOverlay } from "@/components/grid-overlay";
 import { PeekHeader } from "@/components/peek-header";
 import { SmoothScroll } from "@/components/smooth-scroll";
-import { fontVariables } from "@/lib/fonts";
 import { personJsonLd } from "@/lib/llms";
 import "./globals.css";
 

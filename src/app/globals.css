@@ -1,50 +1,6 @@
 @import "tailwindcss";
-
-:root {
-  --background: #f9f9f9;
-  --foreground: #171717;
-  --accent: #e4ff02;
-  /* 62% → #6d6d6d on the page bg, 4.9:1 (AA at small sizes). */
-  --muted: color-mix(in oklab, var(--foreground) 62%, transparent);
-  --rule: color-mix(in oklab, var(--foreground) 15%, transparent);
-
-  --margin: 1rem;
-  --gutter: 1rem;
-}
-
-@media (min-width: 64rem) {
-  :root {
-    --margin: 1.25rem;
-    --gutter: 1.25rem;
-  }
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-accent: var(--accent);
-  --color-muted: var(--muted);
-  --color-rule: var(--rule);
-  --font-display: var(--font-host-grotesk);
-  --font-sans: var(--font-inter);
-}
-
-/* 12-col page grid, mirrored by the dev grid overlay (G) */
-@utility page-grid {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gutter);
-  padding-inline: var(--margin);
-}
-
-@utility page-x {
-  padding-inline: var(--margin);
-}
-
-::selection {
-  background: var(--accent);
-  color: var(--foreground);
-}
+/* Colours, type, grid, curves: shared with the dnbls-design skill. */
+@import "../../dnbls-design/tokens.css";
 
 /* Lightbox open: the page beneath shouldn't rubber-band under a touch drag. */
 body:has(dialog[open]) {
@@ -530,18 +486,9 @@ body:has(dialog[open]) {
   }
 }
 
-/* /cv on paper */
+/* /cv on paper (margin and background tokens: tokens.css) */
 @media print {
   @page {
     margin: 14mm;
-  }
-
-  :root {
-    --margin: 0px;
-    --gutter: 1rem;
-  }
-
-  body {
-    background: #fff;
   }
 }

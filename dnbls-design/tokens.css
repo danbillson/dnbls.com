@@ -1,0 +1,71 @@
+/* dnbls design tokens. The single source for dnbls.com (imported by
+   src/app/globals.css) and for new projects (copy this file next to your
+   globals.css and `@import "./tokens.css";` straight after tailwindcss).
+   Needs Tailwind v4 and the font variables from fonts.ts on <html>. */
+
+:root {
+  --background: #f9f9f9;
+  --foreground: #171717;
+  --accent: #e4ff02;
+  /* 62% → #6d6d6d on the page bg, 4.9:1 (AA at small sizes). */
+  --muted: color-mix(in oklab, var(--foreground) 62%, transparent);
+  --rule: color-mix(in oklab, var(--foreground) 15%, transparent);
+
+  --margin: 1rem;
+  --gutter: 1rem;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --margin: 1.25rem;
+    --gutter: 1.25rem;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --font-display: var(--font-host-grotesk);
+  --font-sans: var(--font-inter);
+}
+
+/* House curves, as `ease-out-expo` etc. utilities and CSS variables.
+   Expo: UI transitions, hovers, wipes. Quint: scroll and load reveals.
+   Morph: shared-element / view-transition moves. */
+@theme {
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-morph: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* 12-col page grid, mirrored by the dev grid overlay (G) */
+@utility page-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  padding-inline: var(--margin);
+}
+
+@utility page-x {
+  padding-inline: var(--margin);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--foreground);
+}
+
+/* Paper: no page margin of our own, white sheet. */
+@media print {
+  :root {
+    --margin: 0px;
+    --gutter: 1rem;
+  }
+
+  body {
+    background: #fff;
+  }
+}
