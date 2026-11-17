@@ -57,4 +57,5 @@ imports, so adjust paths when you copy.
 | `src/components/blog/callout.tsx` | Aside with a kicker label and a 2px foreground left bar. |
 | `src/components/blog/info-links.tsx` | Kicker-style metadata row with `↗` external links. |
 | `src/mdx-components.tsx` | MDX mapping: external links, figure with kicker caption (from alt; `caption={false}` hides it). |
+| `src/app/blog/[slug]/print/page.tsx` | A6 print booklet of a list post: ledger kicker rows, big display numerals, pt/mm sizes, named `@page`. Page plans live in `src/lib/booklet.ts`; `pnpm booklet <slug>` saves the PDF. |
 | `src/lib/og.tsx` | OG image: off-white card, Host Grotesk, palette-tinted lettering. |

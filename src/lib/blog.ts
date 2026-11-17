@@ -54,14 +54,19 @@ function parseMeta(src: string): PostMeta | null {
 
 const SLUG = /^[a-z0-9-]+$/;
 
-export const getPost = cache(async (slug: string): Promise<Post | null> => {
+/** Raw MDX source, for routes that lay a post out themselves (print). */
+export const getPostSource = cache((slug: string): string | null => {
   if (!SLUG.test(slug)) return null;
-  let src: string;
   try {
-    src = readFileSync(join(DIR, `${slug}.mdx`), "utf8");
+    return readFileSync(join(DIR, `${slug}.mdx`), "utf8");
   } catch {
     return null;
   }
+});
+
+export const getPost = cache(async (slug: string): Promise<Post | null> => {
+  const src = getPostSource(slug);
+  if (!src) return null;
   const meta = parseMeta(src);
   if (!meta) return null;
   return { slug, minutes: readingTime(src), ...meta };

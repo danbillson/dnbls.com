@@ -1,0 +1,24 @@
+/* A6 booklet pages. A named page so /cv's `@page { margin: 14mm }` in
+   globals.css can't leak in: each .booklet-page is exactly one sheet side. */
+@page booklet {
+  size: 105mm 148mm;
+  margin: 0;
+}
+
+.booklet-page {
+  page: booklet;
+  break-after: page;
+  print-color-adjust: exact;
+}
+
+.booklet-page:last-child {
+  break-after: auto;
+}
+
+@media print {
+  .booklet {
+    display: block;
+    padding: 0;
+    background: none;
+  }
+}
